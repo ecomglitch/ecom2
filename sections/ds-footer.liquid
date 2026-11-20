@@ -1,71 +1,165 @@
 {%- liquid
   assign classic = section.settings.classic_product
   assign pro = section.settings.pro_product
+  assign logo = section.settings.logo | default: settings.logo_inverse
+  assign email = section.settings.email | default: shop.email
+  assign logo_style = 'height: ' | append: section.settings.logo_height | append: 'px; width: auto;'
+
+  assign social_count = 0
+  assign social_names = 'instagram,tiktok,facebook,youtube,x,pinterest' | split: ','
+  for name in social_names
+    if section.settings[name] != blank
+      assign social_count = social_count | plus: 1
+    endif
+  endfor
 -%}
 
 <footer class="ds ds-footer" aria-label="Footer">
   <div class="ds__container">
-    <div class="ds-footer__top">
-      <div>
-        <div class="ds-footer__brand">{{ section.settings.brand | escape }}</div>
+    {%- comment -%} Brand + newsletter {%- endcomment -%}
+    <div class="ds-footer__hero">
+      <div class="ds-footer__brand-block">
+        <a href="{{ routes.root_url }}" class="ds-footer__logo" aria-label="{{ shop.name | escape }} home">
+          {%- if logo != blank -%}
+            {{
+              logo
+              | image_url: width: 480
+              | image_tag:
+                widths: '160, 240, 320, 480',
+                sizes: '160px',
+                loading: 'lazy',
+                alt: shop.name,
+                style: logo_style
+            }}
+          {%- else -%}
+            <span class="ds-footer__wordmark">{{ section.settings.brand | escape }}</span>
+          {%- endif -%}
+        </a>
         <p class="ds-footer__tagline">{{ section.settings.tagline | escape }}</p>
         <p class="ds-footer__desc">{{ section.settings.description | escape }}</p>
-        <div class="ds-footer__social">
-          {%- if section.settings.instagram != blank -%}
-            <a href="{{ section.settings.instagram }}" aria-label="Instagram" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.tiktok != blank -%}
-            <a href="{{ section.settings.tiktok }}" aria-label="TikTok" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.7a2.9 2.9 0 1 1-2-2.8V9.4a6.3 6.3 0 1 0 5.4 6.3V8.7a8.2 8.2 0 0 0 4.8 1.5V6.8l-1-.1z"/></svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.facebook != blank -%}
-            <a href="{{ section.settings.facebook }}" aria-label="Facebook" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>
-            </a>
-          {%- endif -%}
-        </div>
       </div>
 
+      {%- if section.settings.show_newsletter -%}
+        <div class="ds-footer__newsletter">
+          <p class="ds-footer__news-title">{{ section.settings.newsletter_heading | escape }}</p>
+          <p class="ds-footer__news-text">{{ section.settings.newsletter_text | escape }}</p>
+          {%- form 'customer', id: 'DsFooterNewsletter', class: 'ds-footer__form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <label for="DsFooterEmail" class="visually-hidden">Email address</label>
+            <input
+              id="DsFooterEmail"
+              type="email"
+              name="contact[email]"
+              placeholder="Email address"
+              autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              required
+              {% if form.errors %}
+                aria-invalid="true" aria-describedby="DsFooterNewsStatus"
+              {% endif %}
+            >
+            <button type="submit" class="ds-btn ds-btn--primary">Subscribe</button>
+            {%- if form.posted_successfully? -%}
+              <p id="DsFooterNewsStatus" class="ds-footer__news-status" role="status">Thanks — you're subscribed.</p>
+            {%- elsif form.errors -%}
+              <p id="DsFooterNewsStatus" class="ds-footer__news-status ds-footer__news-status--error" role="alert">
+                {{- form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email -}}
+              </p>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Links {%- endcomment -%}
+    <div class="ds-footer__links">
       <nav aria-label="Shop">
         <p class="ds-footer__heading">Shop</p>
         <ul role="list">
-          <li><a href="{% if classic != blank %}{{ classic.url }}{% else %}{{ routes.root_url }}#shop{% endif %}">Shop Classic</a></li>
-          <li><a href="{% if pro != blank %}{{ pro.url }}{% else %}{{ routes.root_url }}#shop{% endif %}">Shop Pro</a></li>
+          <li><a href="{% if classic != blank %}{{ classic.url }}{% else %}{{ routes.root_url }}#shop{% endif %}">DrySense Classic</a></li>
+          <li><a href="{% if pro != blank %}{{ pro.url }}{% else %}{{ routes.root_url }}#shop{% endif %}">DrySense Pro</a></li>
           <li><a href="{{ routes.root_url }}#how-it-works">How It Works</a></li>
           <li><a href="{{ routes.root_url }}#reviews">Reviews</a></li>
-          <li><a href="{{ routes.root_url }}#faq">FAQ</a></li>
         </ul>
       </nav>
 
-      <nav aria-label="Policies">
-        <p class="ds-footer__heading">Policies</p>
+      <nav aria-label="Help">
+        <p class="ds-footer__heading">Help</p>
         <ul role="list">
-          {%- if shop.shipping_policy != blank -%}<li><a href="{{ shop.shipping_policy.url }}">Shipping Policy</a></li>{%- endif -%}
-          {%- if shop.refund_policy != blank -%}<li><a href="{{ shop.refund_policy.url }}">Refund Policy</a></li>{%- endif -%}
-          {%- if shop.privacy_policy != blank -%}<li><a href="{{ shop.privacy_policy.url }}">Privacy Policy</a></li>{%- endif -%}
-          {%- if shop.terms_of_service != blank -%}<li><a href="{{ shop.terms_of_service.url }}">Terms of Service</a></li>{%- endif -%}
+          <li><a href="{{ routes.root_url }}#faq">FAQ</a></li>
+          {%- if section.settings.contact_page != blank -%}
+            <li><a href="{{ section.settings.contact_page }}">Contact Us</a></li>
+          {%- endif -%}
+          {%- if shop.shipping_policy != blank -%}<li><a href="{{ shop.shipping_policy.url }}">Shipping</a></li>{%- endif -%}
+          {%- if shop.refund_policy != blank -%}<li><a href="{{ shop.refund_policy.url }}">Returns &amp; Refunds</a></li>{%- endif -%}
         </ul>
       </nav>
 
       <div>
-        <p class="ds-footer__heading">Support</p>
+        <p class="ds-footer__heading">Contact</p>
         <ul role="list">
-          {%- if section.settings.contact_page != blank -%}
-            <li><a href="{{ section.settings.contact_page }}">Contact Us</a></li>
-          {%- endif -%}
-          {%- assign email = section.settings.email | default: shop.email -%}
           {%- if email != blank -%}
             <li><a href="mailto:{{ email }}">{{ email }}</a></li>
           {%- endif -%}
+          {%- if section.settings.support_hours != blank -%}
+            <li class="ds-footer__muted">{{ section.settings.support_hours | escape }}</li>
+          {%- endif -%}
         </ul>
       </div>
+
+      {%- if social_count > 0 or request.design_mode -%}
+        <div>
+          <p class="ds-footer__heading">Follow</p>
+          {%- if social_count == 0 -%}
+            <p class="ds-footer__muted">Add your social links in this section's settings — icons appear here.</p>
+          {%- endif -%}
+          <ul class="ds-footer__social" role="list">
+            {%- if section.settings.instagram != blank -%}
+              <li><a href="{{ section.settings.instagram }}" aria-label="Instagram" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg>
+              </a></li>
+            {%- endif -%}
+            {%- if section.settings.tiktok != blank -%}
+              <li><a href="{{ section.settings.tiktok }}" aria-label="TikTok" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.7a2.9 2.9 0 1 1-2-2.8V9.4a6.3 6.3 0 1 0 5.4 6.3V8.7a8.2 8.2 0 0 0 4.8 1.5V6.8l-1-.1z"/></svg>
+              </a></li>
+            {%- endif -%}
+            {%- if section.settings.facebook != blank -%}
+              <li><a href="{{ section.settings.facebook }}" aria-label="Facebook" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>
+              </a></li>
+            {%- endif -%}
+            {%- if section.settings.youtube != blank -%}
+              <li><a href="{{ section.settings.youtube }}" aria-label="YouTube" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>
+              </a></li>
+            {%- endif -%}
+            {%- if section.settings.x != blank -%}
+              <li><a href="{{ section.settings.x }}" aria-label="X" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.2 2.3h3.4l-7.4 8.4L23 21.7h-6.8l-5.3-6.9-6.1 6.9H1.4l7.9-9L.9 2.3h7l4.8 6.3 5.5-6.3zm-1.2 17.4h1.9L7 4.2H5z"/></svg>
+              </a></li>
+            {%- endif -%}
+            {%- if section.settings.pinterest != blank -%}
+              <li><a href="{{ section.settings.pinterest }}" aria-label="Pinterest" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0a12 12 0 0 0-4.4 23.2c-.1-.9-.2-2.4 0-3.4l1.4-6s-.4-.7-.4-1.8c0-1.7 1-2.9 2.2-2.9 1 0 1.5.8 1.5 1.7 0 1-.7 2.6-1 4-.3 1.2.6 2.2 1.8 2.2 2.1 0 3.8-2.3 3.8-5.5 0-2.9-2.1-4.9-5-4.9-3.4 0-5.4 2.6-5.4 5.2 0 1 .4 2.1.9 2.7.1.1.1.2.1.4l-.3 1.4c0 .2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.6 0-3.8 2.7-7.2 7.9-7.2 4.1 0 7.3 2.9 7.3 6.9 0 4.1-2.6 7.4-6.2 7.4-1.2 0-2.4-.6-2.7-1.4l-.8 2.8c-.3 1-1 2.3-1.5 3.1A12 12 0 1 0 12 0z"/></svg>
+              </a></li>
+            {%- endif -%}
+          </ul>
+        </div>
+      {%- endif -%}
     </div>
 
+    {%- comment -%} Legal + payments {%- endcomment -%}
     <div class="ds-footer__bottom">
-      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</span>
+      <div class="ds-footer__legal">
+        <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</span>
+        {%- if shop.privacy_policy != blank -%}<a href="{{ shop.privacy_policy.url }}">Privacy Policy</a>{%- endif -%}
+        {%- if shop.terms_of_service != blank -%}<a href="{{ shop.terms_of_service.url }}">Terms of Service</a>{%- endif -%}
+        {%- if shop.shipping_policy != blank -%}<a href="{{ shop.shipping_policy.url }}">Shipping Policy</a>{%- endif -%}
+        {%- if shop.refund_policy != blank -%}<a href="{{ shop.refund_policy.url }}">Refund Policy</a>{%- endif -%}
+      </div>
       {%- if shop.enabled_payment_types.size > 0 -%}
         <ul class="ds-footer__payments" role="list" aria-label="Payment methods">
           {%- for type in shop.enabled_payment_types -%}
@@ -83,7 +177,15 @@
   "tag": "div",
   "enabled_on": { "groups": ["footer"] },
   "settings": [
-    { "type": "text", "id": "brand", "label": "Wordmark", "default": "DRYSENSE" },
+    { "type": "header", "content": "Brand" },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Use a white / light version for the dark footer. Falls back to the inverse logo in Theme settings → Logo, then to the wordmark."
+    },
+    { "type": "range", "id": "logo_height", "label": "Logo height", "min": 20, "max": 80, "step": 2, "unit": "px", "default": 32 },
+    { "type": "text", "id": "brand", "label": "Wordmark", "default": "DRYSENSE", "info": "Shown when no logo is set" },
     { "type": "text", "id": "tagline", "label": "Tagline", "default": "Fresh shoes. Every day." },
     {
       "type": "textarea",
@@ -91,17 +193,35 @@
       "label": "Description",
       "default": "Thoughtfully designed footwear-care technology for everyday life."
     },
+
+    { "type": "header", "content": "Newsletter" },
+    { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter signup", "default": true },
+    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Stay in the loop" },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Text",
+      "default": "Product news, care tips and early access to offers. No spam."
+    },
+
+    { "type": "header", "content": "Links" },
     { "type": "product", "id": "classic_product", "label": "Classic product" },
     { "type": "product", "id": "pro_product", "label": "Pro product" },
     { "type": "url", "id": "contact_page", "label": "Contact page", "default": "/pages/contact" },
     { "type": "text", "id": "email", "label": "Support email", "info": "Defaults to your store's sender email" },
+    { "type": "text", "id": "support_hours", "label": "Support hours", "info": "e.g. Mon–Fri, 9am–5pm EST" },
+
     { "type": "header", "content": "Social" },
+    { "type": "paragraph", "content": "Icons only appear for the accounts you fill in." },
     { "type": "url", "id": "instagram", "label": "Instagram" },
     { "type": "url", "id": "tiktok", "label": "TikTok" },
     { "type": "url", "id": "facebook", "label": "Facebook" },
+    { "type": "url", "id": "youtube", "label": "YouTube" },
+    { "type": "url", "id": "x", "label": "X (Twitter)" },
+    { "type": "url", "id": "pinterest", "label": "Pinterest" },
     {
       "type": "paragraph",
-      "content": "Payment icons are shown automatically for the methods enabled in Settings → Payments. Policy links appear once each policy is filled in under Settings → Policies."
+      "content": "Payment icons show automatically for the methods enabled in Settings → Payments. Policy links appear once each policy is filled in under Settings → Policies."
     }
   ],
   "presets": [{ "name": "DrySense: Footer" }]
