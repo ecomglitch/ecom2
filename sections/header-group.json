@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "type": "header",
   "name": "t:names.header",
   "sections": {
@@ -17,11 +16,12 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "WINTER SALE — <strong>35% OFF</strong> + FREE SHIPPING",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
-            "letter_spacing": "normal",
-            "case": "none"
+            "letter_spacing": "loose",
+            "case": "none",
+            "text_color": "#FFFFFF"
           },
           "blocks": {}
         }
@@ -33,11 +33,11 @@
       "settings": {
         "speed": 5,
         "section_width": "page-width",
-        "background_color": "{{ settings.color_palette.background }}",
-        "divider_width": 1,
+        "background_color": "#18212B",
+        "divider_width": 0,
         "divider_color": "{{ settings.color_palette.color2 }}",
-        "padding-block-start": 15,
-        "padding-block-end": 15
+        "padding-block-start": 10,
+        "padding-block-end": 10
       }
     },
     "header_section": {
@@ -78,23 +78,23 @@
         "logo_position": "left",
         "menu_position": "left",
         "menu_row": "top",
-        "show_search": true,
+        "show_search": false,
         "search_position": "right",
         "search_row": "top",
-        "show_country": true,
+        "show_country": false,
         "country_selector_style": false,
-        "show_language": true,
+        "show_language": false,
         "localization_font": "heading",
         "localization_font_size": "0.875rem",
         "localization_position": "right",
         "localization_row": "top",
         "section_width": "page-width",
-        "section_height": "standard",
+        "section_height": "compact",
         "enable_sticky_header": "always",
-        "divider_width": 0,
-        "divider_size": "page-width",
+        "divider_width": 1,
+        "divider_size": "full-width",
         "border_width": 0,
-        "background_color_top": "{{ settings.color_palette.background }}",
+        "background_color_top": "#FFFFFF",
         "enable_transparent_header_home": false,
         "enable_transparent_header_product": false,
         "enable_transparent_header_collection": false

@@ -1,0 +1,52 @@
+<section class="ds" aria-labelledby="DsFinalHeading-{{ section.id }}">
+  <div class="ds__container ds-split">
+    <div>
+      <h2 id="DsFinalHeading-{{ section.id }}" class="ds-h2">{{ section.settings.heading | escape }}</h2>
+      <p class="ds-lead">{{ section.settings.text | escape }}</p>
+      <div class="ds-hero__actions">
+        <a class="ds-btn ds-btn--primary" href="{{ section.settings.link | default: '#shop' }}">
+          {{- section.settings.button | escape -}}
+        </a>
+      </div>
+      {%- if section.settings.note != blank -%}
+        <p class="ds-body" style="margin-top: 16px; font-size: 14px;">{{ section.settings.note | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {% render 'ds-media',
+      image: section.settings.image,
+      number: '7',
+      label: 'Final DrySense campaign',
+      file: '07-final-campaign.webp',
+      ratio: '4 / 5',
+      sizes: '(min-width: 900px) 50vw, 100vw',
+      alt: section.settings.image.alt
+    %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "DrySense: Final CTA",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image 7 — Final campaign",
+      "info": "07-final-campaign.webp · Portrait 4:5. Classic and Pro together, person getting ready to leave home."
+    },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Make Every Morning a Fresh Start." },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Don't let wet footwear slow you down. Discover a smarter way to care for your shoes."
+    },
+    { "type": "text", "id": "button", "label": "Button", "default": "Shop DrySense" },
+    { "type": "url", "id": "link", "label": "Button link", "info": "Defaults to the product section on this page" },
+    { "type": "text", "id": "note", "label": "Note", "default": "Choose between DrySense Classic and DrySense Pro." }
+  ],
+  "presets": [{ "name": "DrySense: Final CTA" }]
+}
+{% endschema %}

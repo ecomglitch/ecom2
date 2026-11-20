@@ -1,0 +1,81 @@
+{%- capture hero_media -%}
+  {% render 'ds-media',
+    image: section.settings.image,
+    number: '1',
+    label: 'Hero lifestyle',
+    file: '01-hero.webp',
+    ratio: '4 / 5',
+    sizes: '(min-width: 900px) 50vw, 100vw',
+    lazy: false,
+    alt: section.settings.image.alt
+  %}
+{%- endcapture -%}
+
+<section class="ds ds-hero" aria-labelledby="DsHeroHeading-{{ section.id }}">
+  <div class="ds__container ds-hero__grid">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="ds-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 id="DsHeroHeading-{{ section.id }}" class="ds-h1">{{ section.settings.heading | escape }}</h1>
+      <p class="ds-lead">{{ section.settings.text | escape }}</p>
+
+      <div class="ds-hero__media-mobile">{{ hero_media }}</div>
+
+      <div class="ds-hero__actions">
+        <a class="ds-btn ds-btn--primary" href="{{ section.settings.primary_link | default: '#shop' }}">
+          {{- section.settings.primary_label | escape -}}
+        </a>
+        <a class="ds-link" href="{{ section.settings.secondary_link | default: '#how-it-works' }}">
+          {{- section.settings.secondary_label | escape -}}
+          {% render 'ds-icon', name: 'arrow-right' %}
+        </a>
+      </div>
+
+      <ul class="ds-hero__trust" role="list">
+        <li>{% render 'ds-icon', name: 'thermometer' %}{{ section.settings.trust_1 | escape }}</li>
+        <li>{% render 'ds-icon', name: 'wind' %}{{ section.settings.trust_2 | escape }}</li>
+        <li>{% render 'ds-icon', name: 'home' %}{{ section.settings.trust_3 | escape }}</li>
+      </ul>
+    </div>
+
+    <div class="ds-hero__media-desktop">{{ hero_media }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "DrySense: Hero",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image 1 — Hero lifestyle",
+      "info": "01-hero.webp · Portrait 4:5. Person using DrySense Pro in a modern home."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "DrySense shoe dryer" },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stop Ruining Your Shoes in the Rain and Snow."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Meet DrySense — the electric shoe dryer designed to help remove moisture and unpleasant odors using controlled 48°C thermal circulation."
+    },
+    { "type": "text", "id": "primary_label", "label": "Primary button", "default": "Shop DrySense now" },
+    { "type": "url", "id": "primary_link", "label": "Primary link", "info": "Defaults to the product section on this page" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary link", "default": "Discover how it works" },
+    { "type": "url", "id": "secondary_link", "label": "Secondary URL", "info": "Defaults to How it works on this page" },
+    { "type": "header", "content": "Benefits" },
+    { "type": "text", "id": "trust_1", "label": "Benefit 1", "default": "Controlled 48°C heat" },
+    { "type": "text", "id": "trust_2", "label": "Benefit 2", "default": "Helps reduce odor" },
+    { "type": "text", "id": "trust_3", "label": "Benefit 3", "default": "Designed for everyday use" }
+  ],
+  "presets": [{ "name": "DrySense: Hero" }]
+}
+{% endschema %}

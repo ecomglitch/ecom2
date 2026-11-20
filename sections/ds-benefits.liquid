@@ -1,0 +1,71 @@
+<section class="ds ds-benefits" aria-labelledby="DsBenefitsHeading-{{ section.id }}">
+  <div class="ds__container ds-split{% if section.settings.image_right %} ds-split--reverse{% endif %}">
+    {% render 'ds-media',
+      image: section.settings.image,
+      number: '5',
+      label: 'Customer lifestyle',
+      file: '05-customer-lifestyle.webp',
+      ratio: '4 / 5',
+      sizes: '(min-width: 900px) 50vw, 100vw',
+      alt: section.settings.image.alt
+    %}
+
+    <div>
+      <h2 id="DsBenefitsHeading-{{ section.id }}" class="ds-h2">{{ section.settings.heading | escape }}</h2>
+      <ol class="ds-benefits__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="ds-benefit" {{ block.shopify_attributes }}>
+            <span class="ds-benefit__icon">{% render 'ds-icon', name: block.settings.icon %}</span>
+            <h3 class="ds-h3">
+              <span class="ds-benefit__num">{{ forloop.index | prepend: '0' }}</span>
+              {{- block.settings.title | escape -}}
+            </h3>
+            <p class="ds-body">{{ block.settings.text | escape }}</p>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "DrySense: Benefits",
+  "tag": "div",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "droplet", "label": "Droplet" },
+            { "value": "wind", "label": "Airflow" },
+            { "value": "home", "label": "Home" },
+            { "value": "thermometer", "label": "Thermometer" },
+            { "value": "shield", "label": "Shield" }
+          ],
+          "default": "droplet"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Benefit" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image 5 — Customer lifestyle",
+      "info": "05-customer-lifestyle.webp · Portrait 4:5. Woman using DrySense Pro after returning home."
+    },
+    { "type": "checkbox", "id": "image_right", "label": "Image on the right", "default": false },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your Shoes Deserve Better." }
+  ],
+  "presets": [{ "name": "DrySense: Benefits" }]
+}
+{% endschema %}

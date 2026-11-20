@@ -21,6 +21,8 @@
     {%- render 'stylesheets' -%}
     {%- render 'card-hover-effect-styles' -%}
     {%- render 'scripts' -%}
+    {{ 'drysense.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'drysense.js' | asset_url }}" type="module" defer></script>
     {%- render 'theme-styles-variables' -%}
     {%- render 'color-palette' -%}
 

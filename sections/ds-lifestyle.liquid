@@ -1,0 +1,42 @@
+<section
+  class="ds ds--flush ds-lifestyle{% if section.settings.image != blank %} ds-lifestyle--has-image{% endif %}"
+  aria-labelledby="DsLifestyleHeading-{{ section.id }}"
+>
+  {% render 'ds-media',
+    image: section.settings.image,
+    number: '6',
+    label: 'Family winter lifestyle',
+    file: '06-family-winter.webp',
+    sizes: '100vw',
+    alt: section.settings.image.alt
+  %}
+  <div class="ds__container ds-lifestyle__content">
+    <div>
+      <h2 id="DsLifestyleHeading-{{ section.id }}" class="ds-h2">{{ section.settings.heading | escape }}</h2>
+      <p class="ds-lead">{{ section.settings.text | escape }}</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "DrySense: Lifestyle",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image 6 — Family winter",
+      "info": "06-family-winter.webp · Wide landscape, at least 2400px. Mother and child back from the snow, DrySense Classic visible. A soft dark fade is added behind the text automatically."
+    },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Ready for Whatever Tomorrow Brings." },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Rainy commutes, snowy adventures, busy school mornings, and everyday workouts. Your footwear goes through a lot. Give it the care it deserves."
+    }
+  ],
+  "presets": [{ "name": "DrySense: Lifestyle" }]
+}
+{% endschema %}

@@ -1,0 +1,101 @@
+{%- liquid
+  assign classic = section.settings.classic_product
+  assign pro = section.settings.pro_product
+-%}
+
+<section class="ds ds--alt ds-compare" aria-labelledby="DsCompareHeading-{{ section.id }}">
+  <div class="ds__container">
+    <header class="ds-head ds-head--center">
+      <h2 id="DsCompareHeading-{{ section.id }}" class="ds-h2">{{ section.settings.heading | escape }}</h2>
+      <p class="ds-lead">{{ section.settings.text | escape }}</p>
+    </header>
+
+    {%- if section.settings.show_image -%}
+      {% render 'ds-media',
+        image: section.settings.image,
+        number: '4',
+        label: 'Classic vs Pro comparison',
+        file: '04-comparison.webp',
+        ratio: '21 / 9',
+        class: 'ds-compare__media',
+        sizes: '(min-width: 1200px) 1200px, 100vw',
+        alt: 'DrySense Classic and DrySense Pro side by side'
+      %}
+    {%- endif -%}
+
+    <div class="ds-table-wrap">
+      <table class="ds-table">
+        <caption class="visually-hidden">DrySense Classic and Pro compared</caption>
+        <thead>
+          <tr>
+            <th scope="col">Feature</th>
+            <th scope="col">Classic</th>
+            <th scope="col">Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            <tr {{ block.shopify_attributes }}>
+              <th scope="row">{{ block.settings.feature | escape }}</th>
+              <td{% if block.settings.classic == 'Not specified' %} class="is-unknown"{% endif %}>
+                {{- block.settings.classic | escape -}}
+              </td>
+              <td{% if block.settings.pro == 'Not specified' %} class="is-unknown"{% endif %}>
+                {{- block.settings.pro | escape -}}
+              </td>
+            </tr>
+          {%- endfor -%}
+          <tr>
+            <th scope="row">Price</th>
+            <td>
+              {%- if classic != blank -%}{{ classic.price | money }}{%- else -%}{{ section.settings.classic_price }}{%- endif -%}
+            </td>
+            <td>
+              {%- if pro != blank -%}{{ pro.price | money }}{%- else -%}{{ section.settings.pro_price }}{%- endif -%}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ds-compare__actions">
+      <a class="ds-btn ds-btn--ghost" href="{% if classic != blank %}{{ classic.url }}{% else %}#shop{% endif %}">Shop Classic</a>
+      <a class="ds-btn ds-btn--dark" href="{% if pro != blank %}{{ pro.url }}{% else %}#shop{% endif %}">Shop Pro</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "DrySense: Comparison",
+  "tag": "div",
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "Feature", "default": "Feature" },
+        { "type": "text", "id": "classic", "label": "Classic", "default": "Not specified", "info": "Use \"Not specified\" when unconfirmed. It is shown in gray." },
+        { "type": "text", "id": "pro", "label": "Pro", "default": "Not specified" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Two Models. One Fresh Start." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Find the DrySense that fits your everyday routine." },
+    { "type": "checkbox", "id": "show_image", "label": "Show comparison image", "default": false },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image 4 — Classic vs Pro",
+      "info": "04-comparison.webp · Wide 21:9. Both models together in one studio shot."
+    },
+    { "type": "header", "content": "Price row" },
+    { "type": "product", "id": "classic_product", "label": "Classic product" },
+    { "type": "product", "id": "pro_product", "label": "Pro product" },
+    { "type": "text", "id": "classic_price", "label": "Classic fallback price", "default": "$49.99" },
+    { "type": "text", "id": "pro_price", "label": "Pro fallback price", "default": "$54.99" }
+  ],
+  "presets": [{ "name": "DrySense: Comparison" }]
+}
+{% endschema %}

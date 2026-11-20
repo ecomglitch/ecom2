@@ -8,203 +8,287 @@
  * ------------------------------------------------------------
  */{
   "sections": {
-    "hero_spotlight": {
-      "type": "hero-spotlight",
-      "settings": {
-        "eyebrow": "New release",
-        "subheading": "<p>Engineered for speed, built to last. Everything you need, nothing you don&#39;t.</p>",
-        "secondary_label": "Explore features"
-      }
+    "hero": {
+      "type": "ds-hero",
+      "settings": {}
     },
-    "product_list_fa6P9H": {
-      "type": "product-list",
+    "products": {
+      "type": "ds-products",
+      "settings": {}
+    },
+    "benefits": {
+      "type": "ds-benefits",
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
+        "benefit_1": {
+          "type": "benefit",
           "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_YFtzcL": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_MWeP9V": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
-          ]
+            "icon": "droplet",
+            "title": "Help remove moisture",
+            "text": "DrySense uses controlled thermal circulation to help remove moisture from your everyday footwear."
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "benefit_2": {
+          "type": "benefit",
           "settings": {
-            "product_card_gap": 4,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_677WP3": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_YXxMTj": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_JQzVV4": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
-          ]
+            "icon": "wind",
+            "title": "Help reduce unpleasant odors",
+            "text": "By helping reduce trapped moisture, DrySense helps address conditions associated with unpleasant footwear odors."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "home",
+            "title": "Designed for everyday life",
+            "text": "From gym sessions to rainy commutes and outdoor adventures, make footwear care part of your daily routine."
+          }
         }
       },
-      "name": "t:names.product_list",
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3"
+      ],
+      "settings": {}
+    },
+    "steps": {
+      "type": "ds-steps",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "icon": "sliders",
+            "title": "Adjust",
+            "text": "Extend the drying attachments to accommodate your footwear."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "icon": "timer",
+            "title": "Set",
+            "text": "Choose your desired drying time using the controls."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "icon": "wind",
+            "title": "Relax",
+            "text": "Let DrySense circulate warm air through your footwear."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ],
+      "settings": {}
+    },
+    "compare": {
+      "type": "ds-compare",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "feature": "Product design",
+            "classic": "Compact base with two upright fork attachments",
+            "pro": "Upright body with four drying arms"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "feature": "Exterior color",
+            "classic": "Charcoal",
+            "pro": "Champagne"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "feature": "Display",
+            "classic": "Top control panel",
+            "pro": "Front digital temperature display"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "feature": "Drying temperature",
+            "classic": "48°C",
+            "pro": "48°C"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "feature": "Adjustable attachments",
+            "classic": "Not specified",
+            "pro": "Not specified"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5"
+      ],
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "show_image": false
       }
+    },
+    "lifestyle": {
+      "type": "ds-lifestyle",
+      "settings": {}
+    },
+    "reviews": {
+      "type": "ds-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Finally, my ski boots are dry by morning!",
+            "author": "Mark T."
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Such a useful product during rainy weather. Really convenient for everyday use.",
+            "author": "Sarah L."
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Compact, simple to use, and a great addition to my home.",
+            "author": "James R."
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "reviews_are_real": false
+      }
+    },
+    "guarantee": {
+      "type": "ds-guarantee",
+      "settings": {}
+    },
+    "final": {
+      "type": "ds-final-cta",
+      "settings": {}
+    },
+    "faq": {
+      "type": "ds-faq",
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "How does DrySense work?",
+            "answer": "<p>DrySense circulates warm air at a controlled 48°C through its drying attachments and into your footwear, helping remove moisture from the inside out.</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "What is the difference between Classic and Pro?",
+            "answer": "<p>Both models use the same drying approach. DrySense Classic has a charcoal finish and a top control panel. DrySense Pro has a champagne finish and a front digital display. See the comparison table above for details.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "Is DrySense suitable for sneakers and boots?",
+            "answer": "<p>DrySense is designed for everyday footwear, including sneakers and boots. [Confirm any footwear types or materials that should not be used.]</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "How long does drying take?",
+            "answer": "<p>[Add the recommended drying time and timer options from the product manual.]</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "Does DrySense help reduce unpleasant odors?",
+            "answer": "<p>By helping remove trapped moisture, DrySense helps address conditions associated with unpleasant footwear odors.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "What temperature does DrySense use?",
+            "answer": "<p>DrySense uses controlled thermal circulation at 48°C.</p>"
+          }
+        },
+        "question_7": {
+          "type": "question",
+          "settings": {
+            "question": "Can I use DrySense every day?",
+            "answer": "<p>Yes. DrySense is designed for everyday use. Always follow the instructions in the product manual.</p>"
+          }
+        },
+        "question_8": {
+          "type": "question",
+          "settings": {
+            "question": "Does it turn off automatically?",
+            "answer": "<p>[Confirm whether DrySense has a timer or automatic shut-off before answering.]</p>"
+          }
+        },
+        "question_9": {
+          "type": "question",
+          "settings": {
+            "question": "How much does shipping cost?",
+            "answer": "<p>[Add your shipping rates and delivery times, matching your shipping policy.]</p>"
+          }
+        },
+        "question_10": {
+          "type": "question",
+          "settings": {
+            "question": "What if I am not satisfied?",
+            "answer": "<p>Contact our support team within 30 days of receiving your order to request a refund, subject to our published return policy.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6",
+        "question_7",
+        "question_8",
+        "question_9",
+        "question_10"
+      ],
+      "settings": {}
     }
   },
   "order": [
-    "hero_spotlight",
-    "product_list_fa6P9H"
+    "hero",
+    "products",
+    "compare",
+    "benefits",
+    "steps",
+    "lifestyle",
+    "reviews",
+    "guarantee",
+    "final",
+    "faq"
   ]
 }

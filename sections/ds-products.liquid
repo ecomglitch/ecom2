@@ -1,0 +1,219 @@
+{%- comment -%}
+  Two distinct products, each with its own Shopify product, image, price and
+  cart line. Classic and Pro are never mixed.
+{%- endcomment -%}
+{%- liquid
+  assign keys = 'classic,pro' | split: ','
+  assign default_key = 'pro'
+  assign d_product = default_key | append: '_product'
+  assign d_name = default_key | append: '_name'
+  assign d_price = default_key | append: '_price'
+-%}
+
+<section
+  id="shop"
+  class="ds ds-anchor ds-products"
+  aria-labelledby="DsProductsHeading-{{ section.id }}"
+>
+  <div class="ds__container">
+    <header class="ds-head ds-head--center">
+      <h2 id="DsProductsHeading-{{ section.id }}" class="ds-h2">{{ section.settings.heading | escape }}</h2>
+      <p class="ds-lead">{{ section.settings.text | escape }}</p>
+    </header>
+
+    <div class="ds-products__grid" id="DsProducts-{{ section.id }}">
+      {%- for key in keys -%}
+        {%- liquid
+          assign k_product = key | append: '_product'
+          assign k_name = key | append: '_name'
+          assign k_image = key | append: '_image'
+          assign k_badge = key | append: '_badge'
+          assign k_description = key | append: '_description'
+          assign k_price = key | append: '_price'
+          assign k_compare = key | append: '_compare'
+          assign k_cta = key | append: '_cta'
+          assign p = section.settings[k_product]
+          assign variant = p.selected_or_first_available_variant
+          assign name = section.settings[k_name]
+          assign status_id = 'DsStatus-' | append: section.id | append: '-' | append: key
+          assign image = section.settings[k_image]
+          if key == 'classic'
+            assign number = '2'
+            assign file = '02-classic.webp'
+          else
+            assign number = '3'
+            assign file = '03-pro.webp'
+          endif
+          assign badge = section.settings[k_badge]
+        -%}
+        <article
+          class="ds-card{% if key == 'pro' %} ds-card--featured{% endif %}"
+          data-ds-card="{{ key }}"
+          aria-labelledby="DsCardTitle-{{ section.id }}-{{ key }}"
+        >
+          {%- if badge != blank -%}
+            <span class="ds-card__badge">{{ badge | escape }}</span>
+          {%- endif -%}
+
+          {% render 'ds-media',
+            image: image,
+            number: number,
+            label: name,
+            file: file,
+            ratio: '1 / 1',
+            class: 'ds-card__media ds-media--contain',
+            sizes: '(min-width: 750px) 50vw, 100vw',
+            alt: name
+          %}
+
+          <div class="ds-card__body">
+            <h3 id="DsCardTitle-{{ section.id }}-{{ key }}" class="ds-h3 ds-card__title">{{ name | escape }}</h3>
+            <p class="ds-body">{{ section.settings[k_description] | escape }}</p>
+            {% render 'ds-price',
+              product: p,
+              fallback_price: section.settings[k_price],
+              fallback_compare: section.settings[k_compare]
+            %}
+
+            <div class="ds-card__footer">
+              {%- if p != blank and variant.available -%}
+                <button
+                  type="button"
+                  class="ds-btn ds-btn--primary ds-btn--block"
+                  data-ds-add
+                  data-variant-id="{{ variant.id }}"
+                  data-product-id="{{ p.id }}"
+                  data-status-id="{{ status_id }}"
+                >
+                  {{- section.settings[k_cta] | escape -}}
+                </button>
+              {%- elsif p != blank -%}
+                <button type="button" class="ds-btn ds-btn--primary ds-btn--block" disabled>Sold out</button>
+              {%- else -%}
+                <button type="button" class="ds-btn ds-btn--primary ds-btn--block" disabled>
+                  {{- section.settings[k_cta] | escape -}}
+                </button>
+              {%- endif -%}
+              <p id="{{ status_id }}" class="ds-cart-status" role="status" aria-live="polite">
+                {%- if p == blank and request.design_mode -%}Connect a product in the theme editor to enable checkout.{%- endif -%}
+              </p>
+              {%- if p != blank -%}
+                <a class="ds-link ds-card__details" href="{{ p.url }}">Product details</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Sticky mobile purchase bar — appears once the shopper scrolls past this section {%- endcomment -%}
+<div class="ds-sticky" data-ds-sticky data-watch="DsProducts-{{ section.id }}" inert>
+  <div class="ds-sticky__row">
+    {%- for key in keys -%}
+      {%- assign k_image = key | append: '_image' -%}
+      <div data-ds-thumb="{{ key }}"{% unless key == default_key %} hidden{% endunless %}>
+        {% render 'ds-media',
+          image: section.settings[k_image],
+          number: '',
+          label: '',
+          ratio: '1 / 1',
+          class: 'ds-sticky__thumb ds-media--contain',
+          sizes: '44px',
+          alt: ''
+        %}
+      </div>
+    {%- endfor -%}
+
+    <div class="ds-sticky__info">
+      <div class="ds-sticky__select" role="group" aria-label="Choose model">
+        {%- for key in keys -%}
+          {%- liquid
+            assign k_product = key | append: '_product'
+            assign k_name = key | append: '_name'
+            assign k_image = key | append: '_image'
+            assign k_badge = key | append: '_badge'
+            assign k_description = key | append: '_description'
+            assign k_price = key | append: '_price'
+            assign k_compare = key | append: '_compare'
+            assign k_cta = key | append: '_cta'
+            assign p = section.settings[k_product]
+            assign variant = p.selected_or_first_available_variant
+            if p != blank
+              assign price_text = variant.price | money
+            else
+              assign price_text = section.settings[k_price]
+            endif
+            assign short_name = section.settings[k_name] | remove: 'DrySense ' | strip
+          -%}
+          <button
+            type="button"
+            class="ds-sticky__option"
+            data-ds-option="{{ key }}"
+            data-name="{{ section.settings[k_name] | escape }}"
+            data-price="{{ price_text | escape }}"
+            data-variant-id="{% if p != blank and variant.available %}{{ variant.id }}{% endif %}"
+            data-product-id="{{ p.id }}"
+            aria-pressed="{% if key == default_key %}true{% else %}false{% endif %}"
+          >
+            {{- short_name | escape -}}
+          </button>
+        {%- endfor -%}
+      </div>
+      {%- liquid
+        assign dp = section.settings[d_product]
+        assign dv = dp.selected_or_first_available_variant
+      -%}
+      <span class="visually-hidden" data-ds-name>{{ section.settings[d_name] | escape }}</span>
+      <span class="ds-sticky__price" data-ds-price>
+        {%- if dp != blank -%}{{ dv.price | money }}{%- else -%}{{ section.settings[d_price] }}{%- endif -%}
+      </span>
+    </div>
+
+    <button
+      type="button"
+      class="ds-btn ds-btn--primary"
+      data-ds-add
+      data-variant-id="{% if dp != blank and dv.available %}{{ dv.id }}{% endif %}"
+      data-product-id="{{ dp.id }}"
+      {% unless dp != blank and dv.available %}
+        disabled
+      {% endunless %}
+    >
+      Add to cart
+    </button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "DrySense: Products",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Meet Your New Everyday Essential." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Two thoughtfully designed models. One simple goal: fresher footwear." },
+
+    { "type": "header", "content": "DrySense Classic" },
+    { "type": "product", "id": "classic_product", "label": "Product", "info": "Price, compare-at price and checkout come from this product." },
+    { "type": "image_picker", "id": "classic_image", "label": "Image 2 — Classic", "info": "02-classic.webp · Square 1:1. Charcoal body, pink side button." },
+    { "type": "text", "id": "classic_name", "label": "Name", "default": "DrySense Classic" },
+    { "type": "textarea", "id": "classic_description", "label": "Description", "default": "Your everyday essential for fresher, drier footwear." },
+    { "type": "text", "id": "classic_badge", "label": "Badge" },
+    { "type": "text", "id": "classic_cta", "label": "Button", "default": "Choose Classic" },
+    { "type": "text", "id": "classic_price", "label": "Fallback price", "default": "$49.99", "info": "Only shown until a product is connected." },
+    { "type": "text", "id": "classic_compare", "label": "Fallback compare-at price", "default": "$79.99" },
+
+    { "type": "header", "content": "DrySense Pro" },
+    { "type": "product", "id": "pro_product", "label": "Product", "info": "Price, compare-at price and checkout come from this product." },
+    { "type": "image_picker", "id": "pro_image", "label": "Image 3 — Pro", "info": "03-pro.webp · Square 1:1. Champagne body, 48°C digital display." },
+    { "type": "text", "id": "pro_name", "label": "Name", "default": "DrySense Pro" },
+    { "type": "textarea", "id": "pro_description", "label": "Description", "default": "Premium footwear care with a smart digital display and sophisticated design." },
+    { "type": "text", "id": "pro_badge", "label": "Badge", "default": "Premium model" },
+    { "type": "text", "id": "pro_cta", "label": "Button", "default": "Choose Pro" },
+    { "type": "text", "id": "pro_price", "label": "Fallback price", "default": "$54.99", "info": "Only shown until a product is connected." },
+    { "type": "text", "id": "pro_compare", "label": "Fallback compare-at price", "default": "$89.99" }
+  ],
+  "presets": [{ "name": "DrySense: Products" }]
+}
+{% endschema %}

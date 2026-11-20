@@ -1,0 +1,26 @@
+{%- comment -%}
+  Price with compare-at and savings. Uses the live Shopify variant when a
+  product is connected; otherwise the fallback prices typed in the section.
+
+  Accepts:
+  - product: {product} Connected product (optional)
+  - fallback_price: {string} e.g. '$49.99'
+  - fallback_compare: {string} e.g. '$79.99'
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- assign variant = product.selected_or_first_available_variant -%}
+  <p class="ds-price">
+    <span class="ds-price__now">{{ variant.price | money }}</span>
+    {%- if variant.compare_at_price > variant.price -%}
+      <s class="ds-price__was"><span class="visually-hidden">Regular price </span>{{ variant.compare_at_price | money }}</s>
+      <span class="ds-price__save">Save {{ variant.compare_at_price | minus: variant.price | money }}</span>
+    {%- endif -%}
+  </p>
+{%- else -%}
+  <p class="ds-price">
+    <span class="ds-price__now">{{ fallback_price }}</span>
+    {%- if fallback_compare != blank -%}
+      <s class="ds-price__was"><span class="visually-hidden">Regular price </span>{{ fallback_compare }}</s>
+    {%- endif -%}
+  </p>
+{%- endif -%}
