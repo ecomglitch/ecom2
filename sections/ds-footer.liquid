@@ -3,6 +3,10 @@
   assign pro = section.settings.pro_product
   assign logo = section.settings.logo | default: settings.logo_inverse
   assign email = section.settings.email | default: shop.email
+  assign contact_url = section.settings.contact_page
+  if contact_url == blank and pages.contact != blank
+    assign contact_url = pages.contact.url
+  endif
   assign logo_style = 'height: ' | append: section.settings.logo_height | append: 'px; width: auto;'
 
   assign social_count = 0
@@ -89,8 +93,8 @@
         <p class="ds-footer__heading">Help</p>
         <ul role="list">
           <li><a href="{{ routes.root_url }}#faq">FAQ</a></li>
-          {%- if section.settings.contact_page != blank -%}
-            <li><a href="{{ section.settings.contact_page }}">Contact Us</a></li>
+          {%- if contact_url != blank -%}
+            <li><a href="{{ contact_url }}">Contact Us</a></li>
           {%- endif -%}
           {%- if shop.shipping_policy != blank -%}<li><a href="{{ shop.shipping_policy.url }}">Shipping</a></li>{%- endif -%}
           {%- if shop.refund_policy != blank -%}<li><a href="{{ shop.refund_policy.url }}">Returns &amp; Refunds</a></li>{%- endif -%}
@@ -207,7 +211,7 @@
     { "type": "header", "content": "Links" },
     { "type": "product", "id": "classic_product", "label": "Classic product" },
     { "type": "product", "id": "pro_product", "label": "Pro product" },
-    { "type": "url", "id": "contact_page", "label": "Contact page", "default": "/pages/contact" },
+    { "type": "url", "id": "contact_page", "label": "Contact page", "info": "Defaults to your Contact page if one exists" },
     { "type": "text", "id": "email", "label": "Support email", "info": "Defaults to your store's sender email" },
     { "type": "text", "id": "support_hours", "label": "Support hours", "info": "e.g. Mon–Fri, 9am–5pm EST" },
 
