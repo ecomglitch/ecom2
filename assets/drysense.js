@@ -141,9 +141,10 @@ function initSticky(bar) {
 
   options.forEach((option) => option.addEventListener('click', () => select(option.dataset.dsOption)));
 
-  // Choosing a model on a product card keeps the bar in sync
+  // Pro stays preselected; only an explicit "Choose …" on a card switches the bar
   document.addEventListener('click', (event) => {
-    const card = /** @type {Element} */ (event.target).closest?.('[data-ds-card]');
+    const cta = /** @type {Element} */ (event.target).closest?.('[data-ds-card] [data-ds-add]');
+    const card = cta?.closest('[data-ds-card]');
     if (card instanceof HTMLElement && card.dataset.dsCard) select(card.dataset.dsCard);
   });
 

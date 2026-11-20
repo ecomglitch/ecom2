@@ -5,6 +5,8 @@
 {%- liquid
   assign keys = 'classic,pro' | split: ','
   assign default_key = 'pro'
+  # Pro is the primary model: first in the sticky bar and preselected
+  assign sticky_keys = 'pro,classic' | split: ','
   assign d_product = default_key | append: '_product'
   assign d_name = default_key | append: '_name'
   assign d_price = default_key | append: '_price'
@@ -128,7 +130,7 @@
 
     <div class="ds-sticky__info">
       <div class="ds-sticky__select" role="group" aria-label="Choose model">
-        {%- for key in keys -%}
+        {%- for key in sticky_keys -%}
           {%- liquid
             assign k_product = key | append: '_product'
             assign k_name = key | append: '_name'

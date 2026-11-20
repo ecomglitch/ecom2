@@ -323,6 +323,8 @@ html {
 
 /* ==========================================================================
    Hero
+   Desktop: copy left, image right. Mobile: image → short headline → CTA,
+   sized so the product and the button are both visible without scrolling.
    ========================================================================== */
 .ds-hero {
   padding-block: clamp(40px, 6vw, 88px) clamp(64px, 8vw, 112px);
@@ -333,6 +335,25 @@ html {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: clamp(40px, 6vw, 96px);
+}
+
+.ds-hero__content {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.ds-hero__media {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.ds-hero__media .ds-media {
+  --ds-ratio: 4 / 5;
+}
+
+.ds-hero__media-mobile,
+.ds-hero__heading-mobile {
+  display: none;
 }
 
 .ds-hero__actions {
@@ -365,13 +386,25 @@ html {
   color: var(--ds-muted);
 }
 
-.ds-hero__media-mobile {
-  display: none;
-}
-
 @media (max-width: 899px) {
+  .ds-hero {
+    padding-block: 12px 56px;
+  }
+
   .ds-hero__grid {
     grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .ds-hero__content,
+  .ds-hero__media {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .ds-hero__media .ds-media {
+    --ds-ratio: 1 / 1;
+    border-radius: var(--ds-radius);
   }
 
   .ds-hero__media-desktop {
@@ -380,27 +413,52 @@ html {
 
   .ds-hero__media-mobile {
     display: block;
-    margin-top: 32px;
+  }
+
+  /* Trim everything that delays the product + button */
+  .ds-hero__eyebrow,
+  .ds-hero__heading-desktop,
+  .ds-hero__text,
+  .ds-hero__secondary {
+    display: none;
+  }
+
+  .ds-hero__heading-mobile {
+    display: inline;
+  }
+
+  .ds-hero .ds-h1 {
+    font-size: clamp(1.875rem, 8.5vw, 2.5rem);
+    line-height: 1.08;
   }
 
   .ds-hero__actions {
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 28px;
-    text-align: center;
+    margin-top: 20px;
   }
 
   .ds-hero__actions .ds-btn {
     width: 100%;
-  }
-
-  .ds-hero__actions .ds-link {
-    justify-content: center;
+    min-height: 56px;
+    font-size: 15px;
   }
 
   .ds-hero__trust {
-    flex-direction: column;
-    margin-top: 32px;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 0;
+    border: 0;
+  }
+
+  .ds-hero__trust li {
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ds-muted);
+  }
+
+  .ds-hero__trust .ds-icon {
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -1258,4 +1316,11 @@ body:has(dialog[open]) .ds-sticky {
 .announcement-bar__text strong {
   color: var(--ds-accent);
   font-weight: 600;
+}
+
+/* Pro is the primary model — list it first on phones */
+@media (max-width: 749px) {
+  .ds-card--featured {
+    order: -1;
+  }
 }

@@ -1,32 +1,68 @@
-{%- capture hero_media -%}
-  {% render 'ds-media',
-    image: section.settings.image,
-    number: '1',
-    label: 'Hero lifestyle',
-    file: '01-hero.webp',
-    ratio: '4 / 5',
-    sizes: '(min-width: 900px) 50vw, 100vw',
-    lazy: false,
-    alt: section.settings.image.alt
-  %}
-{%- endcapture -%}
+{%- comment -%}
+  Mobile: product image first, short headline, CTA — all above the fold.
+  Desktop: copy left, image right.
+{%- endcomment -%}
+{%- liquid
+  assign mobile_image = section.settings.mobile_image | default: section.settings.image
+  assign mobile_heading = section.settings.mobile_heading | default: section.settings.heading
+-%}
 
 <section class="ds ds-hero" aria-labelledby="DsHeroHeading-{{ section.id }}">
   <div class="ds__container ds-hero__grid">
-    <div>
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="ds-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    <div class="ds-hero__media">
+      {%- if section.settings.mobile_image != blank -%}
+        <div class="ds-hero__media-desktop">
+          {% render 'ds-media',
+            image: section.settings.image,
+            number: '1',
+            label: 'Hero lifestyle',
+            file: '01-hero.webp',
+            sizes: '(min-width: 900px) 50vw, 1px',
+            lazy: false,
+            alt: section.settings.image.alt
+          %}
+        </div>
+        <div class="ds-hero__media-mobile">
+          {% render 'ds-media',
+            image: mobile_image,
+            number: '1',
+            label: 'Hero (mobile)',
+            file: '01-hero.webp',
+            sizes: '(max-width: 899px) 100vw, 1px',
+            lazy: false,
+            alt: mobile_image.alt
+          %}
+        </div>
+      {%- else -%}
+        {% render 'ds-media',
+          image: section.settings.image,
+          number: '1',
+          label: 'Hero lifestyle',
+          file: '01-hero.webp',
+          sizes: '(min-width: 900px) 50vw, 100vw',
+          lazy: false,
+          alt: section.settings.image.alt
+        %}
       {%- endif -%}
-      <h1 id="DsHeroHeading-{{ section.id }}" class="ds-h1">{{ section.settings.heading | escape }}</h1>
-      <p class="ds-lead">{{ section.settings.text | escape }}</p>
+    </div>
 
-      <div class="ds-hero__media-mobile">{{ hero_media }}</div>
+    <div class="ds-hero__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="ds-eyebrow ds-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 id="DsHeroHeading-{{ section.id }}" class="ds-h1">
+        <span class="ds-hero__heading-desktop">{{ section.settings.heading | escape }}</span>
+        <span class="ds-hero__heading-mobile">{{ mobile_heading | escape }}</span>
+      </h1>
+      {%- if section.settings.text != blank -%}
+        <p class="ds-lead ds-hero__text">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
 
       <div class="ds-hero__actions">
         <a class="ds-btn ds-btn--primary" href="{{ section.settings.primary_link | default: '#shop' }}">
           {{- section.settings.primary_label | escape -}}
         </a>
-        <a class="ds-link" href="{{ section.settings.secondary_link | default: '#how-it-works' }}">
+        <a class="ds-link ds-hero__secondary" href="{{ section.settings.secondary_link | default: '#how-it-works' }}">
           {{- section.settings.secondary_label | escape -}}
           {% render 'ds-icon', name: 'arrow-right' %}
         </a>
@@ -38,8 +74,6 @@
         <li>{% render 'ds-icon', name: 'home' %}{{ section.settings.trust_3 | escape }}</li>
       </ul>
     </div>
-
-    <div class="ds-hero__media-desktop">{{ hero_media }}</div>
   </div>
 </section>
 
@@ -54,7 +88,13 @@
       "label": "Image 1 — Hero lifestyle",
       "info": "01-hero.webp · Portrait 4:5. Person using DrySense Pro in a modern home."
     },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "DrySense shoe dryer" },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image (optional)",
+      "info": "Square 1:1, product clearly visible — e.g. DrySense Pro. Falls back to the hero image."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Desktop only" },
     {
       "type": "textarea",
       "id": "heading",
@@ -62,19 +102,27 @@
       "default": "Stop Ruining Your Shoes in the Rain and Snow."
     },
     {
+      "type": "text",
+      "id": "mobile_heading",
+      "label": "Mobile heading",
+      "default": "Dry, fresh shoes. Every day.",
+      "info": "Keep it short so the button stays on screen. Falls back to the heading."
+    },
+    {
       "type": "textarea",
       "id": "text",
       "label": "Text",
-      "default": "Meet DrySense — the electric shoe dryer designed to help remove moisture and unpleasant odors using controlled 48°C thermal circulation."
+      "default": "The electric shoe dryer with controlled 48°C warm air.",
+      "info": "Desktop only"
     },
     { "type": "text", "id": "primary_label", "label": "Primary button", "default": "Shop DrySense now" },
     { "type": "url", "id": "primary_link", "label": "Primary link", "info": "Defaults to the product section on this page" },
-    { "type": "text", "id": "secondary_label", "label": "Secondary link", "default": "Discover how it works" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary link", "default": "Discover how it works", "info": "Desktop only" },
     { "type": "url", "id": "secondary_link", "label": "Secondary URL", "info": "Defaults to How it works on this page" },
     { "type": "header", "content": "Benefits" },
     { "type": "text", "id": "trust_1", "label": "Benefit 1", "default": "Controlled 48°C heat" },
     { "type": "text", "id": "trust_2", "label": "Benefit 2", "default": "Helps reduce odor" },
-    { "type": "text", "id": "trust_3", "label": "Benefit 3", "default": "Designed for everyday use" }
+    { "type": "text", "id": "trust_3", "label": "Benefit 3", "default": "Everyday use" }
   ],
   "presets": [{ "name": "DrySense: Hero" }]
 }
