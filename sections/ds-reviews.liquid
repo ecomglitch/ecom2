@@ -34,15 +34,16 @@
     aria-labelledby="DsReviewsHeading-{{ section.id }}"
   >
     <div class="ds__container">
-      <header class="ds-head">
-        <h2 id="DsReviewsHeading-{{ section.id }}" class="ds-h2">{{ section.settings.heading | escape }}</h2>
+      <header class="ds-head" data-ds-reveal>
+        {%- if section.settings.eyebrow != blank -%}<p class="ds-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 id="DsReviewsHeading-{{ section.id }}" class="ds-h2">{{ section.settings.heading | escape }}</h2>
       </header>
 
       {%- if show_cards and card_count > 0 -%}
         <div class="ds-reviews__grid">
           {%- for block in section.blocks -%}
             {%- if block.type == 'review' -%}
-              <figure class="ds-review" {{ block.shopify_attributes }}>
+              <figure class="ds-review" data-ds-reveal style="--ds-delay: {{ forloop.index0 | times: 100 }}ms;" {{ block.shopify_attributes }}>
                 <div class="ds-review__stars" role="img" aria-label="{{ block.settings.rating }} out of 5 stars">
                   {%- for i in (1..block.settings.rating) -%}
                     {% render 'ds-icon', name: 'star' %}
@@ -90,6 +91,7 @@
     }
   ],
   "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Reviews" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Real Experiences. Better Mornings." },
     {
       "type": "checkbox",

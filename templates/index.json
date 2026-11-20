@@ -92,41 +92,46 @@
         "row_1": {
           "type": "row",
           "settings": {
-            "feature": "Product design",
-            "classic": "Compact base with two upright fork attachments",
-            "pro": "Upright body with four drying arms"
+            "icon": "target",
+            "label": "Best for",
+            "classic": "Shoes, kids' shoes & gloves",
+            "pro": "All everyday footwear"
           }
         },
         "row_2": {
           "type": "row",
           "settings": {
-            "feature": "Exterior color",
-            "classic": "Charcoal",
-            "pro": "Champagne"
+            "icon": "expand",
+            "label": "Drying arms",
+            "classic": "Compact",
+            "pro": "Extendable"
           }
         },
         "row_3": {
           "type": "row",
           "settings": {
-            "feature": "Display",
-            "classic": "Top control panel",
-            "pro": "Front digital temperature display"
+            "icon": "monitor",
+            "label": "Display",
+            "classic": "Control panel",
+            "pro": "Digital 48°C display"
           }
         },
         "row_4": {
           "type": "row",
           "settings": {
-            "feature": "Drying temperature",
-            "classic": "48°C",
-            "pro": "48°C"
+            "icon": "thermometer",
+            "label": "Controlled 48°C heat",
+            "classic": "yes",
+            "pro": "yes"
           }
         },
         "row_5": {
           "type": "row",
           "settings": {
-            "feature": "Adjustable attachments",
-            "classic": "Not specified",
-            "pro": "Not specified"
+            "icon": "palette",
+            "label": "Finish",
+            "classic": "Charcoal",
+            "pro": "Champagne"
           }
         }
       },
@@ -204,14 +209,14 @@
           "type": "question",
           "settings": {
             "question": "What is the difference between Classic and Pro?",
-            "answer": "<p>Both models use the same drying approach. DrySense Classic has a charcoal finish and a top control panel. DrySense Pro has a champagne finish and a front digital display. See the comparison table above for details.</p>"
+            "answer": "<p>Both use controlled 48°C warm air. <strong>Classic</strong> is our compact model — great for everyday shoes, kids' shoes and gloves. <strong>Pro</strong> is our premium model, with extendable arms that adjust to your footwear and a digital display — for just a little more.</p>"
           }
         },
         "question_3": {
           "type": "question",
           "settings": {
             "question": "Is DrySense suitable for sneakers and boots?",
-            "answer": "<p>DrySense is designed for everyday footwear, including sneakers and boots. [Confirm any footwear types or materials that should not be used.]</p>"
+            "answer": "<p>Yes. DrySense is designed for everyday footwear, including sneakers and boots. DrySense Classic also works for kids' shoes and gloves. [Confirm any footwear types or materials that should not be used.]</p>"
           }
         },
         "question_4": {
@@ -277,12 +282,17 @@
         "question_10"
       ],
       "settings": {}
+    },
+    "moments": {
+      "type": "ds-moments",
+      "settings": {}
     }
   },
   "order": [
     "hero",
     "products",
     "compare",
+    "moments",
     "benefits",
     "steps",
     "lifestyle",

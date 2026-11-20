@@ -21,6 +21,11 @@
     {%- render 'stylesheets' -%}
     {%- render 'card-hover-effect-styles' -%}
     {%- render 'scripts' -%}
+    <script>
+      // Hide reveal-on-scroll content only while drysense.js runs; if it fails to load, show everything.
+      document.documentElement.classList.add('ds-js');
+      setTimeout(function () { if (!window.__dsReady) document.documentElement.classList.remove('ds-js'); }, 3000);
+    </script>
     {{ 'drysense.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'drysense.js' | asset_url }}" type="module" defer></script>
     {%- render 'theme-styles-variables' -%}

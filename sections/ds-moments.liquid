@@ -1,0 +1,37 @@
+{%- comment -%}
+  Slow-moving strip of everyday moments DrySense fits into. Decorative —
+  the list is also available to screen readers as plain text.
+{%- endcomment -%}
+{%- assign moments = section.settings.moments | split: ',' -%}
+
+<section class="ds-moments" aria-label="{{ section.settings.label | escape }}">
+  <p class="visually-hidden">{{ section.settings.label | escape }}: {{ moments | join: ', ' }}</p>
+  <div class="ds-moments__track" aria-hidden="true">
+    {%- for i in (1..2) -%}
+      <span class="ds-moments__group">
+        {%- for m in moments -%}
+          <span class="ds-moments__item">{{ m | strip | escape }}</span>
+          <svg class="ds-moments__sep" viewBox="0 0 24 24"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+        {%- endfor -%}
+      </span>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "DrySense: Moments strip",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Accessible label", "default": "Made for everyday moments" },
+    {
+      "type": "textarea",
+      "id": "moments",
+      "label": "Moments",
+      "default": "Rainy commutes, Snow days, Gym sessions, Ski trips, School mornings, Trail runs, Puddle jumping",
+      "info": "Comma-separated"
+    }
+  ],
+  "presets": [{ "name": "DrySense: Moments strip" }]
+}
+{% endschema %}

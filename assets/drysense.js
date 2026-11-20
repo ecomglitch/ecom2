@@ -161,3 +161,29 @@ function initSticky(bar) {
 }
 
 document.querySelectorAll('[data-ds-sticky]').forEach(initSticky);
+
+/* ---------- Scroll reveal ---------- */
+// Elements fade up once as they enter the viewport. The `ds-js` class is set
+// inline in <head>, which removes it again if this module never runs.
+window.__dsReady = true;
+const revealTargets = document.querySelectorAll('[data-ds-reveal]');
+if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-in');
+        revealObserver.unobserve(entry.target);
+      }
+    },
+    { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+  );
+  revealTargets.forEach((el) => revealObserver.observe(el));
+} else {
+  revealTargets.forEach((el) => el.classList.add('is-in'));
+}
+
+// Theme editor re-renders sections in place — show their content straight away
+document.addEventListener('shopify:section:load', (event) => {
+  /** @type {Element} */ (event.target).querySelectorAll('[data-ds-reveal]').forEach((el) => el.classList.add('is-in'));
+});
