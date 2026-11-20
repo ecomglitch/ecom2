@@ -18,8 +18,7 @@
   aria-labelledby="DsProductsHeading-{{ section.id }}"
 >
   <div class="ds__container">
-    <header class="ds-head ds-head--center" data-ds-reveal>
-      {%- if section.settings.eyebrow != blank -%}<p class="ds-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    <header class="ds-head ds-head--center">
       <h2 id="DsProductsHeading-{{ section.id }}" class="ds-h2">{{ section.settings.heading | escape }}</h2>
       <p class="ds-lead">{{ section.settings.text | escape }}</p>
     </header>
@@ -35,7 +34,6 @@
           assign k_price = key | append: '_price'
           assign k_compare = key | append: '_compare'
           assign k_cta = key | append: '_cta'
-          assign k_chips = key | append: '_chips'
           assign p = section.settings[k_product]
           assign variant = p.selected_or_first_available_variant
           assign name = section.settings[k_name]
@@ -53,7 +51,6 @@
         <article
           class="ds-card{% if key == 'pro' %} ds-card--featured{% endif %}"
           data-ds-card="{{ key }}"
-          data-ds-reveal
           aria-labelledby="DsCardTitle-{{ section.id }}-{{ key }}"
         >
           {%- if badge != blank -%}
@@ -74,35 +71,11 @@
           <div class="ds-card__body">
             <h3 id="DsCardTitle-{{ section.id }}-{{ key }}" class="ds-h3 ds-card__title">{{ name | escape }}</h3>
             <p class="ds-body">{{ section.settings[k_description] | escape }}</p>
-            {%- assign chips = section.settings[k_chips] | split: ',' -%}
-            {%- if chips.size > 0 -%}
-              <ul class="ds-chips{% if key == 'pro' %} ds-chips--accent{% endif %}" role="list">
-                {%- for chip in chips -%}
-                  <li>{% render 'ds-icon', name: 'check' %}{{ chip | strip | escape }}</li>
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
             {% render 'ds-price',
               product: p,
               fallback_price: section.settings[k_price],
               fallback_compare: section.settings[k_compare]
             %}
-            {%- if key == 'pro' -%}
-              {%- liquid
-                assign classic_p = section.settings.classic_product
-                assign upgrade_text = section.settings.pro_upgrade
-                if classic_p != blank and p != blank
-                  assign diff = p.selected_or_first_available_variant.price | minus: classic_p.selected_or_first_available_variant.price
-                  if diff > 0
-                    assign diff_money = diff | money_without_trailing_zeros
-                    assign upgrade_text = 'Only ' | append: diff_money | append: ' more than Classic'
-                  endif
-                endif
-              -%}
-              {%- if upgrade_text != blank -%}
-                <p class="ds-upgrade">{% render 'ds-icon', name: 'arrow-right' %}{{ upgrade_text | escape }}</p>
-              {%- endif -%}
-            {%- endif -%}
 
             <div class="ds-card__footer">
               {%- if p != blank and variant.available -%}
@@ -220,7 +193,6 @@
   "name": "DrySense: Products",
   "tag": "div",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Choose your DrySense" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Meet Your New Everyday Essential." },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Two thoughtfully designed models. One simple goal: fresher footwear." },
 
@@ -228,8 +200,7 @@
     { "type": "product", "id": "classic_product", "label": "Product", "info": "Price, compare-at price and checkout come from this product." },
     { "type": "image_picker", "id": "classic_image", "label": "Image 2 — Classic", "info": "02-classic.webp · Square 1:1. Charcoal body, pink side button." },
     { "type": "text", "id": "classic_name", "label": "Name", "default": "DrySense Classic" },
-    { "type": "textarea", "id": "classic_description", "label": "Description", "default": "Compact and simple. Keeps everyday shoes, kids' shoes and gloves fresh and dry." },
-    { "type": "text", "id": "classic_chips", "label": "Highlights", "default": "Shoes, Kids' shoes, Gloves", "info": "Comma-separated" },
+    { "type": "textarea", "id": "classic_description", "label": "Description", "default": "Your everyday essential for fresher, drier footwear." },
     { "type": "text", "id": "classic_badge", "label": "Badge" },
     { "type": "text", "id": "classic_cta", "label": "Button", "default": "Choose Classic" },
     { "type": "text", "id": "classic_price", "label": "Fallback price", "default": "$49.99", "info": "Only shown until a product is connected." },
@@ -239,10 +210,8 @@
     { "type": "product", "id": "pro_product", "label": "Product", "info": "Price, compare-at price and checkout come from this product." },
     { "type": "image_picker", "id": "pro_image", "label": "Image 3 — Pro", "info": "03-pro.webp · Square 1:1. Champagne body, 48°C digital display." },
     { "type": "text", "id": "pro_name", "label": "Name", "default": "DrySense Pro" },
-    { "type": "textarea", "id": "pro_description", "label": "Description", "default": "Our premium model. Extendable arms adjust to your footwear, with a smart 48°C digital display." },
-    { "type": "text", "id": "pro_chips", "label": "Highlights", "default": "Extendable arms, Digital display, Premium finish", "info": "Comma-separated" },
-    { "type": "text", "id": "pro_upgrade", "label": "Upgrade line", "default": "Only $5 more than Classic", "info": "Calculated automatically from the real prices once both products are connected." },
-    { "type": "text", "id": "pro_badge", "label": "Badge", "default": "Recommended" },
+    { "type": "textarea", "id": "pro_description", "label": "Description", "default": "Premium footwear care with a smart digital display and sophisticated design." },
+    { "type": "text", "id": "pro_badge", "label": "Badge", "default": "Premium model" },
     { "type": "text", "id": "pro_cta", "label": "Button", "default": "Choose Pro" },
     { "type": "text", "id": "pro_price", "label": "Fallback price", "default": "$54.99", "info": "Only shown until a product is connected." },
     { "type": "text", "id": "pro_compare", "label": "Fallback compare-at price", "default": "$89.99" }

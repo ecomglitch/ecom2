@@ -662,6 +662,70 @@ body:has(dialog[open]) .ds-sticky {
   margin-bottom: clamp(40px, 5vw, 64px);
 }
 
+.ds-table-wrap {
+  max-width: 880px;
+  margin-inline: auto;
+  overflow-x: auto;
+}
+
+.ds-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-table th,
+.ds-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid var(--ds-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ds-table thead th {
+  padding-top: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+}
+
+.ds-table tbody th {
+  width: 34%;
+  font-weight: 500;
+  color: var(--ds-muted);
+}
+
+.ds-table td {
+  font-weight: 500;
+}
+
+.ds-table .is-unknown {
+  color: var(--ds-muted);
+  font-weight: 400;
+}
+
+.ds-compare__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+@media (max-width: 599px) {
+  .ds-table th,
+  .ds-table td {
+    padding: 14px 8px;
+    font-size: 14px;
+  }
+
+  .ds-compare__actions {
+    flex-direction: column;
+  }
+}
+
 /* ==========================================================================
    Benefits
    ========================================================================== */
@@ -1246,505 +1310,17 @@ body:has(dialog[open]) .ds-sticky {
   }
 }
 
+/* ==========================================================================
+   Header + announcement touch-ups (Horizon header, DrySense skin)
+   ========================================================================== */
+.announcement-bar__text strong {
+  color: var(--ds-accent);
+  font-weight: 600;
+}
 
 /* Pro is the primary model — list it first on phones */
 @media (max-width: 749px) {
   .ds-card--featured {
     order: -1;
-  }
-}
-
-/* ==========================================================================
-   Life & motion layer
-   ========================================================================== */
-
-/* Eyebrow gets a small warm dot */
-.ds-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--ds-accent-hover);
-}
-
-.ds-eyebrow::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--ds-accent);
-}
-
-/* Scroll reveal: hidden only while JS is running (see the head script for the fallback) */
-.ds-js [data-ds-reveal]:not(.is-in) {
-  opacity: 0;
-  transform: translateY(24px);
-}
-
-.ds-js [data-ds-reveal] {
-  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--ds-delay, 0ms),
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--ds-delay, 0ms);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ds-js [data-ds-reveal]:not(.is-in) {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Cards: gentle lift + image zoom */
-.ds-card {
-  transition: border-color 0.2s ease-out, box-shadow 0.3s ease-out, transform 0.3s ease-out;
-}
-
-.ds-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 2px 4px rgb(var(--ds-ink-rgb) / 0.04), 0 24px 48px -12px rgb(var(--ds-ink-rgb) / 0.16);
-}
-
-.ds-card .ds-media img {
-  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.ds-card:hover .ds-media img {
-  transform: scale(1.04);
-}
-
-.ds-card--featured {
-  border-color: var(--ds-accent);
-  box-shadow: 0 0 0 1px var(--ds-accent);
-}
-
-.ds-card--featured .ds-card__badge {
-  background: var(--ds-accent);
-}
-
-/* Steps: markers warm up as they appear */
-.ds-step__marker {
-  transition: background-color 0.5s ease-out var(--ds-delay, 0ms), color 0.5s ease-out var(--ds-delay, 0ms),
-    border-color 0.5s ease-out var(--ds-delay, 0ms);
-}
-
-.ds-step.is-in .ds-step__marker {
-  border-color: var(--ds-accent);
-  background: var(--ds-accent);
-  color: #fff;
-}
-
-.ds-benefit__icon {
-  color: var(--ds-accent-hover);
-  background: #fdf1e9;
-  border-color: transparent;
-}
-
-/* ==========================================================================
-   Promo bar: animated, moves left to right
-   ========================================================================== */
-.ds-promo {
-  position: relative;
-  overflow: hidden;
-  background: var(--ds-ink);
-  color: #fff;
-}
-
-.ds-promo__link {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-}
-
-.ds-promo__link:focus-visible {
-  outline: 2px solid var(--ds-accent);
-  outline-offset: -2px;
-}
-
-.ds-promo__track {
-  display: flex;
-  width: max-content;
-  animation: ds-promo-scroll var(--ds-promo-speed, 28s) linear infinite;
-}
-
-.ds-promo:hover .ds-promo__track {
-  animation-play-state: paused;
-}
-
-.ds-promo__group {
-  display: flex;
-  flex: none;
-}
-
-.ds-promo__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 28px;
-  font-family: var(--ds-font);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.ds-promo__flake {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: #9fc4ff;
-  stroke-width: 1.75;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  animation: ds-spin 8s linear infinite;
-}
-
-.ds-promo__deal {
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: var(--ds-accent);
-  color: #fff;
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  animation: ds-pulse 2.4s ease-out infinite;
-}
-
-.ds-promo__extra {
-  color: rgb(255 255 255 / 0.85);
-}
-
-/* Left to right: start shifted left by one group, slide back to 0 */
-@keyframes ds-promo-scroll {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes ds-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes ds-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgb(233 120 53 / 0.55);
-  }
-  70%,
-  100% {
-    box-shadow: 0 0 0 10px rgb(233 120 53 / 0);
-  }
-}
-
-@media (max-width: 599px) {
-  .ds-promo__item {
-    gap: 10px;
-    padding: 12px 20px;
-    font-size: 14px;
-  }
-
-  .ds-promo__deal {
-    font-size: 13px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ds-promo__track,
-  .ds-promo__flake,
-  .ds-promo__deal {
-    animation: none;
-  }
-
-  .ds-promo__track {
-    justify-content: center;
-    width: auto;
-  }
-
-  .ds-promo__group:not(:first-child),
-  .ds-promo__item:not(:first-child) {
-    display: none;
-  }
-}
-
-/* ==========================================================================
-   Product card extras
-   ========================================================================== */
-.ds-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ds-chips li {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--ds-bg-alt);
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.ds-chips .ds-icon {
-  width: 14px;
-  height: 14px;
-  stroke-width: 2.25;
-  color: var(--ds-muted);
-}
-
-.ds-chips--accent li {
-  background: #fdf1e9;
-  color: #8a3f12;
-}
-
-.ds-chips--accent .ds-icon {
-  color: var(--ds-accent);
-}
-
-.ds-upgrade {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ds-accent-hover);
-}
-
-.ds-upgrade .ds-icon {
-  width: 16px;
-  height: 16px;
-}
-
-/* ==========================================================================
-   Comparison chart
-   ========================================================================== */
-.ds-vs {
-  display: grid;
-  max-width: 900px;
-  margin-inline: auto;
-}
-
-.ds-vs__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr);
-  align-items: stretch;
-}
-
-.ds-vs__label,
-.ds-vs__cell {
-  display: flex;
-  align-items: center;
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--ds-border);
-  font-size: 15px;
-}
-
-.ds-vs__label {
-  gap: 12px;
-  font-weight: 500;
-  color: var(--ds-muted);
-}
-
-.ds-vs__label .ds-icon {
-  color: var(--ds-ink);
-}
-
-.ds-vs__cell {
-  justify-content: center;
-  text-align: center;
-  font-weight: 600;
-}
-
-.ds-vs__cell--pro {
-  background: var(--ds-bg);
-  border-inline: 2px solid var(--ds-accent);
-}
-
-.ds-vs__row--head .ds-vs__label,
-.ds-vs__row--head .ds-vs__cell {
-  border-bottom: 0;
-}
-
-.ds-vs__row--head .ds-vs__cell {
-  position: relative;
-  flex-direction: column;
-  gap: 2px;
-  padding-top: 28px;
-}
-
-.ds-vs__row--head .ds-vs__cell--pro {
-  border-top: 2px solid var(--ds-accent);
-  border-radius: var(--ds-radius) var(--ds-radius) 0 0;
-}
-
-.ds-vs__name {
-  font-family: var(--ds-font-display);
-  font-size: clamp(1.25rem, 2.4vw, 1.625rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.ds-vs__price {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ds-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.ds-vs__badge {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  translate: -50% -50%;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: var(--ds-accent);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.ds-vs__yes {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #e7f4ee;
-  color: var(--ds-success);
-}
-
-.ds-vs__yes .ds-icon {
-  width: 16px;
-  height: 16px;
-  stroke-width: 2.5;
-}
-
-.ds-vs__no {
-  color: #b5bac1;
-}
-
-.ds-vs__row--foot .ds-vs__label,
-.ds-vs__row--foot .ds-vs__cell {
-  border-bottom: 0;
-  padding-top: 24px;
-  padding-bottom: 24px;
-}
-
-.ds-vs__row--foot .ds-vs__cell--pro {
-  border-bottom: 2px solid var(--ds-accent);
-  border-radius: 0 0 var(--ds-radius) var(--ds-radius);
-}
-
-.ds-vs__row--foot .ds-btn {
-  min-height: 48px;
-  padding-inline: 16px;
-}
-
-/* Mobile: each label sits above its two values */
-@media (max-width: 699px) {
-  .ds-vs__row {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  .ds-vs__label {
-    grid-column: 1 / -1;
-    justify-content: center;
-    padding: 16px 8px 4px;
-    border-bottom: 0;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .ds-vs__label .ds-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .ds-vs__row--head .ds-vs__label,
-  .ds-vs__row--foot .ds-vs__label {
-    display: none;
-  }
-
-  .ds-vs__cell {
-    padding: 8px 10px 16px;
-    font-size: 14px;
-  }
-}
-
-/* ==========================================================================
-   Moments strip (moves right to left, slower than the promo bar)
-   ========================================================================== */
-.ds-moments {
-  overflow: hidden;
-  padding-block: clamp(28px, 4vw, 44px);
-  border-block: 1px solid var(--ds-border);
-  background: var(--ds-bg);
-}
-
-.ds-moments__track {
-  display: flex;
-  width: max-content;
-  animation: ds-moments-scroll 50s linear infinite;
-}
-
-.ds-moments__group {
-  display: flex;
-  flex: none;
-  align-items: center;
-}
-
-.ds-moments__item {
-  padding-inline: clamp(16px, 2.5vw, 32px);
-  font-family: var(--ds-font-display);
-  font-size: clamp(1.75rem, 4.5vw, 3.25rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  white-space: nowrap;
-  color: var(--ds-ink);
-}
-
-.ds-moments__item:nth-child(4n + 3) {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--ds-ink);
-}
-
-.ds-moments__sep {
-  width: clamp(16px, 2vw, 24px);
-  height: clamp(16px, 2vw, 24px);
-  flex: none;
-  fill: var(--ds-accent);
-}
-
-@keyframes ds-moments-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ds-moments__track {
-    flex-wrap: wrap;
-    justify-content: center;
-    width: auto;
-    animation: none;
-  }
-
-  .ds-moments__group:not(:first-child) {
-    display: none;
   }
 }
