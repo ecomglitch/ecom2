@@ -10,7 +10,10 @@
   "sections": {
     "hero": {
       "type": "ds-hero",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/U261028QGE018.jpg",
+        "mobile_image": "shopify://shop_images/U261028QGE017.jpg"
+      }
     },
     "products": {
       "type": "ds-products",
