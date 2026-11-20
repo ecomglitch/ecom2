@@ -6,88 +6,49 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero": {
       "type": "ds-hero",
       "settings": {
         "image": "shopify://shop_images/U261028QGE018.jpg",
-        "mobile_image": "shopify://shop_images/U261028QGE017.jpg"
+        "mobile_image": "shopify://shop_images/U261028QGE017.jpg",
+        "eyebrow": "",
+        "heading": "Stop Ruining Your Shoes in the Rain and Snow.",
+        "mobile_heading": "Dry, fresh shoes. Every day.",
+        "text": "The electric shoe dryer with controlled 48°C warm air.",
+        "primary_label": "Shop DrySense now",
+        "primary_link": "",
+        "secondary_label": "Discover how it works",
+        "secondary_link": "",
+        "trust_1": "Controlled 48°C heat",
+        "trust_2": "Helps reduce odor",
+        "trust_3": "Everyday use"
       }
     },
     "products": {
       "type": "ds-products",
-      "settings": {}
-    },
-    "benefits": {
-      "type": "ds-benefits",
-      "blocks": {
-        "benefit_1": {
-          "type": "benefit",
-          "settings": {
-            "icon": "droplet",
-            "title": "Help remove moisture",
-            "text": "DrySense uses controlled thermal circulation to help remove moisture from your everyday footwear."
-          }
-        },
-        "benefit_2": {
-          "type": "benefit",
-          "settings": {
-            "icon": "wind",
-            "title": "Help reduce unpleasant odors",
-            "text": "By helping reduce trapped moisture, DrySense helps address conditions associated with unpleasant footwear odors."
-          }
-        },
-        "benefit_3": {
-          "type": "benefit",
-          "settings": {
-            "icon": "home",
-            "title": "Designed for everyday life",
-            "text": "From gym sessions to rainy commutes and outdoor adventures, make footwear care part of your daily routine."
-          }
-        }
-      },
-      "block_order": [
-        "benefit_1",
-        "benefit_2",
-        "benefit_3"
-      ],
-      "settings": {}
-    },
-    "steps": {
-      "type": "ds-steps",
-      "blocks": {
-        "step_1": {
-          "type": "step",
-          "settings": {
-            "icon": "sliders",
-            "title": "Adjust",
-            "text": "Extend the drying attachments to accommodate your footwear."
-          }
-        },
-        "step_2": {
-          "type": "step",
-          "settings": {
-            "icon": "timer",
-            "title": "Set",
-            "text": "Choose your desired drying time using the controls."
-          }
-        },
-        "step_3": {
-          "type": "step",
-          "settings": {
-            "icon": "wind",
-            "title": "Relax",
-            "text": "Let DrySense circulate warm air through your footwear."
-          }
-        }
-      },
-      "block_order": [
-        "step_1",
-        "step_2",
-        "step_3"
-      ],
-      "settings": {}
+      "settings": {
+        "heading": "Meet Your New Everyday Essential.",
+        "text": "Two thoughtfully designed models. One simple goal: fresher footwear.",
+        "classic_product": "drysense-shoe-dryer",
+        "classic_image": "shopify://shop_images/U261028QGE012.avif",
+        "classic_name": "DrySense Classic",
+        "classic_description": "Your everyday essential for fresher, drier footwear.",
+        "classic_badge": "",
+        "classic_cta": "Choose Classic",
+        "classic_price": "$49.99",
+        "classic_compare": "$79.99",
+        "pro_product": "drysense-shoe-dryer",
+        "pro_image": "shopify://shop_images/U261028QGE017.jpg",
+        "pro_name": "DrySense Pro",
+        "pro_description": "Premium footwear care with a smart digital display and sophisticated design.",
+        "pro_badge": "Premium model",
+        "pro_cta": "Choose Pro",
+        "pro_price": "$54.99",
+        "pro_compare": "$89.99"
+      }
     },
     "compare": {
       "type": "ds-compare",
@@ -141,12 +102,96 @@
         "row_5"
       ],
       "settings": {
-        "show_image": false
+        "heading": "Two Models. One Fresh Start.",
+        "text": "Find the DrySense that fits your everyday routine.",
+        "show_image": false,
+        "classic_product": "",
+        "pro_product": "",
+        "classic_price": "$49.99",
+        "pro_price": "$54.99"
+      }
+    },
+    "benefits": {
+      "type": "ds-benefits",
+      "blocks": {
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "droplet",
+            "title": "Help remove moisture",
+            "text": "DrySense uses controlled thermal circulation to help remove moisture from your everyday footwear."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "wind",
+            "title": "Help reduce unpleasant odors",
+            "text": "By helping reduce trapped moisture, DrySense helps address conditions associated with unpleasant footwear odors."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "home",
+            "title": "Designed for everyday life",
+            "text": "From gym sessions to rainy commutes and outdoor adventures, make footwear care part of your daily routine."
+          }
+        }
+      },
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3"
+      ],
+      "settings": {
+        "image_right": false,
+        "heading": "Your Shoes Deserve Better."
+      }
+    },
+    "steps": {
+      "type": "ds-steps",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "icon": "sliders",
+            "title": "Adjust",
+            "text": "Extend the drying attachments to accommodate your footwear."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "icon": "timer",
+            "title": "Set",
+            "text": "Choose your desired drying time using the controls."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "icon": "wind",
+            "title": "Relax",
+            "text": "Let DrySense circulate warm air through your footwear."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ],
+      "settings": {
+        "heading": "Three Simple Steps. A Fresher Start."
       }
     },
     "lifestyle": {
       "type": "ds-lifestyle",
-      "settings": {}
+      "settings": {
+        "heading": "Ready for Whatever Tomorrow Brings.",
+        "text": "Rainy commutes, snowy adventures, busy school mornings, and everyday workouts. Your footwear goes through a lot. Give it the care it deserves."
+      }
     },
     "reviews": {
       "type": "ds-reviews",
@@ -182,16 +227,29 @@
         "review_3"
       ],
       "settings": {
+        "heading": "Real Experiences. Better Mornings.",
         "reviews_are_real": false
       }
     },
     "guarantee": {
       "type": "ds-guarantee",
-      "settings": {}
+      "settings": {
+        "heading": "Try DrySense Risk-Free for 30 Days.",
+        "text": "We want you to feel confident about your purchase. If DrySense doesn't meet your expectations, contact our support team within 30 days of receiving your order and request a refund, subject to our published return policy.",
+        "point_1": "30-day money-back guarantee",
+        "point_2": "Secure checkout",
+        "point_3": "Customer support"
+      }
     },
     "final": {
       "type": "ds-final-cta",
-      "settings": {}
+      "settings": {
+        "heading": "Make Every Morning a Fresh Start.",
+        "text": "Don't let wet footwear slow you down. Discover a smarter way to care for your shoes.",
+        "button": "Shop DrySense",
+        "link": "",
+        "note": "Choose between DrySense Classic and DrySense Pro."
+      }
     },
     "faq": {
       "type": "ds-faq",
@@ -279,7 +337,9 @@
         "question_9",
         "question_10"
       ],
-      "settings": {}
+      "settings": {
+        "heading": "Everything You Need to Know."
+      }
     }
   },
   "order": [
