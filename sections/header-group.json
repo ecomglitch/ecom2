@@ -16,7 +16,7 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "WINTER SALE — <strong>35% OFF</strong> + FREE SHIPPING",
+            "text": "WINTER SALE: <strong>35% OFF</strong> + FREE SHIPPING",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
             "letter_spacing": "loose",
