@@ -148,7 +148,11 @@
       </main>
 
       <footer>
-        {% sections 'footer-group' %}
+        {%- comment -%}
+          DrySense footer is a static section so theme-editor saves to footer-group.json
+          can no longer remove it. The footer group is intentionally not rendered.
+        {%- endcomment -%}
+        {% section 'ds-footer' %}
       </footer>
     </div>
 

@@ -18,7 +18,7 @@
   endfor
 -%}
 
-<footer class="ds ds-footer" aria-label="Footer">
+<div class="ds ds-footer">
   <div class="ds__container">
     {%- comment -%} Brand + newsletter {%- endcomment -%}
     <div class="ds-footer__hero">
@@ -173,13 +173,12 @@
       {%- endif -%}
     </div>
   </div>
-</footer>
+</div>
 
 {% schema %}
 {
   "name": "DrySense: Footer",
   "tag": "div",
-  "enabled_on": { "groups": ["footer"] },
   "settings": [
     { "type": "header", "content": "Brand" },
     {
@@ -227,7 +226,6 @@
       "type": "paragraph",
       "content": "Payment icons show automatically for the methods enabled in Settings → Payments. Policy links appear once each policy is filled in under Settings → Policies."
     }
-  ],
-  "presets": [{ "name": "DrySense: Footer" }]
+  ]
 }
 {% endschema %}
