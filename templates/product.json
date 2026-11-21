@@ -87,6 +87,55 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "intro_ds": {
+              "type": "ds-product-intro",
+              "settings": {
+                "eyebrow": "DrySense™",
+                "badge": "Winter sale",
+                "subtitle": "Fresh, dry shoes with controlled 48°C warm air",
+                "checklist": "Controlled 48°C warm air\nHelps remove moisture and odor\nDesigned for everyday use",
+                "deal_label": "Winter deal",
+                "proof_text": ""
+              },
+              "blocks": {}
+            },
+            "bundles_ds": {
+              "type": "ds-bundles",
+              "settings": {
+                "button_label": "Add to cart",
+                "show_dynamic_checkout": true,
+                "default_tier": "1",
+                "low_stock": 0,
+                "t1_enabled": true,
+                "t1_qty": 1,
+                "t1_title": "1 DrySense",
+                "t1_subtitle": "",
+                "t1_discount": 0,
+                "t1_badge": "",
+                "t1_gift_1": "",
+                "t1_gift_2": "",
+                "t1_code": "",
+                "t2_enabled": true,
+                "t2_qty": 2,
+                "t2_title": "2 DrySense",
+                "t2_subtitle": "One for you, one to share",
+                "t2_discount": 10,
+                "t2_badge": "Most popular",
+                "t2_gift_1": "",
+                "t2_gift_2": "",
+                "t2_code": "",
+                "t3_enabled": false,
+                "t3_qty": 3,
+                "t3_title": "3 DrySense",
+                "t3_subtitle": "For the whole family",
+                "t3_discount": 15,
+                "t3_badge": "Best value",
+                "t3_gift_1": "",
+                "t3_gift_2": "",
+                "t3_code": ""
+              },
+              "blocks": {}
+            },
             "payment_ds": {
               "type": "payment-icons",
               "settings": {
@@ -384,14 +433,6 @@
                 "row_5",
                 "row_6"
               ]
-            },
-            "intro_ds": {
-              "type": "ds-product-intro",
-              "settings": {}
-            },
-            "bundles_ds": {
-              "type": "ds-bundles",
-              "settings": {}
             }
           },
           "block_order": [
