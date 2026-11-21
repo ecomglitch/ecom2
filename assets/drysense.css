@@ -1600,11 +1600,11 @@ body:has(dialog[open]) .ds-sticky {
 }
 
 /* ==========================================================================
-   Social posts band
+   Social posts band: three testimonial screenshots
    ========================================================================== */
 .ds-social {
-  font-family: var(--ds-font);
-  color: var(--ds-ink);
+  --ds-band: var(--ds-accent);
+  --ds-band-soft: rgb(233 120 53 / 0.35);
 }
 
 .ds-social__wave {
@@ -1622,11 +1622,12 @@ body:has(dialog[open]) .ds-sticky {
 .ds-social__heading {
   margin-bottom: clamp(28px, 4vw, 48px);
   text-align: center;
-  color: var(--ds-band-text);
+  color: #fff;
 }
 
 .ds-social__track {
   display: flex;
+  align-items: flex-start;
   justify-content: center;
   gap: 24px;
   margin: 0;
@@ -1639,141 +1640,25 @@ body:has(dialog[open]) .ds-sticky {
   min-width: 0;
 }
 
-.ds-post {
-  display: grid;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.25);
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.ds-post__head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.ds-post__avatar {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  flex: none;
-  overflow: hidden;
-  border-radius: 50%;
-  background: var(--ds-bg-alt);
-  font-weight: 700;
-  color: var(--ds-muted);
-}
-
-.ds-post__avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ds-post__meta {
-  display: grid;
-  min-width: 0;
-  flex: 1;
-}
-
-.ds-post__name {
-  font-weight: 700;
-}
-
-.ds-post__time {
-  font-size: 12px;
-  color: var(--ds-muted);
-}
-
-.ds-post__more {
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--ds-muted);
-}
-
-.ds-post__text {
-  margin: 0;
-}
-
-.ds-post__image {
-  overflow: hidden;
-  margin-inline: -16px;
-}
-
-.ds-post__image img {
+.ds-social__image {
   display: block;
   width: 100%;
   height: auto;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.3);
 }
 
-.ds-post__stats {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 13px;
-  color: var(--ds-muted);
-}
-
-.ds-post__reactions {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ds-post__emoji {
-  display: inline-flex;
-}
-
-.ds-post__emoji i {
+.ds-social__placeholder {
   display: grid;
   place-items: center;
-  width: 18px;
-  height: 18px;
-  margin-left: -4px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  font-size: 9px;
-  font-style: normal;
-  line-height: 1;
+  aspect-ratio: 16 / 9;
+  border: 2px dashed rgb(255 255 255 / 0.7);
+  border-radius: 12px;
+  font: 600 14px var(--ds-font);
   color: #fff;
 }
 
-.ds-post__emoji i:first-child {
-  margin-left: 0;
-}
-
-.ds-post__actions {
-  display: flex;
-  justify-content: space-around;
-  padding-top: 10px;
-  border-top: 1px solid var(--ds-border);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ds-muted);
-}
-
-.ds-post__actions span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ds-post__actions svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.75;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Mobile: swipeable row, next card peeks in */
+/* Mobile: swipe sideways, next image peeks in */
 @media (max-width: 899px) {
   .ds-social__track {
     justify-content: flex-start;
@@ -1793,8 +1678,4 @@ body:has(dialog[open]) .ds-sticky {
     flex: 0 0 min(300px, 82vw);
     scroll-snap-align: start;
   }
-}
-
-.ds-social__track {
-  align-items: flex-start;
 }
