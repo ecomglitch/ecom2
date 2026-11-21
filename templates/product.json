@@ -39,6 +39,7 @@
             "media_columns": "two",
             "image_gap": 4,
             "large_first_image": false,
+            "icons_style": "arrow",
             "slideshow_controls_style": "counter",
             "slideshow_mobile_controls_style": "dots",
             "thumbnail_position": "right",
@@ -117,6 +118,7 @@
                 "border_opacity": 100,
                 "border_color": "",
                 "border_radius": 0,
+                "link": "",
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 0,
@@ -153,13 +155,57 @@
                 },
                 "review_ds": {
                   "type": "review",
-                  "settings": {}
+                  "settings": {
+                    "stars_style": "shaded",
+                    "show_number": true,
+                    "text_color": "",
+                    "type_preset": "paragraph",
+                    "width": "100%",
+                    "alignment": "left"
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
                 "text_xrnftG",
                 "review_ds"
               ]
+            },
+            "checklist_ds": {
+              "type": "ds-checklist",
+              "settings": {
+                "items": "Controlled 48°C warm air\nHelps remove moisture and odor\nDesigned for everyday use"
+              },
+              "blocks": {}
+            },
+            "price_ds": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "sale_ds": {
+              "type": "ds-sale-badge",
+              "settings": {
+                "label": "Winter sale"
+              },
+              "blocks": {}
             },
             "divider_VJhene": {
               "type": "_divider",
@@ -202,6 +248,7 @@
                 "stacking": true,
                 "text_color": "",
                 "show_pickup_availability": false,
+                "show_physical_stores": true,
                 "gift_card_form": true,
                 "recipient_button_style": "default",
                 "recipient_button_background": "{{ settings.color_palette.background }}",
@@ -256,65 +303,93 @@
               },
               "block_order": []
             },
-            "checklist_ds": {
-              "type": "ds-checklist",
-              "settings": {}
-            },
-            "price_ds": {
-              "type": "price",
+            "payment_ds": {
+              "type": "payment-icons",
               "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "paragraph",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "text_color": "",
-                "padding-block-start": 4,
+                "horizontal_alignment": "flex-start",
+                "gap": 10,
+                "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
               "blocks": {}
             },
-            "sale_ds": {
-              "type": "ds-sale-badge",
-              "settings": {}
-            },
-            "payment_ds": {
-              "type": "payment-icons",
-              "settings": {}
-            },
             "delivery_ds": {
               "type": "ds-delivery",
-              "settings": {}
+              "settings": {
+                "ready_min": 1,
+                "ready_max": 2,
+                "ship_min": 10,
+                "ship_max": 12,
+                "label_ordered": "Ordered",
+                "label_ready": "Order ready",
+                "label_delivered": "Delivered"
+              },
+              "blocks": {}
             },
             "assurance_ds": {
               "type": "ds-assurance",
-              "settings": {}
+              "settings": {
+                "point_1": "30-day money-back guarantee",
+                "point_2": "Free shipping",
+                "point_3": "Secure checkout"
+              },
+              "blocks": {}
             },
             "faq_ds": {
               "type": "accordion",
-              "settings": {},
+              "settings": {
+                "icon": "caret",
+                "dividers": true,
+                "divider_color": "",
+                "type_preset": "h6",
+                "background_color": "",
+                "text_color": "",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
               "blocks": {
                 "row_1": {
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "Product details",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "{{ closest.product.description }}",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -325,15 +400,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "How does DrySense work?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>DrySense circulates warm air at a controlled 48°C through its drying attachments and into your footwear, helping remove moisture from the inside out.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -344,15 +439,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "Classic or Pro?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>Both use controlled 48°C warm air. Classic has a charcoal finish and a top control panel. Pro has a champagne finish and a front digital display.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -363,15 +478,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "How long does drying take?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>[Add the recommended drying time and timer options from the product manual.]</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -382,15 +517,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "Shipping & delivery",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>[Add your shipping rates and delivery times, matching your shipping policy.]</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -401,15 +556,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "Returns & guarantee",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>Contact our support team within 30 days of receiving your order to request a refund, subject to our published return policy.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -455,6 +630,204 @@
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 0,
         "padding-block-end": 0
+      }
+    },
+    "moments_pdp": {
+      "type": "ds-benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "droplet",
+            "title": "Rainy commutes",
+            "text": "Come home, set your shoes on DrySense, and step out fresh tomorrow."
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "wind",
+            "title": "Gym & game days",
+            "text": "Help clear trapped moisture and odor after every workout or match."
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "home",
+            "title": "Winter adventures",
+            "text": "From snow days to ski trips, warm, dry footwear is part of the plan."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ],
+      "settings": {
+        "image_right": true,
+        "heading": "For the Moments That Matter."
+      }
+    },
+    "ugc": {
+      "type": "ds-ugc",
+      "blocks": {
+        "m1": {
+          "type": "media",
+          "settings": {
+            "caption": "",
+            "name": ""
+          }
+        },
+        "m2": {
+          "type": "media",
+          "settings": {
+            "caption": "",
+            "name": ""
+          }
+        },
+        "m3": {
+          "type": "media",
+          "settings": {
+            "caption": "",
+            "name": ""
+          }
+        },
+        "m4": {
+          "type": "media",
+          "settings": {
+            "caption": "",
+            "name": ""
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {
+        "heading": "Real Customers. Real Results.",
+        "text": "See DrySense at home with people like you."
+      }
+    },
+    "social_pdp": {
+      "type": "ds-social-posts",
+      "settings": {
+        "heading": "What People Are Saying",
+        "image_1": "shopify://shop_images/review.png",
+        "image_2": "shopify://shop_images/review_2.png",
+        "image_3": "shopify://shop_images/review_3.png"
+      }
+    },
+    "compare_pdp": {
+      "type": "ds-compare",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "feature": "Product design",
+            "classic": "Compact base with two upright fork attachments",
+            "pro": "Upright body with four drying arms"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "feature": "Exterior color",
+            "classic": "Charcoal",
+            "pro": "Champagne"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "feature": "Display",
+            "classic": "Top control panel",
+            "pro": "Front digital temperature display"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "feature": "Drying temperature",
+            "classic": "48°C",
+            "pro": "48°C"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "feature": "Adjustable attachments",
+            "classic": "Not specified",
+            "pro": "Not specified"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5"
+      ],
+      "settings": {
+        "heading": "Two Models. One Fresh Start.",
+        "text": "Find the DrySense that fits your everyday routine.",
+        "show_image": false,
+        "classic_product": "",
+        "pro_product": "",
+        "classic_price": "$49.99",
+        "pro_price": "$54.99"
+      }
+    },
+    "steps_pdp": {
+      "type": "ds-steps",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "icon": "sliders",
+            "title": "Adjust",
+            "text": "Extend the drying attachments to accommodate your footwear."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "icon": "timer",
+            "title": "Set",
+            "text": "Choose your desired drying time using the controls."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "icon": "wind",
+            "title": "Relax",
+            "text": "Let DrySense circulate warm air through your footwear."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ],
+      "settings": {
+        "heading": "Three Simple Steps. A Fresher Start."
+      }
+    },
+    "guarantee_pdp": {
+      "type": "ds-guarantee",
+      "settings": {
+        "heading": "Try DrySense Risk-Free for 30 Days.",
+        "text": "We want you to feel confident about your purchase. If DrySense doesn't meet your expectations, contact our support team within 30 days of receiving your order and request a refund, subject to our published return policy.",
+        "point_1": "30-day money-back guarantee",
+        "point_2": "Secure checkout",
+        "point_3": "Customer support"
       }
     },
     "product_recommendations_qggXJq": {
@@ -598,176 +971,6 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
-    },
-    "moments_pdp": {
-      "type": "ds-benefits",
-      "settings": {
-        "heading": "For the Moments That Matter.",
-        "image_right": true
-      },
-      "blocks": {
-        "b1": {
-          "type": "benefit",
-          "settings": {
-            "icon": "droplet",
-            "title": "Rainy commutes",
-            "text": "Come home, set your shoes on DrySense, and step out fresh tomorrow."
-          }
-        },
-        "b2": {
-          "type": "benefit",
-          "settings": {
-            "icon": "wind",
-            "title": "Gym & game days",
-            "text": "Help clear trapped moisture and odor after every workout or match."
-          }
-        },
-        "b3": {
-          "type": "benefit",
-          "settings": {
-            "icon": "home",
-            "title": "Winter adventures",
-            "text": "From snow days to ski trips, warm, dry footwear is part of the plan."
-          }
-        }
-      },
-      "block_order": [
-        "b1",
-        "b2",
-        "b3"
-      ]
-    },
-    "ugc": {
-      "type": "ds-ugc",
-      "settings": {},
-      "blocks": {
-        "m1": {
-          "type": "media",
-          "settings": {}
-        },
-        "m2": {
-          "type": "media",
-          "settings": {}
-        },
-        "m3": {
-          "type": "media",
-          "settings": {}
-        },
-        "m4": {
-          "type": "media",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "m1",
-        "m2",
-        "m3",
-        "m4"
-      ]
-    },
-    "compare_pdp": {
-      "type": "ds-compare",
-      "settings": {
-        "heading": "Two Models. One Fresh Start.",
-        "text": "Find the DrySense that fits your everyday routine.",
-        "show_image": false,
-        "classic_product": "",
-        "pro_product": "",
-        "classic_price": "$49.99",
-        "pro_price": "$54.99"
-      },
-      "blocks": {
-        "row_1": {
-          "type": "row",
-          "settings": {
-            "feature": "Product design",
-            "classic": "Compact base with two upright fork attachments",
-            "pro": "Upright body with four drying arms"
-          }
-        },
-        "row_2": {
-          "type": "row",
-          "settings": {
-            "feature": "Exterior color",
-            "classic": "Charcoal",
-            "pro": "Champagne"
-          }
-        },
-        "row_3": {
-          "type": "row",
-          "settings": {
-            "feature": "Display",
-            "classic": "Top control panel",
-            "pro": "Front digital temperature display"
-          }
-        },
-        "row_4": {
-          "type": "row",
-          "settings": {
-            "feature": "Drying temperature",
-            "classic": "48°C",
-            "pro": "48°C"
-          }
-        },
-        "row_5": {
-          "type": "row",
-          "settings": {
-            "feature": "Adjustable attachments",
-            "classic": "Not specified",
-            "pro": "Not specified"
-          }
-        }
-      },
-      "block_order": [
-        "row_1",
-        "row_2",
-        "row_3",
-        "row_4",
-        "row_5"
-      ]
-    },
-    "steps_pdp": {
-      "type": "ds-steps",
-      "settings": {},
-      "blocks": {
-        "step_1": {
-          "type": "step",
-          "settings": {
-            "icon": "sliders",
-            "title": "Adjust",
-            "text": "Extend the drying attachments to accommodate your footwear."
-          }
-        },
-        "step_2": {
-          "type": "step",
-          "settings": {
-            "icon": "timer",
-            "title": "Set",
-            "text": "Choose your desired drying time using the controls."
-          }
-        },
-        "step_3": {
-          "type": "step",
-          "settings": {
-            "icon": "wind",
-            "title": "Relax",
-            "text": "Let DrySense circulate warm air through your footwear."
-          }
-        }
-      },
-      "block_order": [
-        "step_1",
-        "step_2",
-        "step_3"
-      ]
-    },
-    "guarantee_pdp": {
-      "type": "ds-guarantee",
-      "settings": {}
-    },
-    "social_pdp": {
-      "type": "ds-social-posts",
-      "settings": {}
     }
   },
   "order": [
