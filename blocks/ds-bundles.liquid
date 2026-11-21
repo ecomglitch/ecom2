@@ -1,10 +1,11 @@
 {%- comment -%}
   Bundle picker + add to cart.
-  - Up to 3 tiers: quantity of this product, a % discount, and up to 2 gift
-    products picked in the editor.
-  - Model chips pick the variant; extra units in a tier get their own picker.
-  - Prices shown here are a preview: the real discount and free gifts must be
-    set up as Shopify discounts (automatic, or a code per tier).
+  Each bundle is either:
+  - the products picked in "Products in this bundle" (one of each), or
+  - if none are picked, this product × "Quantity".
+  Every item gets its own variant picker when it has more than one variant.
+  Prices shown are a preview: the real discount and free gifts must also be
+  set up as Shopify discounts (automatic, or a code per bundle).
 {%- endcomment -%}
 {%- liquid
   assign product = closest.product
@@ -12,173 +13,166 @@
     assign product = collections.all.products.first
   endif
   assign s = block.settings
-  assign variant = product.selected_or_first_available_variant
-  assign multi = false
-  if product.has_only_default_variant == false
-    assign multi = true
-  endif
   assign default_tier = s.default_tier | plus: 0
   assign threshold = s.low_stock | plus: 0
+  assign main_variant = product.selected_or_first_available_variant
 -%}
+
+{%- capture variant_json -%}
+  {%- for v in product.variants -%}
+    {"id":{{ v.id }},"price":{{ v.price }},"compare":{{ v.compare_at_price | default: 0 }},"available":{{ v.available }},"title":{{ v.title | json }},"main":true},
+  {%- endfor -%}
+  {%- for t in (1..3) -%}
+    {%- assign k_products = 't' | append: t | append: '_products' -%}
+    {%- for p in s[k_products] -%}
+      {%- for v in p.variants -%}
+        {"id":{{ v.id }},"price":{{ v.price }},"compare":{{ v.compare_at_price | default: 0 }},"available":{{ v.available }},"title":{{ v.title | json }}},
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
 
 <div
   class="ds-bundles"
   data-ds-bundles
   data-money-format="{{ shop.money_format | escape }}"
   data-currency="{{ cart.currency.iso_code }}"
+  data-main-product="{{ product.id }}"
   {{ block.shopify_attributes }}
 >
-  <script type="application/json" data-ds-variants>
-    [
-      {%- for v in product.variants -%}
-        {"id":{{ v.id }},"title":{{ v.title | json }},"price":{{ v.price }},"compare":{{ v.compare_at_price | default: 0 }},"available":{{ v.available }}}{% unless forloop.last %},{% endunless %}
-      {%- endfor -%}
-    ]
-  </script>
-
-  {%- if multi -%}
-    <div class="ds-bundles__models">
-      <p class="ds-bundles__label">
-        {{ product.options.first | escape }}
-        <span data-ds-model-name>{{ variant.title | escape }}</span>
-      </p>
-      <div class="ds-bundles__chips" role="radiogroup" aria-label="{{ product.options.first | escape }}">
-        {%- for v in product.variants -%}
-          <button
-            type="button"
-            class="ds-bundles__chip"
-            role="radio"
-            aria-checked="{% if v.id == variant.id %}true{% else %}false{% endif %}"
-            data-ds-model="{{ v.id }}"
-            {% unless v.available %}
-              disabled
-            {% endunless %}
-          >
-            {%- if v.featured_image -%}
-              {{ v.featured_image | image_url: width: 120 | image_tag: width: 44, height: 44, loading: 'lazy', alt: '' }}
-            {%- endif -%}
-            <span>{{ v.title | escape }}</span>
-          </button>
-        {%- endfor -%}
-      </div>
-    </div>
-  {%- endif -%}
+  <script type="application/json" data-ds-variants>[{{ variant_json | strip | remove_last: ',' }}]</script>
 
   <div class="ds-bundles__tiers" role="radiogroup" aria-label="Choose a bundle">
     {%- for t in (1..3) -%}
       {%- assign k_on = 't' | append: t | append: '_enabled' -%}
       {%- if s[k_on] -%}
-      {%- liquid
-        assign k_qty = 't' | append: t | append: '_qty'
-        assign k_title = 't' | append: t | append: '_title'
-        assign k_sub = 't' | append: t | append: '_subtitle'
-        assign k_disc = 't' | append: t | append: '_discount'
-        assign k_badge = 't' | append: t | append: '_badge'
-        assign k_g1 = 't' | append: t | append: '_gift_1'
-        assign k_g2 = 't' | append: t | append: '_gift_2'
-        assign k_code = 't' | append: t | append: '_code'
+        {%- liquid
+          assign k_products = 't' | append: t | append: '_products'
+          assign k_qty = 't' | append: t | append: '_qty'
+          assign k_title = 't' | append: t | append: '_title'
+          assign k_sub = 't' | append: t | append: '_subtitle'
+          assign k_disc = 't' | append: t | append: '_discount'
+          assign k_badge = 't' | append: t | append: '_badge'
+          assign k_g1 = 't' | append: t | append: '_gift_1'
+          assign k_g2 = 't' | append: t | append: '_gift_2'
+          assign k_code = 't' | append: t | append: '_code'
 
-        assign qty = s[k_qty] | plus: 0
-        assign disc = s[k_disc] | plus: 0
-        assign unit_compare = variant.compare_at_price | default: variant.price
-        if unit_compare < variant.price
-          assign unit_compare = variant.price
-        endif
-        assign total = variant.price | times: qty
-        assign keep = 100 | minus: disc
-        assign now = total | times: keep | divided_by: 100
-        assign was = unit_compare | times: qty
-        assign save = was | minus: now
-        assign gifts = ''
-        if s[k_g1] != blank
-          assign gifts = gifts | append: s[k_g1].first_available_variant.id | append: ','
-        endif
-        if s[k_g2] != blank
-          assign gifts = gifts | append: s[k_g2].first_available_variant.id | append: ','
-        endif
-      -%}
-      <label
-        class="ds-tier"
-        data-ds-tier
-        data-qty="{{ qty }}"
-        data-discount="{{ disc }}"
-        data-gifts="{{ gifts }}"
-        data-code="{{ s[k_code] | escape }}"
-      >
-        <input
-          type="radio"
-          name="DsBundle-{{ block.id }}"
-          value="{{ t }}"
-          class="visually-hidden"
-          {% if t == default_tier %}
-            checked
-          {% endif %}
+          assign picked = s[k_products]
+          assign disc = s[k_disc] | plus: 0
+          assign keep = 100 | minus: disc
+
+          # Server-side price preview (first available variant of every item)
+          assign total = 0
+          assign was = 0
+          if picked.size > 0
+            for p in picked
+              assign pv = p.selected_or_first_available_variant
+              assign total = total | plus: pv.price
+              assign c = pv.compare_at_price | default: pv.price
+              if c < pv.price
+                assign c = pv.price
+              endif
+              assign was = was | plus: c
+            endfor
+          else
+            assign qty = s[k_qty] | plus: 0
+            assign total = main_variant.price | times: qty
+            assign c = main_variant.compare_at_price | default: main_variant.price
+            if c < main_variant.price
+              assign c = main_variant.price
+            endif
+            assign was = c | times: qty
+          endif
+          assign now = total | times: keep | divided_by: 100
+          assign save = was | minus: now
+
+          assign gifts = ''
+          if s[k_g1] != blank
+            assign gifts = gifts | append: s[k_g1].first_available_variant.id | append: ','
+          endif
+          if s[k_g2] != blank
+            assign gifts = gifts | append: s[k_g2].first_available_variant.id | append: ','
+          endif
+        -%}
+        <label
+          class="ds-tier"
+          data-ds-tier
+          data-discount="{{ disc }}"
+          data-gifts="{{ gifts }}"
+          data-code="{{ s[k_code] | escape }}"
         >
-        {%- if s[k_badge] != blank -%}
-          <span class="ds-tier__badge">{{ s[k_badge] | escape }}</span>
-        {%- endif -%}
+          <input
+            type="radio"
+            name="DsBundle-{{ block.id }}"
+            value="{{ t }}"
+            class="visually-hidden"
+            {% if t == default_tier %}
+              checked
+            {% endif %}
+          >
+          {%- if s[k_badge] != blank -%}
+            <span class="ds-tier__badge">{{ s[k_badge] | escape }}</span>
+          {%- endif -%}
 
-        <span class="ds-tier__main">
-          <span class="ds-tier__radio" aria-hidden="true"></span>
-          <span class="ds-tier__info">
-            <span class="ds-tier__title">
-              {{- s[k_title] | escape -}}
-              <span class="ds-tier__save" data-ds-tier-save{% if save <= 0 %} hidden{% endif %}>Save {{ save | money }}</span>
+          <span class="ds-tier__main">
+            <span class="ds-tier__radio" aria-hidden="true"></span>
+            <span class="ds-tier__info">
+              <span class="ds-tier__title">{{ s[k_title] | escape }}</span>
+              {%- if s[k_sub] != blank -%}
+                <span class="ds-tier__sub">{{ s[k_sub] | escape }}</span>
+              {%- endif -%}
             </span>
-            {%- if s[k_sub] != blank -%}
-              <span class="ds-tier__sub">{{ s[k_sub] | escape }}</span>
+            <span class="ds-tier__prices">
+              <span class="ds-tier__now" data-ds-tier-now>{{ now | money }}</span>
+              <s class="ds-tier__was" data-ds-tier-was{% if save <= 0 %} hidden{% endif %}>{{ was | money }}</s>
+            </span>
+          </span>
+
+          <span class="ds-tier__save-row" data-ds-tier-save{% if save <= 0 %} hidden{% endif %}>
+            You save <strong data-ds-tier-save-amount>{{ save | money }}</strong>
+          </span>
+
+          {%- comment -%} Items in this bundle {%- endcomment -%}
+          <span class="ds-tier__items">
+            {%- if picked.size > 0 -%}
+              {%- for p in picked -%}
+                {% render 'ds-bundle-item', item: p, selected: p.selected_or_first_available_variant %}
+              {%- endfor -%}
+            {%- else -%}
+              {%- assign qty = s[k_qty] | plus: 0 -%}
+              {%- for u in (1..qty) -%}
+                {% render 'ds-bundle-item', item: product, selected: main_variant %}
+              {%- endfor -%}
             {%- endif -%}
           </span>
-          <span class="ds-tier__prices">
-            <span class="ds-tier__now" data-ds-tier-now>{{ now | money }}</span>
-            <s class="ds-tier__was" data-ds-tier-was{% if save <= 0 %} hidden{% endif %}>{{ was | money }}</s>
-          </span>
-        </span>
 
-        {%- if multi and qty > 1 -%}
-          <span class="ds-tier__units">
-            {%- for u in (2..qty) -%}
-              <span class="ds-tier__unit">
-                <span class="ds-tier__unit-label">Item {{ u }}</span>
-                <select data-ds-unit aria-label="Item {{ u }} {{ product.options.first | escape }}">
-                  {%- for v in product.variants -%}
-                    <option value="{{ v.id }}"{% if v.id == variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>
-                      {{- v.title | escape -}}
-                    </option>
-                  {%- endfor -%}
-                </select>
+          {%- for gk in (1..2) -%}
+            {%- liquid
+              if gk == 1
+                assign g = s[k_g1]
+              else
+                assign g = s[k_g2]
+              endif
+            -%}
+            {%- if g != blank -%}
+              <span class="ds-tier__gift">
+                <span class="ds-tier__thumb">
+                  {%- if g.featured_image -%}
+                    {{ g.featured_image | image_url: width: 96 | image_tag: width: 36, height: 36, loading: 'lazy', alt: '' }}
+                  {%- endif -%}
+                </span>
+                <span class="ds-tier__gift-name"><strong>FREE</strong> {{ g.title | escape }}</span>
+                <s class="ds-tier__gift-was">{{ g.price | money }}</s>
               </span>
-            {%- endfor -%}
-          </span>
-        {%- endif -%}
-
-        {%- for gk in (1..2) -%}
-          {%- liquid
-            if gk == 1
-              assign g = s[k_g1]
-            else
-              assign g = s[k_g2]
-            endif
-          -%}
-          {%- if g != blank -%}
-            <span class="ds-tier__gift">
-              <span class="ds-tier__gift-img">
-                {%- if g.featured_image -%}
-                  {{ g.featured_image | image_url: width: 80 | image_tag: width: 32, height: 32, loading: 'lazy', alt: '' }}
-                {%- endif -%}
-              </span>
-              <span class="ds-tier__gift-name">+ FREE {{ g.title | escape }}</span>
-              <s class="ds-tier__gift-was">{{ g.price | money }}</s>
-            </span>
-          {%- endif -%}
-        {%- endfor -%}
-      </label>
+            {%- endif -%}
+          {%- endfor -%}
+        </label>
       {%- endif -%}
     {%- endfor -%}
   </div>
 
-  {%- if threshold > 0 and variant.inventory_management == 'shopify' and variant.inventory_quantity > 0 and variant.inventory_quantity <= threshold -%}
-    <p class="ds-bundles__stock"><span aria-hidden="true"></span>Only {{ variant.inventory_quantity }} left in stock</p>
+  {%- if threshold > 0 and main_variant.inventory_management == 'shopify' and main_variant.inventory_quantity > 0 and main_variant.inventory_quantity <= threshold -%}
+    <p class="ds-bundles__stock"><span aria-hidden="true"></span>Only {{ main_variant.inventory_quantity }} left in stock</p>
   {%- endif -%}
 
   <button
@@ -186,23 +180,23 @@
     class="ds-buy"
     data-ds-add
     data-ds-bundle-button
-    data-variant-id="{{ variant.id }}"
+    data-variant-id="{{ main_variant.id }}"
     data-product-id="{{ product.id }}"
     data-status-id="DsBundleStatus-{{ block.id }}"
-    {% unless variant.available %}
+    {% unless main_variant.available %}
       disabled
     {% endunless %}
   >
-    <span class="ds-buy__label">{% if variant.available %}{{ s.button_label | escape }}{% else %}Sold out{% endif %}</span>
+    <span class="ds-buy__label">{% if main_variant.available %}{{ s.button_label | escape }}{% else %}Sold out{% endif %}</span>
     <span class="ds-buy__sep" aria-hidden="true"></span>
-    <span class="ds-buy__price" data-ds-buy-price>{{ variant.price | money }}</span>
+    <span class="ds-buy__price" data-ds-buy-price>{{ main_variant.price | money }}</span>
   </button>
   <p id="DsBundleStatus-{{ block.id }}" class="ds-cart-status" role="status" aria-live="polite"></p>
 
-  {%- if s.show_dynamic_checkout and variant.available -%}
+  {%- if s.show_dynamic_checkout and main_variant.available -%}
     {%- form 'product', product, class: 'ds-bundles__express' -%}
-      <input type="hidden" name="id" value="{{ variant.id }}" data-ds-express-id>
-      <input type="hidden" name="quantity" value="1" data-ds-express-qty>
+      <input type="hidden" name="id" value="{{ main_variant.id }}">
+      <input type="hidden" name="quantity" value="1">
       {{ form | payment_button }}
     {%- endform -%}
   {%- endif -%}
@@ -228,15 +222,16 @@
     { "type": "range", "id": "low_stock", "label": "Show \"only X left\" at or below", "min": 0, "max": 20, "step": 1, "default": 5, "info": "Uses real inventory. 0 turns it off." },
     {
       "type": "paragraph",
-      "content": "Discounts and free gifts shown here must also be created in Discounts (automatic discount, or a code per bundle) so checkout charges the same price."
+      "content": "Pick the products for each bundle. If none are picked, the bundle uses this product × Quantity. Discounts and free gifts must also be created under Discounts so checkout charges the same price."
     },
 
     { "type": "header", "content": "Bundle 1" },
     { "type": "checkbox", "id": "t1_enabled", "label": "Show", "default": true },
-    { "type": "range", "id": "t1_qty", "label": "Quantity", "min": 1, "max": 5, "step": 1, "default": 1 },
+    { "type": "product_list", "id": "t1_products", "label": "Products in this bundle", "limit": 4 },
+    { "type": "range", "id": "t1_qty", "label": "Quantity (when no products picked)", "min": 1, "max": 5, "step": 1, "default": 1 },
     { "type": "text", "id": "t1_title", "label": "Title", "default": "1 DrySense" },
     { "type": "text", "id": "t1_subtitle", "label": "Subtitle" },
-    { "type": "range", "id": "t1_discount", "label": "Extra discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0 },
+    { "type": "range", "id": "t1_discount", "label": "Discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0 },
     { "type": "text", "id": "t1_badge", "label": "Badge" },
     { "type": "product", "id": "t1_gift_1", "label": "Free gift 1" },
     { "type": "product", "id": "t1_gift_2", "label": "Free gift 2" },
@@ -244,10 +239,11 @@
 
     { "type": "header", "content": "Bundle 2" },
     { "type": "checkbox", "id": "t2_enabled", "label": "Show", "default": true },
-    { "type": "range", "id": "t2_qty", "label": "Quantity", "min": 1, "max": 5, "step": 1, "default": 2 },
+    { "type": "product_list", "id": "t2_products", "label": "Products in this bundle", "limit": 4 },
+    { "type": "range", "id": "t2_qty", "label": "Quantity (when no products picked)", "min": 1, "max": 5, "step": 1, "default": 2 },
     { "type": "text", "id": "t2_title", "label": "Title", "default": "2 DrySense" },
     { "type": "text", "id": "t2_subtitle", "label": "Subtitle", "default": "One for you, one to share" },
-    { "type": "range", "id": "t2_discount", "label": "Extra discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 10 },
+    { "type": "range", "id": "t2_discount", "label": "Discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 10 },
     { "type": "text", "id": "t2_badge", "label": "Badge", "default": "Most popular" },
     { "type": "product", "id": "t2_gift_1", "label": "Free gift 1" },
     { "type": "product", "id": "t2_gift_2", "label": "Free gift 2" },
@@ -255,10 +251,11 @@
 
     { "type": "header", "content": "Bundle 3" },
     { "type": "checkbox", "id": "t3_enabled", "label": "Show", "default": false },
-    { "type": "range", "id": "t3_qty", "label": "Quantity", "min": 1, "max": 5, "step": 1, "default": 3 },
+    { "type": "product_list", "id": "t3_products", "label": "Products in this bundle", "limit": 4 },
+    { "type": "range", "id": "t3_qty", "label": "Quantity (when no products picked)", "min": 1, "max": 5, "step": 1, "default": 3 },
     { "type": "text", "id": "t3_title", "label": "Title", "default": "3 DrySense" },
     { "type": "text", "id": "t3_subtitle", "label": "Subtitle", "default": "For the whole family" },
-    { "type": "range", "id": "t3_discount", "label": "Extra discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 15 },
+    { "type": "range", "id": "t3_discount", "label": "Discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 15 },
     { "type": "text", "id": "t3_badge", "label": "Badge", "default": "Best value" },
     { "type": "product", "id": "t3_gift_1", "label": "Free gift 1" },
     { "type": "product", "id": "t3_gift_2", "label": "Free gift 2" },

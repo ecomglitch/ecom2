@@ -230,18 +230,12 @@ function initBundles(root) {
   const money = (cents) =>
     formatMoney(Math.round(cents), root.dataset.moneyFormat || '{{amount}}', root.dataset.currency || '');
   const tiers = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('[data-ds-tier]')]);
-  const chips = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('[data-ds-model]')]);
   const button = /** @type {HTMLButtonElement | null} */ (root.querySelector('[data-ds-bundle-button]'));
   const express = root.querySelector('.ds-bundles__express');
-  let model =
-    chips.find((c) => c.getAttribute('aria-checked') === 'true')?.dataset.dsModel || button?.dataset.variantId || '';
 
-  /** Variant id for every unit in a tier: unit 1 follows the model chips, extra units their own select */
-  const unitIds = (tier) => {
-    const qty = Number(tier.dataset.qty) || 1;
-    const extra = [...tier.querySelectorAll('[data-ds-unit]')].map((sel) => /** @type {HTMLSelectElement} */ (sel).value);
-    return Array.from({ length: qty }, (_, i) => (i === 0 ? model : extra[i - 1] || model));
-  };
+  /** Variant id of every item in a tier (each item has a select or hidden input) */
+  const unitIds = (tier) =>
+    [...tier.querySelectorAll('[data-ds-unit]')].map((el) => /** @type {HTMLInputElement} */ (el).value).filter(Boolean);
 
   const priceTier = (tier) => {
     const ids = unitIds(tier);
@@ -250,7 +244,7 @@ function initBundles(root) {
     let was = 0;
     for (const id of ids) {
       const v = byId.get(String(id));
-      if (!v) continue;
+      if (!v) return null; // unknown variant: keep the server-rendered prices
       total += v.price;
       was += Math.max(v.compare || 0, v.price);
     }
@@ -266,38 +260,20 @@ function initBundles(root) {
   };
 
   const render = () => {
-    const selected = tiers.find((t) => t.querySelector('input')?.checked) || tiers[0];
+    const selected = tiers.find((t) => t.querySelector('input[type="radio"]')?.checked) || tiers[0];
     for (const tier of tiers) {
-      const { now, was, save } = priceTier(tier);
       tier.classList.toggle('is-selected', tier === selected);
-      setText(tier, '[data-ds-tier-now]', money(now));
-      setText(tier, '[data-ds-tier-was]', money(was), save > 0);
-      setText(tier, '[data-ds-tier-save]', `Save ${money(save)}`, save > 0);
+      const p = priceTier(tier);
+      if (!p) continue;
+      setText(tier, '[data-ds-tier-now]', money(p.now));
+      setText(tier, '[data-ds-tier-was]', money(p.was), p.save > 0);
+      setText(tier, '[data-ds-tier-save]', null, p.save > 0);
+      setText(tier, '[data-ds-tier-save-amount]', money(p.save));
     }
+    if (!button || !selected) return;
 
-    // Keep the intro price in sync with the chosen model (single unit)
-    const v = byId.get(String(model));
-    const intro = document.querySelector('.ds-intro');
-    if (v && intro) {
-      const onSale = v.compare > v.price;
-      setText(intro, '[data-ds-price]', money(v.price));
-      setText(intro, '[data-ds-compare]', onSale ? money(v.compare) : '', onSale);
-      setText(intro, '[data-ds-off]', onSale ? `${Math.floor(((v.compare - v.price) * 100) / v.compare)}% OFF` : '', onSale);
-      setText(intro, '[data-ds-saving]', onSale ? money(v.compare - v.price) : '');
-      setText(intro, '[data-ds-deal]', null, onSale);
-    }
-
-    if (!button) return;
-    if (!selected) {
-      // No tiers configured: plain single-unit add to cart
-      button.dataset.variantId = model;
-      delete button.dataset.dsItems;
-      setText(button, '[data-ds-buy-price]', v ? money(v.price) : '');
-      button.disabled = !v?.available;
-      return;
-    }
-
-    const { ids, now } = priceTier(selected);
+    const p = priceTier(selected);
+    const ids = p ? p.ids : unitIds(selected);
     const counts = new Map();
     ids.forEach((id) => counts.set(id, (counts.get(id) || 0) + 1));
     const items = [...counts].map(([id, quantity]) => ({ id: Number(id), quantity }));
@@ -306,32 +282,38 @@ function initBundles(root) {
       .filter(Boolean)
       .forEach((id) => items.push({ id: Number(id), quantity: 1, properties: { _bundle_gift: 'Free gift' } }));
 
+    if (ids.length) button.dataset.variantId = ids[0];
     button.dataset.dsItems = JSON.stringify(items);
-    button.dataset.variantId = model;
     button.dataset.dsDiscount = selected.dataset.code || '';
-    button.disabled = !ids.every((id) => byId.get(String(id))?.available);
-    setText(button, '[data-ds-buy-price]', money(now));
+    button.disabled = !ids.length || ids.some((id) => byId.get(String(id))?.available === false);
+    if (p) setText(button, '[data-ds-buy-price]', money(p.now));
 
-    // Express checkout (Shop Pay etc.) buys the main item at the selected quantity
+    // Express checkout (Shop Pay etc.) buys the first item at the bundle's item count
     const expressId = /** @type {HTMLInputElement | null | undefined} */ (express?.querySelector('input[name="id"]'));
     const expressQty = /** @type {HTMLInputElement | null | undefined} */ (express?.querySelector('input[name="quantity"]'));
-    if (expressId) expressId.value = model;
-    if (expressQty) expressQty.value = String(ids.length);
+    const first = byId.get(String(ids[0]));
+    if (expressId && first?.main) expressId.value = String(ids[0]);
+    if (expressQty) expressQty.value = String(ids.filter((id) => byId.get(String(id))?.main).length || 1);
+
+    // Keep the intro price in sync with the first item when it is this product
+    const intro = document.querySelector('.ds-intro');
+    if (first?.main && intro) {
+      const onSale = first.compare > first.price;
+      setText(intro, '[data-ds-price]', money(first.price));
+      setText(intro, '[data-ds-compare]', onSale ? money(first.compare) : '', onSale);
+      setText(intro, '[data-ds-off]', onSale ? `${Math.floor(((first.compare - first.price) * 100) / first.compare)}% OFF` : '', onSale);
+      setText(intro, '[data-ds-saving]', onSale ? money(first.compare - first.price) : '');
+      setText(intro, '[data-ds-deal]', null, onSale);
+    }
   };
 
-  chips.forEach((chip) =>
-    chip.addEventListener('click', () => {
-      model = chip.dataset.dsModel || model;
-      chips.forEach((c) => c.setAttribute('aria-checked', String(c === chip)));
-      const v = byId.get(String(model));
-      setText(root, '[data-ds-model-name]', v ? v.title : '');
-      root.querySelectorAll('[data-ds-unit]').forEach((sel) => {
-        /** @type {HTMLSelectElement} */ (sel).value = model;
-      });
-      render();
-    })
-  );
-  root.addEventListener('change', render);
+  root.addEventListener('change', (event) => {
+    // Picking an item's variant selects that bundle
+    const tier = /** @type {Element} */ (event.target).closest?.('[data-ds-tier]');
+    const radio = /** @type {HTMLInputElement | null | undefined} */ (tier?.querySelector('input[type="radio"]'));
+    if (radio && !radio.checked) radio.checked = true;
+    render();
+  });
   render();
 }
 

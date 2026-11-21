@@ -1,0 +1,36 @@
+{%- comment -%}
+  One item inside a bundle: thumbnail, name, and a variant picker when the
+  product has more than one variant (otherwise a hidden input).
+
+  Accepts:
+  - item: {product} The product
+  - selected: {variant} The variant selected by default
+{%- endcomment -%}
+<span class="ds-tier__item">
+  <span class="ds-tier__thumb">
+    {%- assign img = selected.featured_image | default: item.featured_image -%}
+    {%- if img -%}
+      {{ img | image_url: width: 96 | image_tag: width: 36, height: 36, loading: 'lazy', alt: '' }}
+    {%- endif -%}
+  </span>
+  <span class="ds-tier__item-name">{{ item.title | escape }}</span>
+  {%- if item.has_only_default_variant -%}
+    <input type="hidden" value="{{ selected.id }}" data-ds-unit>
+  {%- else -%}
+    <select class="ds-tier__select" data-ds-unit aria-label="{{ item.title | escape }} {{ item.options.first | escape }}">
+      {%- for v in item.variants -%}
+        <option
+          value="{{ v.id }}"
+          {% if v.id == selected.id %}
+            selected
+          {% endif %}
+          {% unless v.available %}
+            disabled
+          {% endunless %}
+        >
+          {{- v.title | escape -}}
+        </option>
+      {%- endfor -%}
+    </select>
+  {%- endif -%}
+</span>
