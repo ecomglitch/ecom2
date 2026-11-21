@@ -1324,3 +1324,277 @@ body:has(dialog[open]) .ds-sticky {
     order: -1;
   }
 }
+
+/* ==========================================================================
+   Product page blocks
+   ========================================================================== */
+
+/* Checklist */
+.ds-pdp-checklist {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ds-ink);
+}
+
+.ds-pdp-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ds-pdp-checklist__icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: 50%;
+  background: #fdf1e9;
+  color: var(--ds-accent);
+}
+
+.ds-pdp-checklist__icon .ds-icon {
+  width: 13px;
+  height: 13px;
+  stroke-width: 3;
+}
+
+/* Savings badge */
+.ds-pdp-sale {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  font-size: 14px;
+}
+
+.ds-pdp-sale__pill {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--ds-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ds-pdp-sale__amount {
+  font-weight: 600;
+  color: var(--ds-success);
+}
+
+.ds-pdp-sale__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+}
+
+/* Delivery timeline */
+.ds-pdp-delivery {
+  padding: 20px 8px 4px;
+}
+
+.ds-pdp-delivery__steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+/* Line connecting the three markers */
+.ds-pdp-delivery__steps::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 16.66%;
+  right: 16.66%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--ds-ink) 0 50%, var(--ds-border) 50% 100%);
+}
+
+.ds-pdp-delivery__steps li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.ds-pdp-delivery__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: var(--ds-ink);
+  color: #fff;
+}
+
+.ds-pdp-delivery__steps li:last-child .ds-pdp-delivery__icon {
+  background: var(--ds-accent);
+}
+
+.ds-pdp-delivery__icon .ds-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.ds-pdp-delivery__date {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-ink);
+}
+
+.ds-pdp-delivery__label {
+  font-size: 12px;
+  color: var(--ds-muted);
+}
+
+/* Assurance row */
+.ds-pdp-assurance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 14px;
+  border-radius: var(--ds-radius);
+  background: var(--ds-bg-alt);
+  list-style: none;
+}
+
+.ds-pdp-assurance li {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--ds-ink);
+}
+
+.ds-pdp-assurance .ds-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--ds-accent);
+}
+
+/* ==========================================================================
+   Customer video carousel
+   ========================================================================== */
+.ds-ugc__wrap {
+  position: relative;
+}
+
+.ds-ugc__track {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0 0 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+  overscroll-behavior-x: contain;
+}
+
+.ds-ugc__track::-webkit-scrollbar {
+  display: none;
+}
+
+.ds-ugc__item {
+  flex: 0 0 clamp(220px, 70vw, 290px);
+  scroll-snap-align: start;
+}
+
+.ds-ugc__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 9 / 16;
+  border-radius: var(--ds-radius);
+  background: var(--ds-placeholder);
+}
+
+.ds-ugc__media video,
+.ds-ugc__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ds-ugc__caption {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  justify-self: start;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgb(0 0 0 / 0.72);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ds-ugc__name {
+  margin: 10px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ds-ugc__arrow {
+  position: absolute;
+  top: calc(50% - 22px);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--ds-border);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ds-ink);
+  box-shadow: var(--ds-shadow);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.ds-ugc__arrow:hover {
+  background: var(--ds-ink);
+  color: #fff;
+}
+
+.ds-ugc__arrow--prev {
+  left: -22px;
+}
+
+.ds-ugc__arrow--next {
+  right: -22px;
+}
+
+@media (max-width: 749px) {
+  .ds-ugc__arrow {
+    display: none;
+  }
+
+  /* Let the track bleed to the screen edge so the next clip peeks in */
+  .ds-ugc__track {
+    margin-inline: calc(var(--ds-gutter) * -1);
+    padding-inline: var(--ds-gutter);
+    scroll-padding-inline: var(--ds-gutter);
+  }
+}

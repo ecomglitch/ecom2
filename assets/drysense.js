@@ -161,3 +161,45 @@ function initSticky(bar) {
 }
 
 document.querySelectorAll('[data-ds-sticky]').forEach(initSticky);
+
+/* ---------- Product page: delivery timeline ---------- */
+// Dates are calculated in the browser so cached pages never show stale dates.
+document.querySelectorAll('[data-ds-delivery]').forEach((el) => {
+  const fmt = new Intl.DateTimeFormat(document.documentElement.lang || undefined, { month: 'short', day: 'numeric' });
+  const addDays = (n) => {
+    const d = new Date();
+    d.setDate(d.getDate() + Number(n));
+    return fmt.format(d);
+  };
+  const { readyMin, readyMax, shipMin, shipMax } = el.dataset;
+  const set = (key, text) => {
+    const target = el.querySelector(`[data-ds-date="${key}"]`);
+    if (target) target.textContent = text;
+  };
+  set('ordered', addDays(0));
+  set('ready', readyMin === readyMax ? addDays(readyMin) : `${addDays(readyMin)} – ${addDays(readyMax)}`);
+  set('delivered', shipMin === shipMax ? addDays(shipMin) : `${addDays(shipMin)} – ${addDays(shipMax)}`);
+});
+
+/* ---------- Customer video carousel ---------- */
+document.querySelectorAll('[data-ds-ugc-track]').forEach((track) => {
+  const wrap = track.closest('.ds-ugc__wrap');
+  const step = () => (track.querySelector('.ds-ugc__item')?.getBoundingClientRect().width ?? 300) + 16;
+  wrap?.querySelector('[data-ds-ugc-prev]')?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+  wrap?.querySelector('[data-ds-ugc-next]')?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+
+  // Play muted clips only while visible; respect reduced motion
+  const videos = track.querySelectorAll('video');
+  if (!videos.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const { target, isIntersecting } of entries) {
+        const video = /** @type {HTMLVideoElement} */ (target);
+        if (isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      }
+    },
+    { threshold: 0.6 }
+  );
+  videos.forEach((v) => io.observe(v));
+});

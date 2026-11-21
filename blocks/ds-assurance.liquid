@@ -1,0 +1,27 @@
+{%- comment -%} Three small reassurance points under the buy buttons. {%- endcomment -%}
+<ul class="ds-pdp-assurance" role="list" {{ block.shopify_attributes }}>
+  {%- if block.settings.point_1 != blank -%}
+    <li>{% render 'ds-icon', name: 'shield' %}<span>{{ block.settings.point_1 | escape }}</span></li>
+  {%- endif -%}
+  {%- if block.settings.point_2 != blank -%}
+    <li>
+      <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+      <span>{{ block.settings.point_2 | escape }}</span>
+    </li>
+  {%- endif -%}
+  {%- if block.settings.point_3 != blank -%}
+    <li>{% render 'ds-icon', name: 'lock' %}<span>{{ block.settings.point_3 | escape }}</span></li>
+  {%- endif -%}
+</ul>
+
+{% schema %}
+{
+  "name": "DrySense: Assurance",
+  "settings": [
+    { "type": "text", "id": "point_1", "label": "Point 1", "default": "30-day money-back guarantee" },
+    { "type": "text", "id": "point_2", "label": "Point 2", "default": "Free shipping" },
+    { "type": "text", "id": "point_3", "label": "Point 3", "default": "Secure checkout" }
+  ],
+  "presets": [{ "name": "DrySense: Assurance" }]
+}
+{% endschema %}

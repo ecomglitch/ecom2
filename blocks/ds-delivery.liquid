@@ -1,0 +1,57 @@
+{%- comment -%}
+  Ordered → Ready → Delivered timeline. Dates are calculated in the shopper's
+  browser from today (drysense.js) so cached pages never show stale dates;
+  the day ranges come from the settings and should match your shipping policy.
+{%- endcomment -%}
+<div
+  class="ds-pdp-delivery"
+  data-ds-delivery
+  data-ready-min="{{ block.settings.ready_min }}"
+  data-ready-max="{{ block.settings.ready_max }}"
+  data-ship-min="{{ block.settings.ship_min }}"
+  data-ship-max="{{ block.settings.ship_max }}"
+  {{ block.shopify_attributes }}
+>
+  <ol class="ds-pdp-delivery__steps" role="list">
+    <li>
+      <span class="ds-pdp-delivery__icon">
+        <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </span>
+      <span class="ds-pdp-delivery__date" data-ds-date="ordered">Today</span>
+      <span class="ds-pdp-delivery__label">{{ block.settings.label_ordered | escape }}</span>
+    </li>
+    <li>
+      <span class="ds-pdp-delivery__icon">
+        <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+      </span>
+      <span class="ds-pdp-delivery__date" data-ds-date="ready">{{ block.settings.ready_min }}–{{ block.settings.ready_max }} days</span>
+      <span class="ds-pdp-delivery__label">{{ block.settings.label_ready | escape }}</span>
+    </li>
+    <li>
+      <span class="ds-pdp-delivery__icon">
+        <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v12h14V9"/><path d="M10 21v-6h4v6"/></svg>
+      </span>
+      <span class="ds-pdp-delivery__date" data-ds-date="delivered">
+        {{- block.settings.ship_min }}–{{ block.settings.ship_max }} days
+      </span>
+      <span class="ds-pdp-delivery__label">{{ block.settings.label_delivered | escape }}</span>
+    </li>
+  </ol>
+</div>
+
+{% schema %}
+{
+  "name": "DrySense: Delivery",
+  "settings": [
+    { "type": "paragraph", "content": "Estimated calendar days from today. Match these to your real processing and shipping times." },
+    { "type": "range", "id": "ready_min", "label": "Ready to ship — from (days)", "min": 0, "max": 10, "step": 1, "default": 1 },
+    { "type": "range", "id": "ready_max", "label": "Ready to ship — to (days)", "min": 0, "max": 10, "step": 1, "default": 2 },
+    { "type": "range", "id": "ship_min", "label": "Delivered — from (days)", "min": 1, "max": 30, "step": 1, "default": 10 },
+    { "type": "range", "id": "ship_max", "label": "Delivered — to (days)", "min": 1, "max": 30, "step": 1, "default": 12 },
+    { "type": "text", "id": "label_ordered", "label": "Step 1 label", "default": "Ordered" },
+    { "type": "text", "id": "label_ready", "label": "Step 2 label", "default": "Order ready" },
+    { "type": "text", "id": "label_delivered", "label": "Step 3 label", "default": "Delivered" }
+  ],
+  "presets": [{ "name": "DrySense: Delivery" }]
+}
+{% endschema %}
