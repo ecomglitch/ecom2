@@ -296,6 +296,7 @@
                 },
                 "accelerated-checkout": {
                   "type": "accelerated-checkout",
+                  "disabled": true,
                   "static": true,
                   "settings": {},
                   "blocks": {}
@@ -306,7 +307,7 @@
             "payment_ds": {
               "type": "payment-icons",
               "settings": {
-                "horizontal_alignment": "flex-start",
+                "horizontal_alignment": "center",
                 "gap": 10,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
