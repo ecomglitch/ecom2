@@ -764,12 +764,36 @@
     "guarantee_pdp": {
       "type": "ds-guarantee",
       "settings": {}
+    },
+    "social_pdp": {
+      "type": "ds-social-posts",
+      "settings": {},
+      "blocks": {
+        "p1": {
+          "type": "post",
+          "settings": {}
+        },
+        "p2": {
+          "type": "post",
+          "settings": {}
+        },
+        "p3": {
+          "type": "post",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ]
     }
   },
   "order": [
     "main",
     "moments_pdp",
     "ugc",
+    "social_pdp",
     "compare_pdp",
     "steps_pdp",
     "guarantee_pdp",
