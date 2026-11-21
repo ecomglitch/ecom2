@@ -228,6 +228,7 @@
         "review_2",
         "review_3"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Real Experiences. Better Mornings.",
         "reviews_are_real": false
