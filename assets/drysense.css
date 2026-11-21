@@ -1895,7 +1895,7 @@ body:has(dialog[open]) .ds-sticky {
   background: #fffaf6;
 }
 
-.ds-tier:has(input:focus-visible) {
+.ds-tier:has(.ds-tier__input:focus-visible) {
   outline: 2px solid var(--ds-accent);
   outline-offset: 2px;
 }
@@ -2214,3 +2214,24 @@ body:has(dialog[open]) .ds-sticky {
   color: var(--ds-muted);
 }
 
+
+/* The real radio stays focusable but invisible; .ds-tier__radio draws the circle.
+   Overrides the theme's global input[type='radio'] styling. */
+.ds-tier > .ds-tier__input {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ds-tier > .ds-tier__input::before,
+.ds-tier > .ds-tier__input::after {
+  display: none;
+}
