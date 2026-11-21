@@ -168,6 +168,13 @@
               },
               "blocks": {}
             },
+            "mini_reviews_ds": {
+              "type": "ds-mini-reviews",
+              "settings": {
+                "image_1": "shopify://shop_images/review_William.png"
+              },
+              "blocks": {}
+            },
             "assurance_ds": {
               "type": "ds-assurance",
               "settings": {
@@ -440,10 +447,6 @@
                 "row_5",
                 "row_6"
               ]
-            },
-            "mini_reviews_ds": {
-              "type": "ds-mini-reviews",
-              "settings": {}
             }
           },
           "block_order": [
