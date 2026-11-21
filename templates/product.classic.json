@@ -172,14 +172,8 @@
               "type": "ds-mini-reviews",
               "settings": {
                 "image_1": "shopify://shop_images/review_William.png",
-                "quote_1": "",
-                "name_1": "",
                 "image_2": "shopify://shop_images/review_Mandy.png",
-                "quote_2": "",
-                "name_2": "",
-                "image_3": "shopify://shop_images/review_Milaya.png",
-                "quote_3": "",
-                "name_3": ""
+                "image_3": "shopify://shop_images/review_Milaya.png"
               },
               "blocks": {}
             },
