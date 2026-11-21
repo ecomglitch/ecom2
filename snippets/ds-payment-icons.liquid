@@ -1,0 +1,25 @@
+{%- comment -%}
+  Payment method icons: everything enabled at checkout, plus any extra types
+  listed in Theme settings → DrySense cart → "Extra payment icons".
+
+  Accepts:
+  - class: {string} Extra classes (e.g. 'ds-payments--dark', 'ds-payments--center')
+{%- endcomment -%}
+{%- liquid
+  assign types = shop.enabled_payment_types | join: ','
+  assign extra = settings.ds_extra_payment_icons | default: '' | downcase | replace: ' ', ''
+  if extra != blank
+    assign types = types | append: ',' | append: extra
+  endif
+  assign types = types | split: ',' | uniq
+-%}
+{%- if types.size > 0 -%}
+  <ul class="ds-payments {{ class }}" role="list" aria-label="Payment methods">
+    {%- for type in types -%}
+      {%- if type != blank -%}
+        {%- assign icon = type | payment_type_svg_tag -%}
+        {%- if icon != blank -%}<li>{{ icon }}</li>{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

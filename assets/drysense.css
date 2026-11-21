@@ -2492,3 +2492,54 @@ body:has(dialog[open]) .ds-sticky {
   width: 34px;
   height: 22px;
 }
+
+/* ==========================================================================
+   Payment icons (shared: product page, cart drawer, footer)
+   ========================================================================== */
+.ds-payments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-payments li {
+  display: block;
+  line-height: 0;
+}
+
+.ds-payments svg {
+  display: block;
+  width: 40px;
+  height: 26px;
+}
+
+.ds-payments--center {
+  justify-content: center;
+}
+
+.ds-payments--small {
+  gap: 6px;
+}
+
+.ds-payments--small svg {
+  width: 34px;
+  height: 22px;
+}
+
+.ds-payments--footer {
+  justify-content: flex-end;
+  max-width: 560px;
+}
+
+.ds-payments-block {
+  padding-block: 4px;
+}
+
+@media (max-width: 599px) {
+  .ds-payments--footer {
+    justify-content: flex-start;
+  }
+}

@@ -1,0 +1,17 @@
+{%- comment -%} Payment icons row for product pages (uses the shared ds-payment-icons snippet). {%- endcomment -%}
+<div class="ds-payments-block" {{ block.shopify_attributes }}>
+  {% render 'ds-payment-icons', class: 'ds-payments--center' %}
+</div>
+
+{% schema %}
+{
+  "name": "DrySense: Payment icons",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows every payment method enabled at checkout. Add extra icons in Theme settings → DrySense cart."
+    }
+  ],
+  "presets": [{ "name": "DrySense: Payment icons" }]
+}
+{% endschema %}

@@ -164,13 +164,7 @@
         {%- if shop.shipping_policy != blank -%}<a href="{{ shop.shipping_policy.url }}">Shipping Policy</a>{%- endif -%}
         {%- if shop.refund_policy != blank -%}<a href="{{ shop.refund_policy.url }}">Refund Policy</a>{%- endif -%}
       </div>
-      {%- if shop.enabled_payment_types.size > 0 -%}
-        <ul class="ds-footer__payments" role="list" aria-label="Payment methods">
-          {%- for type in shop.enabled_payment_types -%}
-            <li>{{ type | payment_type_svg_tag }}</li>
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
+      {% render 'ds-payment-icons', class: 'ds-payments--footer' %}
     </div>
   </div>
 </div>

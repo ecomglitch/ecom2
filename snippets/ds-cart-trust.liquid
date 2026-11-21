@@ -32,12 +32,8 @@
         Secure checkout
       </p>
     {%- endif -%}
-    {%- if settings.ds_cart_payment_icons and shop.enabled_payment_types.size > 0 -%}
-      <ul class="ds-cart-trust__payments" role="list" aria-label="Payment methods">
-        {%- for type in shop.enabled_payment_types -%}
-          <li>{{ type | payment_type_svg_tag }}</li>
-        {%- endfor -%}
-      </ul>
+    {%- if settings.ds_cart_payment_icons -%}
+      {% render 'ds-payment-icons', class: 'ds-payments--center ds-payments--small' %}
     {%- endif -%}
   </div>
 {%- endif -%}

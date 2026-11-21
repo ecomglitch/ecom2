@@ -1678,8 +1678,14 @@
       {
         "type": "checkbox",
         "id": "ds_cart_payment_icons",
-        "label": "Show payment icons",
+        "label": "Show payment icons in cart",
         "default": true
+      },
+      {
+        "type": "text",
+        "id": "ds_extra_payment_icons",
+        "label": "Extra payment icons",
+        "info": "Comma-separated, only for methods you really accept but that are not listed automatically. e.g. klarna, ideal, maestro, jcb, unionpay"
       }
     ]
   },
