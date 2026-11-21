@@ -449,11 +449,16 @@
                 "row_5",
                 "row_6"
               ]
+            },
+            "sticky_atc_ds": {
+              "type": "ds-sticky-atc",
+              "settings": {}
             }
           },
           "block_order": [
             "intro_ds",
             "bundles_ds",
+            "sticky_atc_ds",
             "payment_ds",
             "delivery_ds",
             "mini_reviews_ds",

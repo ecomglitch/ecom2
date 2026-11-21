@@ -1,0 +1,39 @@
+{%- comment -%}
+  Sticky add-to-cart bar for product pages. Appears once the main buy button
+  has scrolled out of view; its button triggers the main button, so the
+  selected bundle, items and gifts are added exactly the same way.
+{%- endcomment -%}
+{%- liquid
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+  assign variant = product.selected_or_first_available_variant
+  assign image = variant.featured_image | default: product.featured_image
+-%}
+<div class="ds-satc" data-ds-satc inert {{ block.shopify_attributes }}>
+  <div class="ds-satc__inner">
+    <span class="ds-satc__thumb">
+      {%- if image -%}
+        {{ image | image_url: width: 120 | image_tag: width: 48, height: 48, loading: 'lazy', alt: '' }}
+      {%- endif -%}
+    </span>
+    <span class="ds-satc__info">
+      <span class="ds-satc__title">{{ product.title | escape }}</span>
+      <span class="ds-satc__price" data-ds-satc-price>{{ variant.price | money }}</span>
+    </span>
+    <button type="button" class="ds-satc__button" data-ds-satc-button>
+      {{- block.settings.label | escape -}}
+    </button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "DrySense: Sticky cart bar",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Button label", "default": "Add to cart" }
+  ],
+  "presets": [{ "name": "DrySense: Sticky cart bar" }]
+}
+{% endschema %}

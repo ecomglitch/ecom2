@@ -2602,3 +2602,120 @@ body:has(dialog[open]) .ds-sticky {
   background: var(--ds-ink);
   transform: scale(1.25);
 }
+
+/* ==========================================================================
+   Product page: sticky add-to-cart bar
+   ========================================================================== */
+.ds-satc {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 40;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--ds-border);
+  background: rgb(255 255 255 / 0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 -8px 24px -12px rgb(var(--ds-ink-rgb) / 0.18);
+  font-family: var(--ds-font);
+  transform: translateY(110%);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ds-satc.is-visible {
+  transform: none;
+}
+
+.ds-satc__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+.ds-satc__thumb {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--ds-bg-alt);
+}
+
+.ds-satc__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ds-satc__info {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.ds-satc__title {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ds-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-satc__price {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-ink);
+}
+
+.ds-satc__button {
+  min-height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--ds-accent);
+  color: #fff;
+  font: 700 14px var(--ds-font);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -12px rgb(233 120 53 / 0.8);
+  transition: background-color 0.15s ease-out;
+}
+
+.ds-satc__button:hover {
+  background: var(--ds-accent-hover);
+}
+
+.ds-satc__button:focus-visible {
+  outline: 2px solid var(--ds-ink);
+  outline-offset: 3px;
+}
+
+.ds-satc__button:disabled {
+  background: #c9cdd2;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.ds-satc__button[aria-busy] {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Leave room so the bar never covers the footer; hide while the cart drawer is open */
+body:has(.ds-satc.is-visible) {
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+body:has(dialog[open]) .ds-satc {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-satc {
+    transition: none;
+  }
+}

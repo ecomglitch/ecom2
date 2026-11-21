@@ -365,3 +365,37 @@ document.querySelectorAll('[data-ds-mini-reviews]').forEach((root) => {
   root.addEventListener('focusin', pause);
   root.addEventListener('focusout', resume);
 });
+
+/* ---------- Product page: sticky add-to-cart bar ---------- */
+document.querySelectorAll('[data-ds-satc]').forEach((bar) => {
+  const main = /** @type {HTMLButtonElement | null} */ (document.querySelector('[data-ds-bundle-button]'));
+  const button = /** @type {HTMLButtonElement | null} */ (bar.querySelector('[data-ds-satc-button]'));
+  const price = bar.querySelector('[data-ds-satc-price]');
+  if (!main || !button) return;
+
+  // Fixed positioning can break inside transformed/sticky ancestors; live at <body> level
+  document.body.appendChild(bar);
+
+  // Mirror the main button: price and disabled/sold-out state
+  const sync = () => {
+    const mainPrice = main.querySelector('[data-ds-buy-price]');
+    if (price && mainPrice) price.textContent = mainPrice.textContent;
+    button.disabled = main.disabled;
+    button.toggleAttribute('aria-busy', main.getAttribute('aria-busy') === 'true');
+  };
+  new MutationObserver(sync).observe(main, { attributes: true, childList: true, subtree: true, characterData: true });
+  sync();
+
+  button.addEventListener('click', () => main.click());
+
+  // Show once the main button is above the viewport
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      const passed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      bar.classList.toggle('is-visible', passed);
+      bar.toggleAttribute('inert', !passed);
+    },
+    { threshold: 0 }
+  );
+  observer.observe(main);
+});
