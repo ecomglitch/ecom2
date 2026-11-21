@@ -111,7 +111,7 @@
                   "drysense-shoe-dryer"
                 ],
                 "t1_qty": 1,
-                "t1_title": "1 DrySense",
+                "t1_title": "1 DrySense Pro",
                 "t1_subtitle": "",
                 "t1_discount": 0,
                 "t1_badge": "",
@@ -120,10 +120,10 @@
                 "t1_code": "",
                 "t2_enabled": true,
                 "t2_products": [
-                  "buy-2"
+                  "2x-drysense-pro"
                 ],
                 "t2_qty": 2,
-                "t2_title": "2 DrySense",
+                "t2_title": "2 DrySense Pro",
                 "t2_subtitle": "One for you, one to share",
                 "t2_discount": 10,
                 "t2_badge": "Most popular",
@@ -144,8 +144,16 @@
               "blocks": {}
             },
             "payment_ds": {
-              "type": "ds-payment-icons",
-              "settings": {}
+              "type": "payment-icons",
+              "settings": {
+                "horizontal_alignment": "center",
+                "gap": 10,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             },
             "delivery_ds": {
               "type": "ds-delivery",
