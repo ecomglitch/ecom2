@@ -145,6 +145,7 @@
         "benefit_3"
       ],
       "settings": {
+        "image": "shopify://shop_images/20f6eb98-9fab-4779-b171-5242cf941c47.webp",
         "image_right": false,
         "heading": "Your Shoes Deserve Better."
       }
@@ -189,6 +190,7 @@
     "lifestyle": {
       "type": "ds-lifestyle",
       "settings": {
+        "image": "shopify://shop_images/66ce0488-2f56-4d88-83f9-d2f947dfd2ed.webp",
         "heading": "Ready for Whatever Tomorrow Brings.",
         "text": "Rainy commutes, snowy adventures, busy school mornings, and everyday workouts. Your footwear goes through a lot. Give it the care it deserves."
       }
@@ -244,6 +246,7 @@
     "final": {
       "type": "ds-final-cta",
       "settings": {
+        "image": "shopify://shop_images/57152947-82ab-4816-9319-ee3cde64752e.webp",
         "heading": "Make Every Morning a Fresh Start.",
         "text": "Don't let wet footwear slow you down. Discover a smarter way to care for your shoes.",
         "button": "Shop DrySense",
