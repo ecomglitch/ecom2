@@ -1,0 +1,128 @@
+{%- comment -%}
+  Product intro: eyebrow, title + badge, subtitle, rating, social proof,
+  checklist, price with % off, and a deal banner. Price elements carry
+  data-ds-* hooks so the bundle picker can keep them in sync.
+{%- endcomment -%}
+{%- liquid
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+  assign variant = product.selected_or_first_available_variant
+  assign s = block.settings
+
+  assign percent = 0
+  assign saving = 0
+  if variant.compare_at_price > variant.price
+    assign saving = variant.compare_at_price | minus: variant.price
+    assign percent = saving | times: 100 | divided_by: variant.compare_at_price
+  endif
+
+  assign rating = product.metafields.reviews.rating.value.rating
+  assign rating_count = product.metafields.reviews.rating_count
+  assign lines = s.checklist | newline_to_br | split: '<br />'
+-%}
+
+<div class="ds-intro" {{ block.shopify_attributes }}>
+  {%- if s.eyebrow != blank -%}
+    <p class="ds-intro__eyebrow">{{ s.eyebrow | escape }}</p>
+  {%- endif -%}
+
+  <div class="ds-intro__title-row">
+    <h1 class="ds-intro__title">{{ product.title | escape }}</h1>
+    {%- if s.badge != blank -%}<span class="ds-intro__badge">{{ s.badge | escape }}</span>{%- endif -%}
+  </div>
+
+  {%- if s.subtitle != blank -%}
+    <p class="ds-intro__subtitle">{{ s.subtitle | escape }}</p>
+  {%- endif -%}
+
+  {%- if rating != blank -%}
+    {%- assign rating_percent = rating | divided_by: 5.0 | times: 100 -%}
+    <a href="#reviews" class="ds-intro__rating">
+      <span class="ds-intro__stars" style="--ds-rating: {{ rating_percent }}%;" role="img" aria-label="Rated {{ rating | round: 1 }} out of 5"></span>
+      <span>{{ rating | round: 1 }}{% if rating_count != blank %} ({{ rating_count }} reviews){% endif %}</span>
+    </a>
+  {%- endif -%}
+
+  {%- if s.proof_text != blank -%}
+    <p class="ds-intro__proof">
+      <span class="ds-intro__avatars" aria-hidden="true">
+        {%- for i in (1..3) -%}
+          {%- assign key = 'avatar_' | append: i -%}
+          {%- if s[key] != blank -%}
+            {{ s[key] | image_url: width: 72 | image_tag: width: 28, height: 28, loading: 'lazy', alt: '' }}
+          {%- endif -%}
+        {%- endfor -%}
+      </span>
+      <span>{{ s.proof_text | escape }}</span>
+    </p>
+  {%- endif -%}
+
+  {%- if lines.size > 0 -%}
+    <ul class="ds-intro__checklist" role="list">
+      {%- for line in lines -%}
+        {%- assign item = line | strip -%}
+        {%- if item != blank -%}
+          <li>
+            <span class="ds-intro__tick">{% render 'ds-icon', name: 'check' %}</span>
+            {{- item | escape -}}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  <div class="ds-intro__price" data-ds-intro-price>
+    <s class="ds-intro__compare" data-ds-compare{% if percent == 0 %} hidden{% endif %}>
+      <span class="visually-hidden">Regular price </span>
+      {{- variant.compare_at_price | money -}}
+    </s>
+    <span class="ds-intro__now" data-ds-price>{{ variant.price | money }}</span>
+    <span class="ds-intro__off" data-ds-off{% if percent == 0 %} hidden{% endif %}>{{ percent }}% OFF</span>
+  </div>
+
+  {%- if s.deal_label != blank -%}
+    <p class="ds-intro__deal" data-ds-deal{% if saving == 0 %} hidden{% endif %}>
+      <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
+      <strong>{{ s.deal_label | escape }}</strong>
+      <span class="ds-intro__deal-sep" aria-hidden="true"></span>
+      <span>You're saving <span data-ds-saving>{{ saving | money }}</span></span>
+    </p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "DrySense: Product intro",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label above title", "default": "DrySense™" },
+    { "type": "text", "id": "badge", "label": "Badge next to title", "default": "Winter sale" },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Fresh, dry shoes with controlled 48°C warm air"
+    },
+    {
+      "type": "textarea",
+      "id": "checklist",
+      "label": "Checklist",
+      "default": "Controlled 48°C warm air\nHelps remove moisture and odor\nDesigned for everyday use",
+      "info": "One per line"
+    },
+    { "type": "text", "id": "deal_label", "label": "Deal banner label", "default": "Winter deal", "info": "Shown only when the product has a sale price" },
+    { "type": "header", "content": "Social proof (optional)" },
+    {
+      "type": "text",
+      "id": "proof_text",
+      "label": "Text",
+      "info": "Only use real numbers, e.g. \"Loved by 2,000+ customers\". Leave blank to hide."
+    },
+    { "type": "image_picker", "id": "avatar_1", "label": "Avatar 1" },
+    { "type": "image_picker", "id": "avatar_2", "label": "Avatar 2" },
+    { "type": "image_picker", "id": "avatar_3", "label": "Avatar 3" }
+  ],
+  "presets": [{ "name": "DrySense: Product intro" }]
+}
+{% endschema %}

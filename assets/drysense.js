@@ -9,6 +9,7 @@
  *   product section, kept in sync with the selected model.
  */
 import { CartLinesUpdateEvent, CartErrorEvent } from '@shopify/events';
+import { formatMoney } from '@theme/money-formatting';
 
 // Theme.routes.cart_add_url already ends in .js
 const ADD_URL = () => window.Theme?.routes?.cart_add_url ?? '/cart/add.js';
@@ -40,6 +41,12 @@ async function addToCart(button) {
   const variantId = button.dataset.variantId;
   if (!variantId || button.getAttribute('aria-busy') === 'true') return;
 
+  // Bundles pass several lines (units + gifts); everything else adds one unit
+  /** @type {{id: number, quantity: number, properties?: Record<string, string>}[]} */
+  const items = button.dataset.dsItems ? JSON.parse(button.dataset.dsItems) : [{ id: Number(variantId), quantity: 1 }];
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const discountCode = button.dataset.dsDiscount || '';
+
   const status = document.getElementById(button.dataset.statusId ?? '');
   const setStatus = (text, isError = false) => {
     if (!status) return;
@@ -55,7 +62,7 @@ async function addToCart(button) {
     new CartLinesUpdateEvent({
       action: 'add',
       context: 'product',
-      lines: [{ merchandiseId: variantId, quantity: 1 }],
+      lines: items.map((item) => ({ merchandiseId: String(item.id), quantity: item.quantity })),
       promise: deferred.promise,
     })
   );
@@ -66,11 +73,22 @@ async function addToCart(button) {
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       credentials: 'same-origin',
       body: JSON.stringify({
-        items: [{ id: Number(variantId), quantity: 1 }],
+        items,
         sections: cartSectionIds(),
       }),
     });
     const data = await res.json();
+
+    // Apply the bundle's discount code (if one is configured) before reading the cart back
+    if (res.ok && !data.status && discountCode) {
+      await fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ discount: discountCode }),
+      }).catch(() => {});
+    }
+
     const cart = await fetchCart();
 
     if (!res.ok || data.status) {
@@ -78,7 +96,7 @@ async function addToCart(button) {
       button.dispatchEvent(new CartErrorEvent({ error: message, code: 'INVALID' }));
       deferred.resolve({
         cart: CartLinesUpdateEvent.createCartFromAjaxResponse(cart),
-        detail: { didError: true, items: cart.items, itemCount: 1, source: 'drysense' },
+        detail: { didError: true, items: cart.items, itemCount, source: 'drysense' },
       });
       setStatus(message, true);
       return;
@@ -89,7 +107,7 @@ async function addToCart(button) {
       detail: {
         didError: false,
         items: cart.items,
-        itemCount: 1,
+        itemCount,
         sections: data.sections,
         source: 'drysense',
         productId: button.dataset.productId,
@@ -203,3 +221,118 @@ document.querySelectorAll('[data-ds-ugc-track]').forEach((track) => {
   );
   videos.forEach((v) => io.observe(v));
 });
+
+/* ---------- Product page: bundle picker ---------- */
+/** @param {HTMLElement} root */
+function initBundles(root) {
+  const variants = JSON.parse(root.querySelector('[data-ds-variants]')?.textContent || '[]');
+  const byId = new Map(variants.map((v) => [String(v.id), v]));
+  const money = (cents) =>
+    formatMoney(Math.round(cents), root.dataset.moneyFormat || '{{amount}}', root.dataset.currency || '');
+  const tiers = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('[data-ds-tier]')]);
+  const chips = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('[data-ds-model]')]);
+  const button = /** @type {HTMLButtonElement | null} */ (root.querySelector('[data-ds-bundle-button]'));
+  const express = root.querySelector('.ds-bundles__express');
+  let model =
+    chips.find((c) => c.getAttribute('aria-checked') === 'true')?.dataset.dsModel || button?.dataset.variantId || '';
+
+  /** Variant id for every unit in a tier: unit 1 follows the model chips, extra units their own select */
+  const unitIds = (tier) => {
+    const qty = Number(tier.dataset.qty) || 1;
+    const extra = [...tier.querySelectorAll('[data-ds-unit]')].map((sel) => /** @type {HTMLSelectElement} */ (sel).value);
+    return Array.from({ length: qty }, (_, i) => (i === 0 ? model : extra[i - 1] || model));
+  };
+
+  const priceTier = (tier) => {
+    const ids = unitIds(tier);
+    const discount = Number(tier.dataset.discount) || 0;
+    let total = 0;
+    let was = 0;
+    for (const id of ids) {
+      const v = byId.get(String(id));
+      if (!v) continue;
+      total += v.price;
+      was += Math.max(v.compare || 0, v.price);
+    }
+    const now = (total * (100 - discount)) / 100;
+    return { ids, now, was, save: was - now };
+  };
+
+  const setText = (scope, selector, text, show = true) => {
+    const el = scope?.querySelector(selector);
+    if (!el) return;
+    if (text !== null) el.textContent = text;
+    el.hidden = !show;
+  };
+
+  const render = () => {
+    const selected = tiers.find((t) => t.querySelector('input')?.checked) || tiers[0];
+    for (const tier of tiers) {
+      const { now, was, save } = priceTier(tier);
+      tier.classList.toggle('is-selected', tier === selected);
+      setText(tier, '[data-ds-tier-now]', money(now));
+      setText(tier, '[data-ds-tier-was]', money(was), save > 0);
+      setText(tier, '[data-ds-tier-save]', `Save ${money(save)}`, save > 0);
+    }
+
+    // Keep the intro price in sync with the chosen model (single unit)
+    const v = byId.get(String(model));
+    const intro = document.querySelector('.ds-intro');
+    if (v && intro) {
+      const onSale = v.compare > v.price;
+      setText(intro, '[data-ds-price]', money(v.price));
+      setText(intro, '[data-ds-compare]', onSale ? money(v.compare) : '', onSale);
+      setText(intro, '[data-ds-off]', onSale ? `${Math.floor(((v.compare - v.price) * 100) / v.compare)}% OFF` : '', onSale);
+      setText(intro, '[data-ds-saving]', onSale ? money(v.compare - v.price) : '');
+      setText(intro, '[data-ds-deal]', null, onSale);
+    }
+
+    if (!button) return;
+    if (!selected) {
+      // No tiers configured: plain single-unit add to cart
+      button.dataset.variantId = model;
+      delete button.dataset.dsItems;
+      setText(button, '[data-ds-buy-price]', v ? money(v.price) : '');
+      button.disabled = !v?.available;
+      return;
+    }
+
+    const { ids, now } = priceTier(selected);
+    const counts = new Map();
+    ids.forEach((id) => counts.set(id, (counts.get(id) || 0) + 1));
+    const items = [...counts].map(([id, quantity]) => ({ id: Number(id), quantity }));
+    (selected.dataset.gifts || '')
+      .split(',')
+      .filter(Boolean)
+      .forEach((id) => items.push({ id: Number(id), quantity: 1, properties: { _bundle_gift: 'Free gift' } }));
+
+    button.dataset.dsItems = JSON.stringify(items);
+    button.dataset.variantId = model;
+    button.dataset.dsDiscount = selected.dataset.code || '';
+    button.disabled = !ids.every((id) => byId.get(String(id))?.available);
+    setText(button, '[data-ds-buy-price]', money(now));
+
+    // Express checkout (Shop Pay etc.) buys the main item at the selected quantity
+    const expressId = /** @type {HTMLInputElement | null | undefined} */ (express?.querySelector('input[name="id"]'));
+    const expressQty = /** @type {HTMLInputElement | null | undefined} */ (express?.querySelector('input[name="quantity"]'));
+    if (expressId) expressId.value = model;
+    if (expressQty) expressQty.value = String(ids.length);
+  };
+
+  chips.forEach((chip) =>
+    chip.addEventListener('click', () => {
+      model = chip.dataset.dsModel || model;
+      chips.forEach((c) => c.setAttribute('aria-checked', String(c === chip)));
+      const v = byId.get(String(model));
+      setText(root, '[data-ds-model-name]', v ? v.title : '');
+      root.querySelectorAll('[data-ds-unit]').forEach((sel) => {
+        /** @type {HTMLSelectElement} */ (sel).value = model;
+      });
+      render();
+    })
+  );
+  root.addEventListener('change', render);
+  render();
+}
+
+document.querySelectorAll('[data-ds-bundles]').forEach((root) => initBundles(/** @type {HTMLElement} */ (root)));
