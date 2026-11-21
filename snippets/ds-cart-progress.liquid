@@ -1,0 +1,39 @@
+{%- comment -%}
+  Free shipping progress bar for the cart drawer.
+  Threshold comes from Theme settings → DrySense cart (store currency, whole amount).
+{%- endcomment -%}
+{%- if settings.ds_cart_progress -%}
+  {%- liquid
+    assign threshold = settings.ds_free_shipping | default: 0 | times: 100
+    assign total = cart.total_price
+    assign remaining = threshold | minus: total
+    if threshold > 0
+      assign percent = total | times: 100 | divided_by: threshold
+      if percent > 100
+        assign percent = 100
+      endif
+    else
+      assign percent = 100
+    endif
+  -%}
+  <div class="ds-cart-progress{% if remaining <= 0 %} is-unlocked{% endif %}">
+    <p class="ds-cart-progress__text">
+      <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+      {%- if remaining > 0 -%}
+        <span>You're <strong>{{ remaining | money }}</strong> away from <strong>free shipping</strong></span>
+      {%- else -%}
+        <span>You've unlocked <strong>free shipping</strong> 🎉</span>
+      {%- endif -%}
+    </p>
+    <div
+      class="ds-cart-progress__bar"
+      role="progressbar"
+      aria-label="Progress to free shipping"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="{{ percent }}"
+    >
+      <span style="width: {{ percent }}%;"></span>
+    </div>
+  </div>
+{%- endif -%}

@@ -263,8 +263,13 @@
     {% endif %}
     form="cart-form"
   >
-    <span class="button-text">
+    <span class="button-text ds-checkout-text">
+      {%- comment -%} DrySense: lock icon + total on the checkout button {%- endcomment -%}
+      <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
       {{ 'content.checkout' | t }}
+      {%- if cart.item_count > 0 -%}
+        <span class="ds-checkout-total" aria-hidden="true">{{ cart.total_price | money }}</span>
+      {%- endif -%}
     </span>
   </button>
 

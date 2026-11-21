@@ -1,0 +1,55 @@
+{%- comment -%}
+  "Complete your order" upsell row in the cart drawer. Products come from
+  Theme settings → DrySense cart; anything already in the cart is skipped.
+  The + Add button uses drysense.js (same cart flow as the rest of the site).
+{%- endcomment -%}
+{%- if settings.ds_cart_upsell and settings.ds_cart_upsell_products.size > 0 -%}
+  {%- liquid
+    assign in_cart = cart.items | map: 'product_id' | join: ','
+    assign in_cart = ',' | append: in_cart | append: ','
+    assign shown = 0
+  -%}
+  {%- capture cards -%}
+    {%- for p in settings.ds_cart_upsell_products -%}
+      {%- assign needle = ',' | append: p.id | append: ',' -%}
+      {%- unless in_cart contains needle or p.available == false -%}
+      {%- assign v = p.selected_or_first_available_variant -%}
+      {%- assign shown = shown | plus: 1 -%}
+      <li class="ds-upsell__card">
+        <a href="{{ p.url }}" class="ds-upsell__img" tabindex="-1" aria-hidden="true">
+          {%- if p.featured_image -%}
+            {{ p.featured_image | image_url: width: 160 | image_tag: width: 64, height: 64, loading: 'lazy', alt: '' }}
+          {%- endif -%}
+        </a>
+        <span class="ds-upsell__info">
+          <a href="{{ p.url }}" class="ds-upsell__title">{{ p.title | escape }}</a>
+          <span class="ds-upsell__price">
+            {{ v.price | money }}
+            {%- if v.compare_at_price > v.price -%}
+              <s>{{ v.compare_at_price | money }}</s>
+            {%- endif -%}
+          </span>
+        </span>
+        <button
+          type="button"
+          class="ds-upsell__add"
+          data-ds-add
+          data-variant-id="{{ v.id }}"
+          data-product-id="{{ p.id }}"
+          aria-label="Add {{ p.title | escape }} to cart"
+        >
+          <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          Add
+        </button>
+      </li>
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if shown > 0 -%}
+    <div class="ds-upsell">
+      <p class="ds-upsell__heading">{{ settings.ds_cart_upsell_heading | escape }}</p>
+      <ul class="ds-upsell__list" role="list">{{ cards }}</ul>
+    </div>
+  {%- endif -%}
+{%- endif -%}

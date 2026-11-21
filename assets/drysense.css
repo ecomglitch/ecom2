@@ -2235,3 +2235,260 @@ body:has(dialog[open]) .ds-sticky {
 .ds-tier > .ds-tier__input::after {
   display: none;
 }
+
+/* ==========================================================================
+   Cart drawer: progress, upsell, savings, checkout, trust
+   ========================================================================== */
+.ds-cart-progress {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--ds-bg-alt);
+  font-family: var(--ds-font);
+}
+
+.ds-cart-progress__text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--ds-ink);
+}
+
+.ds-cart-progress__text .ds-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--ds-accent);
+}
+
+.ds-cart-progress__bar {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e3e6ea;
+}
+
+.ds-cart-progress__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--ds-accent), #f2a46d);
+  transition: width 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ds-cart-progress.is-unlocked {
+  background: #e7f4ee;
+}
+
+.ds-cart-progress.is-unlocked .ds-icon {
+  color: var(--ds-success);
+}
+
+.ds-cart-progress.is-unlocked .ds-cart-progress__bar span {
+  background: var(--ds-success);
+}
+
+/* Upsell */
+.ds-upsell {
+  margin: 20px 0 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ds-border);
+  font-family: var(--ds-font);
+}
+
+.ds-upsell__heading {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-ink);
+}
+
+.ds-upsell__list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-upsell__card {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid var(--ds-border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.ds-upsell__img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--ds-bg-alt);
+}
+
+.ds-upsell__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ds-upsell__info {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ds-upsell__title {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ds-ink);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-upsell__price {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-ink);
+}
+
+.ds-upsell__price s {
+  margin-left: 6px;
+  font-weight: 500;
+  color: #c0392b;
+}
+
+.ds-upsell__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1.5px solid var(--ds-ink);
+  border-radius: 999px;
+  background: #fff;
+  font: 700 13px var(--ds-font);
+  color: var(--ds-ink);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.ds-upsell__add .ds-icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.5;
+}
+
+.ds-upsell__add:hover {
+  background: var(--ds-ink);
+  color: #fff;
+}
+
+.ds-upsell__add[aria-busy='true'] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Savings */
+.ds-cart-savings {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #e7f4ee;
+  font-family: var(--ds-font);
+  font-size: 14px;
+  color: var(--ds-success);
+}
+
+.ds-cart-savings .ds-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Checkout button: taller, lock icon, total */
+.cart__checkout-button.button {
+  min-height: 58px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 12px 28px -12px rgb(233 120 53 / 0.8);
+}
+
+.ds-checkout-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ds-checkout-text .ds-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.25;
+}
+
+.ds-checkout-total {
+  padding-left: 12px;
+  border-left: 1px solid rgb(255 255 255 / 0.45);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Trust */
+.ds-cart-trust {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-family: var(--ds-font);
+}
+
+.ds-cart-trust p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ds-muted);
+}
+
+.ds-cart-trust .ds-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--ds-success);
+}
+
+.ds-cart-trust__payments {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-cart-trust__payments svg {
+  display: block;
+  width: 34px;
+  height: 22px;
+}

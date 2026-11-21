@@ -1,0 +1,43 @@
+{%- comment -%}
+  Savings line (above totals) or trust line (below checkout) for the cart drawer.
+
+  Accepts:
+  - part: {string} 'savings' | 'trust'
+{%- endcomment -%}
+{%- if part == 'savings' -%}
+  {%- liquid
+    assign saved = 0
+    for item in cart.items
+      if item.variant.compare_at_price > item.variant.price
+        assign diff = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity
+        assign saved = saved | plus: diff
+      endif
+    endfor
+    assign saved = saved | plus: cart.total_discount
+  -%}
+  {%- if saved > 0 -%}
+    <p class="ds-cart-savings">
+      <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
+      You're saving <strong>{{ saved | money }}</strong> on this order
+    </p>
+  {%- endif -%}
+{%- else -%}
+  <div class="ds-cart-trust">
+    {%- if settings.ds_cart_trust != blank -%}
+      <p>
+        <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        {{ settings.ds_cart_trust | escape }}
+        <span aria-hidden="true">·</span>
+        <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Secure checkout
+      </p>
+    {%- endif -%}
+    {%- if settings.ds_cart_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <ul class="ds-cart-trust__payments" role="list" aria-label="Payment methods">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+{%- endif -%}
