@@ -440,6 +440,10 @@
                 "row_5",
                 "row_6"
               ]
+            },
+            "mini_reviews_ds": {
+              "type": "ds-mini-reviews",
+              "settings": {}
             }
           },
           "block_order": [
@@ -447,6 +451,7 @@
             "bundles_ds",
             "payment_ds",
             "delivery_ds",
+            "mini_reviews_ds",
             "assurance_ds",
             "faq_ds"
           ]

@@ -318,3 +318,50 @@ function initBundles(root) {
 }
 
 document.querySelectorAll('[data-ds-bundles]').forEach((root) => initBundles(/** @type {HTMLElement} */ (root)));
+
+/* ---------- Product page: mini testimonial slider ---------- */
+document.querySelectorAll('[data-ds-mini-reviews]').forEach((root) => {
+  const track = /** @type {HTMLElement | null} */ (root.querySelector('[data-ds-mini-track]'));
+  const dots = root.querySelector('[data-ds-mini-dots]');
+  const slides = track ? [...track.children] : [];
+  if (!track || !dots || slides.length < 2) return;
+
+  let index = 0;
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'ds-mini-reviews__dot';
+    dot.setAttribute('aria-label', `Show testimonial ${i + 1}`);
+    dot.addEventListener('click', () => go(i));
+    dots.appendChild(dot);
+  });
+  dots.removeAttribute('aria-hidden');
+
+  const go = (i) => {
+    index = (i + slides.length) % slides.length;
+    track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' });
+    [...dots.children].forEach((d, n) => d.setAttribute('aria-current', String(n === index)));
+  };
+
+  // Keep dots in sync when the shopper swipes
+  track.addEventListener('scroll', () => {
+    const i = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+    if (i !== index) {
+      index = i;
+      [...dots.children].forEach((d, n) => d.setAttribute('aria-current', String(n === index)));
+    }
+  }, { passive: true });
+
+  go(0);
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let timer = setInterval(() => go(index + 1), 5000);
+  const pause = () => clearInterval(timer);
+  const resume = () => {
+    clearInterval(timer);
+    timer = setInterval(() => go(index + 1), 5000);
+  };
+  root.addEventListener('pointerenter', pause);
+  root.addEventListener('pointerleave', resume);
+  root.addEventListener('focusin', pause);
+  root.addEventListener('focusout', resume);
+});
