@@ -16,6 +16,10 @@
   assign default_tier = s.default_tier | plus: 0
   assign threshold = s.low_stock | plus: 0
   assign main_variant = product.selected_or_first_available_variant
+  # Never preselect an out-of-stock variant (e.g. from a ?variant= link) when another is in stock
+  if main_variant.available == false and product.available
+    assign main_variant = product.first_available_variant
+  endif
 -%}
 
 {%- capture variant_json -%}
@@ -117,7 +121,10 @@
           <span class="ds-tier__main">
             <span class="ds-tier__radio" aria-hidden="true"></span>
             <span class="ds-tier__info">
-              <span class="ds-tier__title">{{ s[k_title] | escape }}</span>
+              <span class="ds-tier__title">
+                {{- s[k_title] | escape -}}
+                <span class="ds-tier__soldout" data-ds-tier-soldout hidden>Sold out</span>
+              </span>
               {%- if s[k_sub] != blank -%}
                 <span class="ds-tier__sub">{{ s[k_sub] | escape }}</span>
               {%- endif -%}
@@ -183,11 +190,12 @@
     data-variant-id="{{ main_variant.id }}"
     data-product-id="{{ product.id }}"
     data-status-id="DsBundleStatus-{{ block.id }}"
-    {% unless main_variant.available %}
+    data-label="{{ s.button_label | escape }}"
+    {% unless product.available %}
       disabled
     {% endunless %}
   >
-    <span class="ds-buy__label">{% if main_variant.available %}{{ s.button_label | escape }}{% else %}Sold out{% endif %}</span>
+    <span class="ds-buy__label">{% if product.available %}{{ s.button_label | escape }}{% else %}Sold out{% endif %}</span>
     <span class="ds-buy__sep" aria-hidden="true"></span>
     <span class="ds-buy__price" data-ds-buy-price>{{ main_variant.price | money }}</span>
   </button>

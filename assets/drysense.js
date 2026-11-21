@@ -259,10 +259,19 @@ function initBundles(root) {
     el.hidden = !show;
   };
 
+  /** A tier is in stock when every item's variant is available (unknown variants count as available) */
+  const tierInStock = (tier) => {
+    const ids = unitIds(tier);
+    return ids.length > 0 && ids.every((id) => byId.get(String(id))?.available !== false);
+  };
+
   const render = () => {
     const selected = tiers.find((t) => t.querySelector('input[type="radio"]')?.checked) || tiers[0];
     for (const tier of tiers) {
       tier.classList.toggle('is-selected', tier === selected);
+      const inStock = tierInStock(tier);
+      tier.classList.toggle('is-soldout', !inStock);
+      setText(tier, '[data-ds-tier-soldout]', null, !inStock);
       const p = priceTier(tier);
       if (!p) continue;
       setText(tier, '[data-ds-tier-now]', money(p.now));
@@ -285,7 +294,9 @@ function initBundles(root) {
     if (ids.length) button.dataset.variantId = ids[0];
     button.dataset.dsItems = JSON.stringify(items);
     button.dataset.dsDiscount = selected.dataset.code || '';
-    button.disabled = !ids.length || ids.some((id) => byId.get(String(id))?.available === false);
+    const soldOut = !tierInStock(selected);
+    button.disabled = soldOut;
+    setText(button, '.ds-buy__label', soldOut ? 'Sold out' : button.dataset.label || 'Add to cart');
     if (p) setText(button, '[data-ds-buy-price]', money(p.now));
 
     // Express checkout (Shop Pay etc.) buys the first item at the bundle's item count
@@ -314,6 +325,14 @@ function initBundles(root) {
     if (radio && !radio.checked) radio.checked = true;
     render();
   });
+
+  // If the preselected bundle is out of stock, start on the first one that is in stock
+  const preselected = tiers.find((t) => t.querySelector('input[type="radio"]')?.checked) || tiers[0];
+  if (preselected && !tierInStock(preselected)) {
+    const fallback = tiers.find(tierInStock);
+    const radio = /** @type {HTMLInputElement | null | undefined} */ (fallback?.querySelector('input[type="radio"]'));
+    if (radio) radio.checked = true;
+  }
   render();
 }
 
