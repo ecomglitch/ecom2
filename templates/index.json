@@ -12,8 +12,8 @@
     "hero": {
       "type": "ds-hero",
       "settings": {
-        "image": "shopify://shop_images/picture_1.png",
-        "mobile_image": "shopify://shop_images/picture_1.png",
+        "image": "shopify://shop_images/U261028QGE018.jpg",
+        "mobile_image": "shopify://shop_images/U261028QGE017.jpg",
         "eyebrow": "",
         "heading": "Stop Ruining Your Shoes in the Rain and Snow.",
         "mobile_heading": "Dry, fresh shoes. Every day.",
@@ -41,7 +41,7 @@
         "classic_price": "$49.99",
         "classic_compare": "$79.99",
         "pro_product": "drysense-shoe-dryer",
-        "pro_image": "shopify://shop_images/picture_1.png",
+        "pro_image": "shopify://shop_images/U261028QGE017.jpg",
         "pro_name": "DrySense Pro",
         "pro_description": "Premium footwear care with a smart digital display and sophisticated design.",
         "pro_badge": "Premium model",
@@ -56,36 +56,12 @@
         "row_1": {
           "type": "row",
           "settings": {
-            "feature": "Drying capacity",
-            "classic": "1 Pair (2 Arms)",
-            "pro": "2 Pairs (4 Arms)"
+            "feature": "Product design",
+            "classic": "Compact base with two upright fork attachments",
+            "pro": "Upright body with four drying arms"
           }
         },
         "row_2": {
-          "type": "row",
-          "settings": {
-            "feature": "Best for",
-            "classic": "Daily sneakers and work shoes",
-            "pro": "Families, athletes, ski boots, and gloves"
-          }
-        },
-        "row_3": {
-          "type": "row",
-          "settings": {
-            "feature": "Drying technology",
-            "classic": "48°C Controlled Warm Air",
-            "pro": "48°C Controlled Warm Air"
-          }
-        },
-        "row_4": {
-          "type": "row",
-          "settings": {
-            "feature": "Display",
-            "classic": "Top Control Panel",
-            "pro": "Front Digital Temperature Display"
-          }
-        },
-        "row_5": {
           "type": "row",
           "settings": {
             "feature": "Exterior color",
@@ -93,20 +69,28 @@
             "pro": "Champagne"
           }
         },
-        "row_6": {
+        "row_3": {
           "type": "row",
           "settings": {
-            "feature": "Auto shut-off",
-            "classic": "Yes",
-            "pro": "Yes"
+            "feature": "Display",
+            "classic": "Top control panel",
+            "pro": "Front digital temperature display"
           }
         },
-        "row_7": {
+        "row_4": {
           "type": "row",
           "settings": {
-            "feature": "Folding design",
-            "classic": "Folds flat",
-            "pro": "Folds flat"
+            "feature": "Drying temperature",
+            "classic": "48°C",
+            "pro": "48°C"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "feature": "Adjustable attachments",
+            "classic": "Not specified",
+            "pro": "Not specified"
           }
         }
       },
@@ -115,9 +99,7 @@
         "row_2",
         "row_3",
         "row_4",
-        "row_5",
-        "row_6",
-        "row_7"
+        "row_5"
       ],
       "settings": {
         "heading": "Two Models. One Fresh Start.",
@@ -208,7 +190,7 @@
     "lifestyle": {
       "type": "ds-lifestyle",
       "settings": {
-        "image": "shopify://shop_images/66ce0488-2f56-4d88-83f9-d2f947dfd2ed.webp",
+        "image": "shopify://shop_images/gloves.png",
         "heading": "Ready for Whatever Tomorrow Brings.",
         "text": "Rainy commutes, snowy adventures, busy school mornings, and everyday workouts. Your footwear goes through a lot. Give it the care it deserves."
       }
