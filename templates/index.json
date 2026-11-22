@@ -56,12 +56,36 @@
         "row_1": {
           "type": "row",
           "settings": {
-            "feature": "Product design",
-            "classic": "Compact base with two upright fork attachments",
-            "pro": "Upright body with four drying arms"
+            "feature": "Drying capacity",
+            "classic": "1 Pair (2 Arms)",
+            "pro": "2 Pairs (4 Arms)"
           }
         },
         "row_2": {
+          "type": "row",
+          "settings": {
+            "feature": "Best for",
+            "classic": "Daily sneakers and work shoes",
+            "pro": "Families, athletes, ski boots, and gloves"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "feature": "Drying technology",
+            "classic": "48°C Controlled Warm Air",
+            "pro": "48°C Controlled Warm Air"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "feature": "Display",
+            "classic": "Top Control Panel",
+            "pro": "Front Digital Temperature Display"
+          }
+        },
+        "row_5": {
           "type": "row",
           "settings": {
             "feature": "Exterior color",
@@ -69,28 +93,20 @@
             "pro": "Champagne"
           }
         },
-        "row_3": {
+        "row_6": {
           "type": "row",
           "settings": {
-            "feature": "Display",
-            "classic": "Top control panel",
-            "pro": "Front digital temperature display"
+            "feature": "Auto shut-off",
+            "classic": "Yes",
+            "pro": "Yes"
           }
         },
-        "row_4": {
+        "row_7": {
           "type": "row",
           "settings": {
-            "feature": "Drying temperature",
-            "classic": "48°C",
-            "pro": "48°C"
-          }
-        },
-        "row_5": {
-          "type": "row",
-          "settings": {
-            "feature": "Adjustable attachments",
-            "classic": "Not specified",
-            "pro": "Not specified"
+            "feature": "Folding design",
+            "classic": "Folds flat",
+            "pro": "Folds flat"
           }
         }
       },
@@ -99,7 +115,9 @@
         "row_2",
         "row_3",
         "row_4",
-        "row_5"
+        "row_5",
+        "row_6",
+        "row_7"
       ],
       "settings": {
         "heading": "Two Models. One Fresh Start.",
@@ -269,63 +287,63 @@
           "type": "question",
           "settings": {
             "question": "What is the difference between Classic and Pro?",
-            "answer": "<p>Both models use the same drying approach. DrySense Classic has a charcoal finish and a top control panel. DrySense Pro has a champagne finish and a front digital display. See the comparison table above for details.</p>"
+            "answer": "<p>Both use 48°C controlled warm air, have auto shut-off and fold flat. <strong>Classic</strong> dries 1 pair (2 arms) and is ideal for daily sneakers and work shoes. <strong>Pro</strong> dries 2 pairs (4 arms), adds a front digital temperature display and is ideal for families, athletes, ski boots and gloves.</p>"
           }
         },
         "question_3": {
           "type": "question",
           "settings": {
             "question": "Is DrySense suitable for sneakers and boots?",
-            "answer": "<p>DrySense is designed for everyday footwear, including sneakers and boots. [Confirm any footwear types or materials that should not be used.]</p>"
+            "answer": "<p>Yes. DrySense works with sneakers, work shoes and boots. DrySense Pro’s 4 arms also fit ski boots and gloves.</p>"
           }
         },
         "question_4": {
           "type": "question",
           "settings": {
             "question": "How long does drying take?",
-            "answer": "<p>[Add the recommended drying time and timer options from the product manual.]</p>"
+            "answer": "<p>Most footwear dries in 1 to 3 hours. Heavy winter boots or heavily soaked shoes may require up to 3 hours of continuous warm air circulation.</p>"
           }
         },
         "question_5": {
           "type": "question",
           "settings": {
             "question": "Does DrySense help reduce unpleasant odors?",
-            "answer": "<p>By helping remove trapped moisture, DrySense helps address conditions associated with unpleasant footwear odors.</p>"
+            "answer": "<p>Yes. By circulating warm air inside the shoe, it removes trapped moisture. Odor-causing bacteria thrive in damp environments, so keeping shoes dry helps reduce unpleasant smells.</p>"
           }
         },
         "question_6": {
           "type": "question",
           "settings": {
             "question": "What temperature does DrySense use?",
-            "answer": "<p>DrySense uses controlled thermal circulation at 48°C.</p>"
+            "answer": "<p>The digital display regulates the internal heating element to a constant 48°C (118°F) to circulate warm air and remove moisture.</p>"
           }
         },
         "question_7": {
           "type": "question",
           "settings": {
             "question": "Can I use DrySense every day?",
-            "answer": "<p>Yes. DrySense is designed for everyday use. Always follow the instructions in the product manual.</p>"
+            "answer": "<p>Yes. The device is designed for daily use. You can safely dry your shoes overnight or after a workout without worrying about material degradation.</p>"
           }
         },
         "question_8": {
           "type": "question",
           "settings": {
             "question": "Does it turn off automatically?",
-            "answer": "<p>[Confirm whether DrySense has a timer or automatic shut-off before answering.]</p>"
+            "answer": "<p>Yes, the device features a smart timer control panel with an auto shut-off function. You can set the desired drying time, and the device will power down automatically when the cycle is complete.</p>"
           }
         },
         "question_9": {
           "type": "question",
           "settings": {
             "question": "How much does shipping cost?",
-            "answer": "<p>[Add your shipping rates and delivery times, matching your shipping policy.]</p>"
+            "answer": "<p>We offer Free Shipping on all orders within the US, UK, and European countries. Orders are processed in 1-2 business days and typically arrive within 6 to 12 business days.</p>"
           }
         },
         "question_10": {
           "type": "question",
           "settings": {
             "question": "What if I am not satisfied?",
-            "answer": "<p>Contact our support team within 30 days of receiving your order to request a refund, subject to our published return policy.</p>"
+            "answer": "<p>We offer a 30-Day Money-Back Guarantee. If your shoes aren’t perfectly dry and warm, contact our support team within 30 days of delivery, and we will issue a full refund.</p>"
           }
         }
       },
