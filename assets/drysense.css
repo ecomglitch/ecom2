@@ -2741,3 +2741,39 @@ body:has(dialog[open]) .ds-satc {
 .ds-tier.is-soldout:not(.is-selected) {
   opacity: 0.55;
 }
+
+/* Product card: secondary "Add to cart" text button under "View details" */
+.ds-card__add {
+  justify-self: center;
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  font: 600 15px var(--ds-font);
+  color: var(--ds-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ds-border);
+  text-underline-offset: 5px;
+  cursor: pointer;
+  transition: text-decoration-color 0.15s ease-out;
+}
+
+.ds-card__add:hover {
+  text-decoration-color: var(--ds-ink);
+}
+
+.ds-card__add:focus-visible {
+  outline: 2px solid var(--ds-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.ds-card__add[aria-busy='true'] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.ds-card__add--soldout {
+  color: var(--ds-muted);
+  text-decoration: none;
+  cursor: default;
+}

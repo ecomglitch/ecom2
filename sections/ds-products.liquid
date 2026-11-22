@@ -78,30 +78,26 @@
             %}
 
             <div class="ds-card__footer">
+              <a class="ds-btn ds-btn--primary ds-btn--block" href="{% if p != blank %}{{ p.url }}{% else %}#shop{% endif %}">
+                {{- section.settings[k_cta] | escape -}}
+              </a>
               {%- if p != blank and variant.available -%}
                 <button
                   type="button"
-                  class="ds-btn ds-btn--primary ds-btn--block"
+                  class="ds-card__add"
                   data-ds-add
                   data-variant-id="{{ variant.id }}"
                   data-product-id="{{ p.id }}"
                   data-status-id="{{ status_id }}"
                 >
-                  {{- section.settings[k_cta] | escape -}}
+                  Add to cart
                 </button>
               {%- elsif p != blank -%}
-                <button type="button" class="ds-btn ds-btn--primary ds-btn--block" disabled>Sold out</button>
-              {%- else -%}
-                <button type="button" class="ds-btn ds-btn--primary ds-btn--block" disabled>
-                  {{- section.settings[k_cta] | escape -}}
-                </button>
+                <span class="ds-card__add ds-card__add--soldout">Sold out</span>
               {%- endif -%}
               <p id="{{ status_id }}" class="ds-cart-status" role="status" aria-live="polite">
                 {%- if p == blank and request.design_mode -%}Connect a product in the theme editor to enable checkout.{%- endif -%}
               </p>
-              {%- if p != blank -%}
-                <a class="ds-link ds-card__details" href="{{ p.url }}">Product details</a>
-              {%- endif -%}
             </div>
           </div>
         </article>
@@ -202,7 +198,7 @@
     { "type": "text", "id": "classic_name", "label": "Name", "default": "DrySense Classic" },
     { "type": "textarea", "id": "classic_description", "label": "Description", "default": "Your everyday essential for fresher, drier footwear." },
     { "type": "text", "id": "classic_badge", "label": "Badge" },
-    { "type": "text", "id": "classic_cta", "label": "Button", "default": "Choose Classic" },
+    { "type": "text", "id": "classic_cta", "label": "Button (links to product page)", "default": "View details" },
     { "type": "text", "id": "classic_price", "label": "Fallback price", "default": "$49.99", "info": "Only shown until a product is connected." },
     { "type": "text", "id": "classic_compare", "label": "Fallback compare-at price", "default": "$79.99" },
 
@@ -212,7 +208,7 @@
     { "type": "text", "id": "pro_name", "label": "Name", "default": "DrySense Pro" },
     { "type": "textarea", "id": "pro_description", "label": "Description", "default": "Premium footwear care with a smart digital display and sophisticated design." },
     { "type": "text", "id": "pro_badge", "label": "Badge", "default": "Premium model" },
-    { "type": "text", "id": "pro_cta", "label": "Button", "default": "Choose Pro" },
+    { "type": "text", "id": "pro_cta", "label": "Button (links to product page)", "default": "View details" },
     { "type": "text", "id": "pro_price", "label": "Fallback price", "default": "$54.99", "info": "Only shown until a product is connected." },
     { "type": "text", "id": "pro_compare", "label": "Fallback compare-at price", "default": "$89.99" }
   ],

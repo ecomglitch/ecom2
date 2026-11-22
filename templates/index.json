@@ -37,7 +37,7 @@
         "classic_name": "DrySense Classic",
         "classic_description": "Your everyday essential for fresher, drier footwear.",
         "classic_badge": "",
-        "classic_cta": "Choose Classic",
+        "classic_cta": "View details",
         "classic_price": "$49.99",
         "classic_compare": "$79.99",
         "pro_product": "drysense-shoe-dryer",
@@ -45,7 +45,7 @@
         "pro_name": "DrySense Pro",
         "pro_description": "Premium footwear care with a smart digital display and sophisticated design.",
         "pro_badge": "Premium model",
-        "pro_cta": "Choose Pro",
+        "pro_cta": "View details",
         "pro_price": "$54.99",
         "pro_compare": "$89.99"
       }
