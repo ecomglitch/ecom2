@@ -143,6 +143,13 @@
               },
               "blocks": {}
             },
+            "sticky_atc_ds": {
+              "type": "ds-sticky-atc",
+              "settings": {
+                "label": "Add to cart"
+              },
+              "blocks": {}
+            },
             "payment_ds": {
               "type": "payment-icons",
               "settings": {
@@ -449,10 +456,6 @@
                 "row_5",
                 "row_6"
               ]
-            },
-            "sticky_atc_ds": {
-              "type": "ds-sticky-atc",
-              "settings": {}
             }
           },
           "block_order": [
@@ -516,7 +519,7 @@
         "b3"
       ],
       "settings": {
-        "image": "shopify://shop_images/picture_1_black.png",
+        "image": "shopify://shop_images/Proof_of_concept_black.png",
         "image_right": true,
         "heading": "For the Moments That Matter."
       }
