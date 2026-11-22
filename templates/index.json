@@ -12,8 +12,8 @@
     "hero": {
       "type": "ds-hero",
       "settings": {
-        "image": "shopify://shop_images/U261028QGE018.jpg",
-        "mobile_image": "shopify://shop_images/U261028QGE017.jpg",
+        "image": "shopify://shop_images/picture_1.png",
+        "mobile_image": "shopify://shop_images/picture_1.png",
         "eyebrow": "",
         "heading": "Stop Ruining Your Shoes in the Rain and Snow.",
         "mobile_heading": "Dry, fresh shoes. Every day.",
@@ -41,7 +41,7 @@
         "classic_price": "$49.99",
         "classic_compare": "$79.99",
         "pro_product": "drysense-shoe-dryer",
-        "pro_image": "shopify://shop_images/U261028QGE017.jpg",
+        "pro_image": "shopify://shop_images/picture_1.png",
         "pro_name": "DrySense Pro",
         "pro_description": "Premium footwear care with a smart digital display and sophisticated design.",
         "pro_badge": "Premium model",
