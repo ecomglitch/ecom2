@@ -582,12 +582,36 @@
         "row_1": {
           "type": "row",
           "settings": {
-            "feature": "Product design",
-            "classic": "Compact base with two upright fork attachments",
-            "pro": "Upright body with four drying arms"
+            "feature": "Drying capacity",
+            "classic": "1 Pair (2 Arms)",
+            "pro": "2 Pairs (4 Arms)"
           }
         },
         "row_2": {
+          "type": "row",
+          "settings": {
+            "feature": "Best for",
+            "classic": "Daily sneakers and work shoes",
+            "pro": "Families, athletes, ski boots, and gloves"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "feature": "Drying technology",
+            "classic": "48°C Controlled Warm Air",
+            "pro": "48°C Controlled Warm Air"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "feature": "Display",
+            "classic": "Top Control Panel",
+            "pro": "Front Digital Temperature Display"
+          }
+        },
+        "row_5": {
           "type": "row",
           "settings": {
             "feature": "Exterior color",
@@ -595,28 +619,20 @@
             "pro": "Champagne"
           }
         },
-        "row_3": {
+        "row_6": {
           "type": "row",
           "settings": {
-            "feature": "Display",
-            "classic": "Top control panel",
-            "pro": "Front digital temperature display"
+            "feature": "Auto shut-off",
+            "classic": "Yes",
+            "pro": "Yes"
           }
         },
-        "row_4": {
+        "row_7": {
           "type": "row",
           "settings": {
-            "feature": "Drying temperature",
-            "classic": "48°C",
-            "pro": "48°C"
-          }
-        },
-        "row_5": {
-          "type": "row",
-          "settings": {
-            "feature": "Adjustable attachments",
-            "classic": "Not specified",
-            "pro": "Not specified"
+            "feature": "Folding design",
+            "classic": "Folds flat",
+            "pro": "Folds flat"
           }
         }
       },
@@ -625,7 +641,9 @@
         "row_2",
         "row_3",
         "row_4",
-        "row_5"
+        "row_5",
+        "row_6",
+        "row_7"
       ],
       "settings": {
         "heading": "Two Models. One Fresh Start.",
