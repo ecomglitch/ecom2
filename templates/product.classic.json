@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "product-information",
@@ -571,7 +572,8 @@
         "classic_product": "",
         "pro_product": "",
         "classic_price": "$49.99",
-        "pro_price": "$54.99"
+        "pro_price": "$54.99",
+        "show_buttons": false
       }
     },
     "steps_pdp": {

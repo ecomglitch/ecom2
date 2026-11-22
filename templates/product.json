@@ -572,7 +572,8 @@
         "classic_product": "",
         "pro_product": "",
         "classic_price": "$49.99",
-        "pro_price": "$54.99"
+        "pro_price": "$54.99",
+        "show_buttons": false
       }
     },
     "steps_pdp": {
