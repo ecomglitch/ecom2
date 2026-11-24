@@ -1,0 +1,96 @@
+{%- comment -%}
+  Promo bar with a real countdown.
+  - Counts down to the end date/time set here (store time zone). No end date = no timer.
+  - Hidden automatically once the sale has ended, server-side and live in the browser,
+    so it never shows an expired or resetting "fake" timer.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign show = s.enabled
+  assign end_iso = ''
+
+  if s.end_date != blank
+    assign end_time = s.end_time | default: '23:59'
+    # Store time zone offset, e.g. +0100 -> +01:00
+    assign tz = 'now' | date: '%z'
+    assign tz_hours = tz | slice: 0, 3
+    assign tz_minutes = tz | slice: 3, 2
+    assign tz_iso = tz_hours | append: ':' | append: tz_minutes
+    assign end_iso = s.end_date | append: 'T' | append: end_time | append: ':00' | append: tz_iso
+
+    assign now_key = 'now' | date: '%Y%m%d%H%M' | plus: 0
+    assign end_key = s.end_date | remove: '-' | append: end_time | remove: ':' | plus: 0
+    if end_key > 0 and now_key >= end_key
+      assign show = false
+    endif
+  endif
+-%}
+
+{%- if show -%}
+  <a
+    class="ds-promo"
+    href="{{ s.link | default: '/#shop' }}"
+    {% if end_iso != blank %}
+      data-ds-countdown="{{ end_iso }}"
+    {% endif %}
+  >
+    <span class="ds-promo__inner">
+      <span class="ds-promo__offer">
+        <span class="ds-promo__dot" aria-hidden="true"></span>
+        <span class="ds-promo__label">{{ s.label | escape }}</span>
+        <span class="ds-promo__sep" aria-hidden="true"></span>
+        <span class="ds-promo__deal">{{ s.offer | escape }}</span>
+        {%- if s.extra != blank -%}
+          <span class="ds-promo__extra">{{ s.extra | escape }}</span>
+        {%- endif -%}
+      </span>
+
+      {%- if end_iso != blank -%}
+        <span class="ds-promo__timer" role="timer" aria-label="{{ s.timer_label | escape }} {{ s.end_date }} {{ s.end_time }}">
+          <span class="ds-promo__timer-label">{{ s.timer_label | escape }}</span>
+          <span class="ds-promo__units" aria-hidden="true">
+            <span class="ds-promo__unit"><b data-ds-cd="d">00</b><i>d</i></span>
+            <span class="ds-promo__unit"><b data-ds-cd="h">00</b><i>h</i></span>
+            <span class="ds-promo__unit"><b data-ds-cd="m">00</b><i>m</i></span>
+            <span class="ds-promo__unit"><b data-ds-cd="s">00</b><i>s</i></span>
+          </span>
+        </span>
+      {%- endif -%}
+
+      {%- if s.cta != blank -%}
+        <span class="ds-promo__cta">
+          {{- s.cta | escape -}}
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </span>
+      {%- endif -%}
+    </span>
+  </a>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "DrySense: Promo bar",
+  "tag": "div",
+  "class": "ds-promo-section",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Show promo bar", "default": true },
+    { "type": "text", "id": "label", "label": "Label", "default": "Winter Sale" },
+    { "type": "text", "id": "offer", "label": "Offer (highlighted)", "default": "35% OFF" },
+    { "type": "text", "id": "extra", "label": "Extra", "default": "+ Free shipping", "info": "Hidden on small phones" },
+    { "type": "header", "content": "Countdown" },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Sale ends on (YYYY-MM-DD)",
+      "info": "Use the real end date. The bar hides itself when the sale ends. Leave blank for no timer."
+    },
+    { "type": "text", "id": "end_time", "label": "Ends at (HH:MM, store time)", "default": "23:59" },
+    { "type": "text", "id": "timer_label", "label": "Timer label", "default": "Ends in" },
+    { "type": "header", "content": "Link" },
+    { "type": "text", "id": "cta", "label": "Link text", "default": "Shop now", "info": "Desktop only" },
+    { "type": "url", "id": "link", "label": "Link", "info": "Defaults to the products on the homepage" }
+  ],
+  "presets": [{ "name": "DrySense: Promo bar" }]
+}
+{% endschema %}

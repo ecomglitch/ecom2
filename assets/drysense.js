@@ -418,3 +418,36 @@ document.querySelectorAll('[data-ds-satc]').forEach((bar) => {
   );
   observer.observe(main);
 });
+
+/* ---------- Promo bar countdown ---------- */
+// Counts down to a real end time; hides the bar when the sale is over.
+document.querySelectorAll('[data-ds-countdown]').forEach((bar) => {
+  const end = Date.parse(/** @type {HTMLElement} */ (bar).dataset.dsCountdown || '');
+  if (Number.isNaN(end)) return;
+  const parts = {
+    d: bar.querySelector('[data-ds-cd="d"]'),
+    h: bar.querySelector('[data-ds-cd="h"]'),
+    m: bar.querySelector('[data-ds-cd="m"]'),
+    s: bar.querySelector('[data-ds-cd="s"]'),
+  };
+  const pad = (n) => String(n).padStart(2, '0');
+  let timer = 0;
+
+  const tick = () => {
+    const left = Math.max(0, end - Date.now());
+    if (left === 0) {
+      clearInterval(timer);
+      (bar.closest('.ds-promo-section') || bar).setAttribute('hidden', '');
+      return;
+    }
+    const sec = Math.floor(left / 1000);
+    if (parts.d) parts.d.textContent = pad(Math.floor(sec / 86400));
+    if (parts.h) parts.h.textContent = pad(Math.floor((sec % 86400) / 3600));
+    if (parts.m) parts.m.textContent = pad(Math.floor((sec % 3600) / 60));
+    if (parts.s) parts.s.textContent = pad(sec % 60);
+    bar.classList.add('is-counting');
+  };
+
+  tick();
+  timer = window.setInterval(tick, 1000);
+});
