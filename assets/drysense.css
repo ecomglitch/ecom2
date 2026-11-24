@@ -3423,3 +3423,44 @@ body:has(dialog[open]) .ds-satc {
     font-size: 14px;
   }
 }
+
+/* Product intro countdown: compact, sits under the subtitle */
+.ds-intro__timer {
+  gap: 8px 10px;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+.ds-intro__timer-label {
+  gap: 6px;
+  font-size: 11px;
+}
+
+.ds-intro__timer-label .ds-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.ds-intro__units {
+  gap: 4px;
+}
+
+.ds-intro__unit {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  min-width: 0;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+.ds-intro__unit b {
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.ds-intro__unit i {
+  font-size: 9px;
+  letter-spacing: 0;
+  text-transform: lowercase;
+}

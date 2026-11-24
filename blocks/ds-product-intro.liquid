@@ -48,6 +48,11 @@
       endif
     endif
   -%}
+
+  {%- if s.subtitle != blank -%}
+    <p class="ds-intro__subtitle">{{ s.subtitle | escape }}</p>
+  {%- endif -%}
+
   {%- if end_iso != blank -%}
     <div class="ds-intro__timer" data-ds-countdown="{{ end_iso }}" role="timer">
       <span class="ds-intro__timer-label">
@@ -55,16 +60,12 @@
         {{- s.timer_label | escape -}}
       </span>
       <span class="ds-intro__units" aria-hidden="true">
-        <span class="ds-intro__unit"><b data-ds-cd="d">00</b><i>days</i></span>
-        <span class="ds-intro__unit"><b data-ds-cd="h">00</b><i>hrs</i></span>
-        <span class="ds-intro__unit"><b data-ds-cd="m">00</b><i>min</i></span>
-        <span class="ds-intro__unit"><b data-ds-cd="s">00</b><i>sec</i></span>
+        <span class="ds-intro__unit"><b data-ds-cd="d">00</b><i>d</i></span>
+        <span class="ds-intro__unit"><b data-ds-cd="h">00</b><i>h</i></span>
+        <span class="ds-intro__unit"><b data-ds-cd="m">00</b><i>m</i></span>
+        <span class="ds-intro__unit"><b data-ds-cd="s">00</b><i>s</i></span>
       </span>
     </div>
-  {%- endif -%}
-
-  {%- if s.subtitle != blank -%}
-    <p class="ds-intro__subtitle">{{ s.subtitle | escape }}</p>
   {%- endif -%}
 
   {%- if rating != blank -%}
