@@ -1,0 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "guide": {
+      "type": "ds-guide",
+      "settings": {},
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Unfold and extend",
+            "text": "<p>Unfold DrySense and extend the drying arms so they fit your footwear.</p>"
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Insert into your shoes",
+            "text": "<p>Slide the arms into your shoes or boots. With DrySense Pro you can dry two pairs, or gloves, at once. Loosen the laces so warm air can flow.</p>"
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Set the timer",
+            "text": "<p>Choose a drying time on the control panel. Most footwear dries in 1 to 3 hours; heavily soaked winter boots may need the full 3 hours.</p>"
+          }
+        },
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "caption": "Watch: DrySense in action"
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "title": "Let it work",
+            "text": "<p>DrySense circulates controlled 48°C warm air to remove moisture and switches off automatically when the cycle is complete.</p>"
+          }
+        },
+        "step_5": {
+          "type": "step",
+          "settings": {
+            "title": "Fold and store",
+            "text": "<p>When you are done, fold DrySense flat and store it until the next wet day.</p>"
+          }
+        },
+        "tips_1": {
+          "type": "tips",
+          "settings": {
+            "title": "Tips for the best results",
+            "tips": "Dry your shoes after every rainy commute or workout to keep odors away.\nRemove soaked insoles and dry them separately for faster results.\nLoosen laces and open the shoe so warm air reaches the toe.\nUse the timer: most footwear is dry in 1 to 3 hours.\nFold DrySense flat for storage when you are not using it."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "video_1",
+        "step_4",
+        "step_5",
+        "tips_1"
+      ]
+    }
+  },
+  "order": [
+    "guide"
+  ]
+}

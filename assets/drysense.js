@@ -437,7 +437,8 @@ document.querySelectorAll('[data-ds-countdown]').forEach((bar) => {
     const left = Math.max(0, end - Date.now());
     if (left === 0) {
       clearInterval(timer);
-      (bar.closest('.ds-promo-section') || bar).setAttribute('hidden', '');
+      // Sale over: remove the offer/timer only (top bar keeps language + Shop)
+      bar.setAttribute('hidden', '');
       return;
     }
     const sec = Math.floor(left / 1000);
@@ -451,3 +452,85 @@ document.querySelectorAll('[data-ds-countdown]').forEach((bar) => {
   tick();
   timer = window.setInterval(tick, 1000);
 });
+
+/* ---------- Top bar: language switcher (design only, no translation yet) ---------- */
+document.querySelectorAll('[data-ds-lang]').forEach((menu) => {
+  const details = /** @type {HTMLDetailsElement} */ (menu);
+  const label = details.querySelector('.ds-lang__toggle span');
+
+  details.querySelectorAll('[data-ds-lang-code]').forEach((option) => {
+    option.addEventListener('click', () => {
+      details.querySelectorAll('[data-ds-lang-code]').forEach((o) => o.removeAttribute('aria-current'));
+      option.setAttribute('aria-current', 'true');
+      if (label) label.textContent = /** @type {HTMLElement} */ (option).dataset.dsLangCode || '';
+      details.open = false;
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (details.open && !details.contains(/** @type {Node} */ (event.target))) details.open = false;
+  });
+  details.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && details.open) {
+      details.open = false;
+      details.querySelector('summary')?.focus();
+    }
+  });
+});
+
+/* ---------- Cookie banner (Shopify Customer Privacy API) ---------- */
+(() => {
+  const banner = /** @type {HTMLElement | null} */ (document.querySelector('[data-ds-cookie]'));
+  if (!banner) return;
+  const STORE_KEY = 'ds-cookie-choice';
+  const remember = (value) => {
+    try {
+      localStorage.setItem(STORE_KEY, value);
+    } catch (e) {}
+  };
+  const stored = () => {
+    try {
+      return localStorage.getItem(STORE_KEY);
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const hide = () => {
+    banner.classList.remove('is-visible');
+    setTimeout(() => (banner.hidden = true), 300);
+  };
+  const show = () => {
+    banner.hidden = false;
+    requestAnimationFrame(() => banner.classList.add('is-visible'));
+  };
+
+  /** @param {boolean} granted */
+  const decide = (granted) => {
+    const privacy = window.Shopify?.customerPrivacy;
+    const consent = { analytics: granted, marketing: granted, preferences: granted, sale_of_data: granted };
+    if (privacy?.setTrackingConsent) {
+      privacy.setTrackingConsent(consent, () => {});
+    }
+    remember(granted ? 'accepted' : 'declined');
+    hide();
+  };
+
+  banner.querySelector('[data-ds-cookie-accept]')?.addEventListener('click', () => decide(true));
+  banner.querySelector('[data-ds-cookie-decline]')?.addEventListener('click', () => decide(false));
+
+  const loadFeatures = window.Shopify?.loadFeatures;
+  if (typeof loadFeatures === 'function') {
+    loadFeatures([{ name: 'consent-tracking-api', version: '0.1' }], (error) => {
+      const privacy = window.Shopify?.customerPrivacy;
+      if (error || !privacy) {
+        if (!stored()) show();
+        return;
+      }
+      // Shopify decides per visitor region whether consent is still needed
+      if (privacy.shouldShowBanner()) show();
+    });
+  } else if (!stored()) {
+    show();
+  }
+})();

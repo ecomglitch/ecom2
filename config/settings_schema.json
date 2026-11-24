@@ -1690,6 +1690,39 @@
     ]
   },
   {
+    "name": "DrySense cookie banner",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Connected to Shopify Customer privacy: it only appears where consent is required, and Accept/Decline set tracking consent. Turn off Shopify’s own cookie banner in Settings → Customer privacy so visitors don’t see two."
+      },
+      {
+        "type": "checkbox",
+        "id": "ds_cookie_enabled",
+        "label": "Show cookie banner",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "ds_cookie_text",
+        "label": "Text",
+        "default": "We use cookies to make the site work and, with your consent, to understand how it is used and show relevant ads."
+      },
+      {
+        "type": "text",
+        "id": "ds_cookie_accept",
+        "label": "Accept button",
+        "default": "Accept"
+      },
+      {
+        "type": "text",
+        "id": "ds_cookie_decline",
+        "label": "Decline button",
+        "default": "Decline"
+      }
+    ]
+  },
+  {
     "name": "t:names.drawers",
     "settings": [
       {

@@ -33,6 +33,36 @@
     {%- if s.badge != blank -%}<span class="ds-intro__badge">{{ s.badge | escape }}</span>{%- endif -%}
   </div>
 
+  {%- liquid
+    assign end_iso = ''
+    if s.timer_end_date != blank
+      assign end_time = s.timer_end_time | default: '23:59'
+      assign tz = 'now' | date: '%z'
+      assign tz_hours = tz | slice: 0, 3
+      assign tz_minutes = tz | slice: 3, 2
+      assign end_iso = s.timer_end_date | append: 'T' | append: end_time | append: ':00' | append: tz_hours | append: ':' | append: tz_minutes
+      assign now_key = 'now' | date: '%Y%m%d%H%M' | plus: 0
+      assign end_key = s.timer_end_date | remove: '-' | append: end_time | remove: ':' | plus: 0
+      if now_key >= end_key
+        assign end_iso = ''
+      endif
+    endif
+  -%}
+  {%- if end_iso != blank -%}
+    <div class="ds-intro__timer" data-ds-countdown="{{ end_iso }}" role="timer">
+      <span class="ds-intro__timer-label">
+        <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M10 2h4"/></svg>
+        {{- s.timer_label | escape -}}
+      </span>
+      <span class="ds-intro__units" aria-hidden="true">
+        <span class="ds-intro__unit"><b data-ds-cd="d">00</b><i>days</i></span>
+        <span class="ds-intro__unit"><b data-ds-cd="h">00</b><i>hrs</i></span>
+        <span class="ds-intro__unit"><b data-ds-cd="m">00</b><i>min</i></span>
+        <span class="ds-intro__unit"><b data-ds-cd="s">00</b><i>sec</i></span>
+      </span>
+    </div>
+  {%- endif -%}
+
   {%- if s.subtitle != blank -%}
     <p class="ds-intro__subtitle">{{ s.subtitle | escape }}</p>
   {%- endif -%}
@@ -97,7 +127,7 @@
   "name": "DrySense: Product intro",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Small label above title", "default": "DrySense™" },
-    { "type": "text", "id": "badge", "label": "Badge next to title", "default": "Winter sale" },
+    { "type": "text", "id": "badge", "label": "Badge next to title", "info": "Optional" },
     {
       "type": "text",
       "id": "subtitle",
@@ -112,6 +142,10 @@
       "info": "One per line"
     },
     { "type": "text", "id": "deal_label", "label": "Deal banner label", "default": "Winter deal", "info": "Shown only when the product has a sale price" },
+    { "type": "header", "content": "Sale countdown (under the title)" },
+    { "type": "text", "id": "timer_end_date", "label": "Sale ends on (YYYY-MM-DD)", "info": "Use the real end date. Hidden when blank or after it ends." },
+    { "type": "text", "id": "timer_end_time", "label": "Ends at (HH:MM, store time)", "default": "23:59" },
+    { "type": "text", "id": "timer_label", "label": "Label", "default": "Winter sale ends in" },
     { "type": "header", "content": "Social proof (optional)" },
     {
       "type": "text",

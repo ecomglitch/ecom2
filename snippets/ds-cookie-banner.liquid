@@ -1,0 +1,34 @@
+{%- comment -%}
+  Cookie consent banner wired to Shopify's Customer Privacy API.
+  Shown only when Shopify says consent is needed for this visitor
+  (shouldShowBanner), so it follows the region settings in
+  Settings → Customer privacy. Accept / Decline set tracking consent for
+  analytics, marketing, preferences and sale of data.
+  Turn off Shopify's own cookie banner so visitors don't see two.
+{%- endcomment -%}
+{%- if settings.ds_cookie_enabled -%}
+  <div
+    class="ds-cookie"
+    id="DsCookieBanner"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="DsCookieText"
+    hidden
+    data-ds-cookie
+  >
+    <p id="DsCookieText" class="ds-cookie__text">
+      {{ settings.ds_cookie_text | escape }}
+      {%- if shop.privacy_policy != blank %}
+        Learn more in our <a href="{{ shop.privacy_policy.url }}">Privacy Policy</a>.
+      {%- endif -%}
+    </p>
+    <div class="ds-cookie__actions">
+      <button type="button" class="ds-cookie__btn ds-cookie__btn--accept" data-ds-cookie-accept>
+        {{- settings.ds_cookie_accept | escape -}}
+      </button>
+      <button type="button" class="ds-cookie__btn ds-cookie__btn--decline" data-ds-cookie-decline>
+        {{- settings.ds_cookie_decline | escape -}}
+      </button>
+    </div>
+  </div>
+{%- endif -%}

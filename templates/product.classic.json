@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "sections": {
     "main": {
       "type": "product-information",
@@ -91,11 +90,14 @@
               "type": "ds-product-intro",
               "settings": {
                 "eyebrow": "DrySense™",
-                "badge": "Winter sale",
+                "badge": "",
                 "subtitle": "Fresh, dry shoes with controlled 48°C warm air",
                 "checklist": "Controlled 48°C warm air\nHelps remove moisture and odor\nDesigned for everyday use",
                 "deal_label": "Winter deal",
-                "proof_text": ""
+                "proof_text": "",
+                "timer_end_date": "2026-11-30",
+                "timer_end_time": "23:59",
+                "timer_label": "Winter sale ends in"
               },
               "blocks": {}
             },

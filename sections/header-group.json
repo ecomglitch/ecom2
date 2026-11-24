@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "type": "header",
   "name": "t:names.header",
   "sections": {
@@ -21,7 +20,10 @@
         "end_date": "2026-11-30",
         "end_time": "23:59",
         "timer_label": "Ends in",
-        "cta": "Shop now"
+        "shop_product": "drysense-shoe-dryer",
+        "shop_label": "Shop",
+        "show_languages": true,
+        "languages": "EN|English\nSQ|Shqip\nDE|Deutsch\nIT|Italiano\nFR|Français"
       }
     },
     "header_section": {
