@@ -3973,3 +3973,65 @@ html.ds-anim-pre .ds-buy {
     display: inline-block;
   }
 }
+
+/* ==========================================================================
+   Top bar on phones: the full offer on two lines; language + currency live
+   in the footer instead
+   ========================================================================== */
+@media (max-width: 699px) {
+  .ds-promo__inner {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 8px 12px;
+  }
+
+  .ds-promo__side {
+    display: none;
+  }
+
+  .ds-promo__center {
+    flex-direction: column;
+    gap: 6px;
+    white-space: normal;
+  }
+
+  .ds-promo__offer {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 8px;
+    font-size: 12px;
+  }
+
+  .ds-promo__dot,
+  .ds-promo__label,
+  .ds-promo__sep,
+  .ds-promo__extra,
+  .ds-promo__timer-label {
+    display: inline-block;
+  }
+
+  .ds-promo__dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .ds-promo__label {
+    letter-spacing: 0.1em;
+  }
+
+  .ds-promo__sep {
+    height: 12px;
+  }
+
+  .ds-promo__timer {
+    gap: 8px;
+  }
+
+  .ds-promo__timer-label {
+    font-size: 11px;
+  }
+
+  .ds-promo__unit {
+    min-width: 30px;
+    padding: 2px 5px;
+  }
+}
