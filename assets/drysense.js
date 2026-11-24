@@ -534,3 +534,39 @@ document.querySelectorAll('[data-ds-lang]').forEach((menu) => {
     show();
   }
 })();
+
+/* ---------- DrySense header: mobile menu, scrolled state, header height ---------- */
+document.querySelectorAll('[data-ds-header]').forEach((header) => {
+  const el = /** @type {HTMLElement} */ (header);
+  const toggle = el.querySelector('[data-ds-menu-toggle]');
+
+  const setOpen = (open) => {
+    el.classList.toggle('is-open', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+  toggle?.addEventListener('click', () => setOpen(!el.classList.contains('is-open')));
+  el.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && el.classList.contains('is-open')) {
+      setOpen(false);
+      /** @type {HTMLElement | null} */ (toggle)?.focus();
+    }
+  });
+  el.querySelectorAll('.ds-header__link').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+  window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => e.matches && setOpen(false));
+
+  // Hairline once the page has scrolled
+  const onScroll = () => el.classList.toggle('is-scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // The theme's original header publishes these; keep them for sticky offsets elsewhere
+  const publish = () => {
+    const height = Math.round(el.getBoundingClientRect().height);
+    const group = document.getElementById('header-group');
+    document.body.style.setProperty('--header-height', `${height}px`);
+    document.body.style.setProperty('--header-group-height', `${Math.round(group?.getBoundingClientRect().height || height)}px`);
+  };
+  new ResizeObserver(publish).observe(el);
+  publish();
+});

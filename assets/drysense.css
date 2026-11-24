@@ -3464,3 +3464,283 @@ body:has(dialog[open]) .ds-satc {
   letter-spacing: 0;
   text-transform: lowercase;
 }
+
+/* ==========================================================================
+   Hover fixes: keep light text on dark surfaces (theme link/summary hovers
+   would otherwise darken them)
+   ========================================================================== */
+.ds-cookie .ds-cookie__text a,
+.ds-cookie .ds-cookie__text a:hover,
+.ds-cookie .ds-cookie__text a:focus-visible {
+  color: #f4a26b;
+  text-decoration-color: currentColor;
+}
+
+.ds-cookie .ds-cookie__text a:hover {
+  color: #fff;
+}
+
+.ds-promo .ds-lang__toggle,
+.ds-promo .ds-lang__toggle:hover,
+.ds-promo .ds-lang[open] .ds-lang__toggle {
+  color: #fff;
+}
+
+.ds-promo .ds-lang__option,
+.ds-promo .ds-lang__option:hover {
+  color: var(--ds-ink);
+}
+
+/* ==========================================================================
+   DrySense header
+   Logo left, quiet text links in the middle, account + cart right.
+   Sticky; a hairline and soft blur appear once the page scrolls.
+   ========================================================================== */
+#header-group {
+  display: contents; /* let the header stick across the page, not just its group */
+}
+
+.ds-header-section {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+}
+
+.ds-header {
+  background: rgb(255 255 255 / 0.92);
+  backdrop-filter: saturate(160%) blur(12px);
+  border-bottom: 1px solid transparent;
+  font-family: var(--ds-font);
+  transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.ds-header.is-scrolled {
+  border-bottom-color: var(--ds-border);
+  box-shadow: 0 6px 24px -18px rgb(var(--ds-ink-rgb) / 0.35);
+}
+
+.ds-header__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  max-width: 1400px;
+  min-height: 64px;
+  margin-inline: auto;
+  padding: 0 24px;
+}
+
+.ds-header__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  color: var(--ds-ink);
+  text-decoration: none;
+}
+
+.ds-header__logo img {
+  display: block;
+  max-width: 180px;
+}
+
+.ds-header__wordmark {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+.ds-header__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-header__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ds-ink);
+  text-decoration: none;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.ds-header__link:hover {
+  background: var(--ds-bg-alt);
+  color: var(--ds-ink);
+}
+
+.ds-header__link[aria-current='page'] {
+  font-weight: 600;
+}
+
+/* Short accent underline marks the current page */
+.ds-header__link[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ds-accent);
+  translate: -50% 0;
+}
+
+.ds-header__link--highlight::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ds-accent);
+}
+
+.ds-header__link:focus-visible,
+.ds-header__logo:focus-visible,
+.ds-header__burger:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 2px;
+}
+
+.ds-header__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Burger (mobile only) */
+.ds-header__burger {
+  display: none;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
+}
+
+.ds-header__burger span {
+  position: absolute;
+  left: 11px;
+  width: 18px;
+  height: 1.75px;
+  border-radius: 2px;
+  background: var(--ds-ink);
+  transition: transform 0.25s ease-out, top 0.25s ease-out;
+}
+
+.ds-header__burger span:first-child {
+  top: 15px;
+}
+
+.ds-header__burger span:last-child {
+  top: 23px;
+}
+
+.ds-header.is-open .ds-header__burger span:first-child {
+  top: 19px;
+  transform: rotate(45deg);
+}
+
+.ds-header.is-open .ds-header__burger span:last-child {
+  top: 19px;
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 899px) {
+  .ds-header__inner {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 8px;
+    min-height: 56px;
+    padding: 0 12px;
+  }
+
+  .ds-header__burger {
+    display: block;
+  }
+
+  .ds-header__logo {
+    justify-self: center;
+  }
+
+  .ds-header__logo img {
+    max-width: 140px;
+  }
+
+  /* Menu drops down under the bar */
+  .ds-header__nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 8px 12px 16px;
+    border-bottom: 1px solid var(--ds-border);
+    background: #fff;
+    box-shadow: 0 16px 32px -20px rgb(var(--ds-ink-rgb) / 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+  }
+
+  .ds-header.is-open .ds-header__nav {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .ds-header__links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+  }
+
+  .ds-header__link {
+    justify-content: space-between;
+    padding: 14px 12px;
+    border-radius: 10px;
+    font-size: 17px;
+  }
+
+  .ds-header__link[aria-current='page']::after {
+    position: static;
+    translate: none;
+    margin-left: auto;
+  }
+
+  .ds-header__inner {
+    position: relative;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-header,
+  .ds-header__nav,
+  .ds-header__burger span {
+    transition: none;
+  }
+}
+
+/* Currency selector in the top bar (shares the language switcher styles) */
+.ds-currency {
+  margin: 0;
+}
+
+.ds-lang--end .ds-lang__menu {
+  left: auto;
+  right: 0;
+  min-width: 220px;
+}
+
+.ds-lang__menu--scroll {
+  max-height: min(360px, 60vh);
+  overflow-y: auto;
+}
