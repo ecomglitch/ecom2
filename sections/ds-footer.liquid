@@ -52,6 +52,7 @@
             assign offer_on = true
           endif
         -%}
+        {%- comment -%} Welcome offer card: solid orange, styles in drysense.css (.ds-offer) {%- endcomment -%}
         <div class="ds-footer__newsletter{% if offer_on %} ds-offer{% endif %}" id="DsFooterOffer">
           {%- if offer_on -%}
             <span class="ds-offer__glow" aria-hidden="true"></span>
