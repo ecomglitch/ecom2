@@ -62,6 +62,14 @@
             </li>
           {%- endif -%}
         {%- endfor -%}
+        {%- if shop.customer_accounts_enabled -%}
+          <li class="ds-header__mobile-only">
+            <a class="ds-header__link ds-header__link--account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
+              <svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              {%- if customer -%}My account{%- else -%}Sign in{%- endif -%}
+            </a>
+          </li>
+        {%- endif -%}
       </ul>
     </nav>
 

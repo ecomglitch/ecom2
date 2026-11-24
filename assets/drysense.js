@@ -516,6 +516,11 @@ document.querySelectorAll('[data-ds-lang]').forEach((menu) => {
     hide();
   };
 
+  // "Cookie preferences" links (footer) reopen the banner
+  document.addEventListener('click', (event) => {
+    if (/** @type {Element} */ (event.target).closest?.('[data-ds-cookie-open]')) show();
+  });
+
   banner.querySelector('[data-ds-cookie-accept]')?.addEventListener('click', () => decide(true));
   banner.querySelector('[data-ds-cookie-decline]')?.addEventListener('click', () => decide(false));
 

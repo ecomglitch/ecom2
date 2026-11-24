@@ -18,6 +18,7 @@
   endfor
 -%}
 
+<div class="ds-footer-float">
 <div class="ds ds-footer">
   <div class="ds__container">
     {%- comment -%} Brand + newsletter {%- endcomment -%}
@@ -82,8 +83,10 @@
       <nav aria-label="Shop">
         <p class="ds-footer__heading">Shop</p>
         <ul role="list">
+          <li><a href="{{ section.settings.shop_page | default: '/pages/shop' }}">Shop all</a></li>
           <li><a href="{% if classic != blank %}{{ classic.url }}{% else %}{{ routes.root_url }}#shop{% endif %}">DrySense Classic</a></li>
           <li><a href="{% if pro != blank %}{{ pro.url }}{% else %}{{ routes.root_url }}#shop{% endif %}">DrySense Pro</a></li>
+          <li><a href="{{ section.settings.guide_page | default: '/pages/guide' }}">Guide</a></li>
           <li><a href="{{ routes.root_url }}#how-it-works">How It Works</a></li>
           <li><a href="{{ routes.root_url }}#reviews">Reviews</a></li>
         </ul>
@@ -101,22 +104,30 @@
         </ul>
       </nav>
 
-      <div>
-        <p class="ds-footer__heading">Contact</p>
+      <nav aria-label="Policies">
+        <p class="ds-footer__heading">Policies</p>
         <ul role="list">
-          {%- if email != blank -%}
-            <li><a href="mailto:{{ email }}">{{ email }}</a></li>
-          {%- endif -%}
-          {%- if section.settings.support_hours != blank -%}
-            <li class="ds-footer__muted">{{ section.settings.support_hours | escape }}</li>
+          {%- for policy in shop.policies -%}
+            <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+          {%- endfor -%}
+          {%- if settings.ds_cookie_enabled -%}
+            <li><button type="button" class="ds-footer__linkbtn" data-ds-cookie-open>Cookie preferences</button></li>
           {%- endif -%}
         </ul>
-      </div>
+      </nav>
 
-      {%- if social_count > 0 or request.design_mode -%}
+      {%- if email != blank or section.settings.support_hours != blank or social_count > 0 or request.design_mode -%}
         <div>
-          <p class="ds-footer__heading">Follow</p>
-          {%- if social_count == 0 -%}
+          <p class="ds-footer__heading">Contact &amp; follow</p>
+          <ul role="list" class="ds-footer__contact">
+            {%- if email != blank -%}
+              <li><a href="mailto:{{ email }}">{{ email }}</a></li>
+            {%- endif -%}
+            {%- if section.settings.support_hours != blank -%}
+              <li class="ds-footer__muted">{{ section.settings.support_hours | escape }}</li>
+            {%- endif -%}
+          </ul>
+          {%- if social_count == 0 and request.design_mode -%}
             <p class="ds-footer__muted">Add your social links in this section's settings — icons appear here.</p>
           {%- endif -%}
           <ul class="ds-footer__social" role="list">
@@ -159,14 +170,18 @@
     <div class="ds-footer__bottom">
       <div class="ds-footer__legal">
         <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</span>
-        {%- if shop.privacy_policy != blank -%}<a href="{{ shop.privacy_policy.url }}">Privacy Policy</a>{%- endif -%}
-        {%- if shop.terms_of_service != blank -%}<a href="{{ shop.terms_of_service.url }}">Terms of Service</a>{%- endif -%}
-        {%- if shop.shipping_policy != blank -%}<a href="{{ shop.shipping_policy.url }}">Shipping Policy</a>{%- endif -%}
-        {%- if shop.refund_policy != blank -%}<a href="{{ shop.refund_policy.url }}">Refund Policy</a>{%- endif -%}
       </div>
+      {% render 'ds-locale-switchers',
+        languages: section.settings.languages,
+        show_languages: section.settings.show_languages,
+        show_currency: section.settings.show_currency,
+        form_id: 'DsCurrencyFormFooter',
+        class: 'ds-locale--up'
+      %}
       {% render 'ds-payment-icons', class: 'ds-payments--footer' %}
     </div>
   </div>
+</div>
 </div>
 
 {% schema %}
@@ -208,6 +223,18 @@
     { "type": "text", "id": "email", "label": "Support email", "info": "Defaults to your store's sender email" },
     { "type": "text", "id": "support_hours", "label": "Support hours", "info": "e.g. Mon–Fri, 9am–5pm EST" },
 
+    { "type": "url", "id": "shop_page", "label": "Shop page", "info": "Defaults to /pages/shop" },
+    { "type": "url", "id": "guide_page", "label": "Guide page", "info": "Defaults to /pages/guide" },
+    { "type": "header", "content": "Language & currency" },
+    { "type": "checkbox", "id": "show_currency", "label": "Show country / currency selector", "default": true, "info": "Appears when more than one country is active in Settings → Markets" },
+    { "type": "checkbox", "id": "show_languages", "label": "Show language switcher", "default": true },
+    {
+      "type": "textarea",
+      "id": "languages",
+      "label": "Languages",
+      "default": "EN|English\nSQ|Shqip\nDE|Deutsch\nIT|Italiano\nFR|Français",
+      "info": "One per line as CODE|Name. Design only for now: no translation yet."
+    },
     { "type": "header", "content": "Social" },
     { "type": "paragraph", "content": "Icons only appear for the accounts you fill in." },
     { "type": "url", "id": "instagram", "label": "Instagram" },

@@ -3825,3 +3825,151 @@ html.ds-anim-pre .ds-buy {
 .ds-lifestyle .ds-media img {
   will-change: transform;
 }
+
+/* Mobile header: only menu, logo and cart; account lives in the drop-down */
+.ds-header__mobile-only {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .ds-header__actions .account-button {
+    display: none;
+  }
+
+  .ds-header__mobile-only {
+    display: block;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--ds-border);
+  }
+
+  .ds-header__link--account {
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .ds-header__link--account .ds-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ==========================================================================
+   Floating footer: rounded dark card inset from the page edges
+   ========================================================================== */
+.ds-footer-float {
+  padding: clamp(32px, 5vw, 64px) clamp(12px, 2vw, 24px) clamp(12px, 2vw, 24px);
+  background: var(--ds-bg);
+}
+
+.ds-footer-float .ds-footer {
+  max-width: 1440px;
+  margin-inline: auto;
+  border-radius: clamp(20px, 3vw, 32px);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 40px 80px -40px rgb(var(--ds-ink-rgb) / 0.55),
+    0 12px 24px -12px rgb(var(--ds-ink-rgb) / 0.25);
+}
+
+.ds-footer__links {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.ds-footer__contact {
+  margin-bottom: 18px !important;
+}
+
+/* "Cookie preferences" looks like the other footer links */
+.ds-footer__linkbtn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: rgb(255 255 255 / 0.7);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease-out;
+}
+
+.ds-footer__linkbtn:hover,
+.ds-footer__linkbtn:focus-visible {
+  color: #fff;
+}
+
+/* Bottom row: © · language + currency · payments */
+.ds-footer__bottom {
+  align-items: center;
+}
+
+.ds-locale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds-footer .ds-lang__toggle,
+.ds-footer .ds-lang__toggle:hover,
+.ds-footer .ds-lang[open] .ds-lang__toggle {
+  color: #fff;
+}
+
+.ds-footer .ds-lang__option,
+.ds-footer .ds-lang__option:hover {
+  color: var(--ds-ink);
+}
+
+/* Menus open upwards at the bottom of the page */
+.ds-locale--up .ds-lang__menu {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+.ds-locale--up .ds-lang:last-child .ds-lang__menu {
+  left: auto;
+  right: 0;
+}
+
+.ds-locale--up .ds-lang[open] .ds-lang__caret {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 899px) {
+  .ds-footer__links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 599px) {
+  .ds-footer__bottom {
+    align-items: flex-start;
+  }
+
+  .ds-locale--up .ds-lang:last-child .ds-lang__menu {
+    left: 0;
+    right: auto;
+  }
+}
+
+/* Footer lists are a vertical grid; payment icons must stay a single wrapping row */
+.ds-footer .ds-payments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ds-footer__contact a {
+  overflow-wrap: anywhere;
+}
+
+/* Footer has room: keep the globe + caret icons on phones (the top bar hides them) */
+@media (max-width: 699px) {
+  .ds-footer .ds-lang__toggle {
+    padding: 0 10px;
+  }
+
+  .ds-footer .ds-lang__toggle > svg:first-child,
+  .ds-footer .ds-lang__caret {
+    display: inline-block;
+  }
+}

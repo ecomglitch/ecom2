@@ -1,0 +1,78 @@
+{%- comment -%}
+  Language switcher (design only, no translation yet) + country/currency selector
+  (Shopify Markets). Same look as the top bar.
+
+  Accepts:
+  - languages: {string} One per line as CODE|Name; the first is shown as selected
+  - show_languages: {boolean}
+  - show_currency: {boolean}
+  - form_id: {string} Unique id for the localization form
+  - class: {string} Extra classes, e.g. 'ds-locale--up' to open the menus upwards
+{%- endcomment -%}
+{%- liquid
+  assign lang_lines = languages | newline_to_br | split: '<br />'
+  assign first_line = lang_lines.first | strip | split: '|'
+  assign current_code = first_line.first | strip
+-%}
+<div class="ds-locale {{ class }}">
+  {%- if show_languages and current_code != blank -%}
+    <details class="ds-lang" data-ds-lang>
+      <summary class="ds-lang__toggle" aria-label="Language: {{ first_line.last | strip | escape }}">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>
+        <span>{{ current_code | upcase | escape }}</span>
+        <svg class="ds-lang__caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <ul class="ds-lang__menu" role="list">
+        {%- for line in lang_lines -%}
+          {%- assign parts = line | strip | split: '|' -%}
+          {%- if parts.size > 0 -%}
+            {%- assign code = parts.first | strip -%}
+            <li>
+              <button
+                type="button"
+                class="ds-lang__option"
+                data-ds-lang-code="{{ code | upcase | escape }}"
+                {% if forloop.first %}
+                  aria-current="true"
+                {% endif %}
+              >
+                <span class="ds-lang__code">{{ code | upcase | escape }}</span>
+                <span>{{ parts.last | strip | escape }}</span>
+              </button>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </details>
+  {%- endif -%}
+
+  {%- if show_currency and localization.available_countries.size > 1 -%}
+    {%- form 'localization', id: form_id, class: 'ds-currency' -%}
+      <details class="ds-lang" data-ds-lang>
+        <summary class="ds-lang__toggle" aria-label="Country / currency: {{ localization.country.name | escape }} ({{ localization.country.currency.iso_code }})">
+          <span>{{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}</span>
+          <svg class="ds-lang__caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <ul class="ds-lang__menu ds-lang__menu--scroll" role="list">
+          {%- for c in localization.available_countries -%}
+            <li>
+              <button
+                type="submit"
+                name="country_code"
+                value="{{ c.iso_code }}"
+                class="ds-lang__option"
+                {% if c.iso_code == localization.country.iso_code %}
+                  aria-current="true"
+                {% endif %}
+              >
+                <span class="ds-lang__code">{{ c.currency.iso_code }}</span>
+                <span>{{ c.name | escape }}</span>
+              </button>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </details>
+      <input type="hidden" name="return_to" value="{{ request.path }}">
+    {%- endform -%}
+  {%- endif -%}
+</div>
