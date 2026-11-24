@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "sections": {
     "hero": {
       "type": "ds-hero",
@@ -213,45 +212,6 @@
         "text": "Rainy commutes, snowy adventures, busy school mornings, and everyday workouts. Your footwear goes through a lot. Give it the care it deserves."
       }
     },
-    "reviews": {
-      "type": "ds-reviews",
-      "blocks": {
-        "review_1": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "quote": "Finally, my ski boots are dry by morning!",
-            "author": "Mark T."
-          }
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "quote": "Such a useful product during rainy weather. Really convenient for everyday use.",
-            "author": "Sarah L."
-          }
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "quote": "Compact, simple to use, and a great addition to my home.",
-            "author": "James R."
-          }
-        }
-      },
-      "block_order": [
-        "review_1",
-        "review_2",
-        "review_3"
-      ],
-      "disabled": true,
-      "settings": {
-        "heading": "Real Experiences. Better Mornings.",
-        "reviews_are_real": false
-      }
-    },
     "guarantee": {
       "type": "ds-guarantee",
       "settings": {
@@ -362,6 +322,29 @@
       "settings": {
         "heading": "Everything You Need to Know."
       }
+    },
+    "photo_reviews": {
+      "type": "ds-photo-reviews",
+      "settings": {},
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {}
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {}
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ]
     }
   },
   "order": [
@@ -371,9 +354,9 @@
     "benefits",
     "steps",
     "lifestyle",
-    "reviews",
     "guarantee",
     "final",
+    "photo_reviews",
     "faq"
   ]
 }

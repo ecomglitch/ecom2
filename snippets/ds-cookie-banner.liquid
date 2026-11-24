@@ -1,9 +1,11 @@
 {%- comment -%}
-  Cookie consent banner wired to Shopify's Customer Privacy API.
-  Shown only when Shopify says consent is needed for this visitor
-  (shouldShowBanner), so it follows the region settings in
-  Settings → Customer privacy. Accept / Decline set tracking consent for
-  analytics, marketing, preferences and sale of data.
+  Cookie consent: a small banner plus a "Cookie and privacy preferences" modal,
+  wired to Shopify's Customer Privacy API.
+  - The banner is shown only when Shopify says consent is needed for this visitor
+    (shouldShowBanner), following Settings → Customer privacy.
+  - The modal (from the banner's "Manage preferences" or the footer's "Cookie
+    preferences") lets visitors choose Personalization / Marketing / Analytics.
+    Required cookies are always on.
   Turn off Shopify's own cookie banner so visitors don't see two.
 {%- endcomment -%}
 {%- if settings.ds_cookie_enabled -%}
@@ -30,5 +32,75 @@
         {{- settings.ds_cookie_decline | escape -}}
       </button>
     </div>
+    <button type="button" class="ds-cookie__manage" data-ds-cookie-open>Manage preferences</button>
   </div>
+
+  <dialog class="ds-consent" id="DsConsentModal" aria-labelledby="DsConsentTitle" data-ds-consent>
+    <div class="ds-consent__card">
+      <header class="ds-consent__head">
+        <h2 id="DsConsentTitle" class="ds-consent__title">Cookie and privacy preferences</h2>
+        <div class="ds-consent__actions">
+          <button type="button" class="ds-consent__btn ds-consent__btn--primary" data-ds-consent-all>Accept all</button>
+          <button type="button" class="ds-consent__btn" data-ds-consent-none>Decline all</button>
+          <button type="button" class="ds-consent__btn" data-ds-consent-save>Save my choices</button>
+        </div>
+        <button type="button" class="ds-consent__close" aria-label="Close" data-ds-consent-close>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+
+      <div class="ds-consent__body">
+        <p class="ds-consent__lead"><strong>You control your data</strong></p>
+        <p class="ds-consent__intro">
+          Learn more about the cookies we use, and choose which cookies to allow.
+          {%- if shop.privacy_policy != blank %}
+            See our <a href="{{ shop.privacy_policy.url }}">Privacy Policy</a>.
+          {%- endif -%}
+        </p>
+
+        <ul class="ds-consent__list" role="list">
+          <li>
+            <label class="ds-consent__item">
+              <input type="checkbox" checked disabled>
+              <span class="ds-consent__box" aria-hidden="true"></span>
+              <span>
+                <span class="ds-consent__name">Required</span>
+                <span class="ds-consent__desc">These cookies are necessary for the site to function properly, including capabilities like logging in and adding items to the cart.</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="ds-consent__item">
+              <input type="checkbox" data-ds-consent-key="preferences">
+              <span class="ds-consent__box" aria-hidden="true"></span>
+              <span>
+                <span class="ds-consent__name">Personalization</span>
+                <span class="ds-consent__desc">These cookies store details about your actions to personalize your next visit to the website.</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="ds-consent__item">
+              <input type="checkbox" data-ds-consent-key="marketing">
+              <span class="ds-consent__box" aria-hidden="true"></span>
+              <span>
+                <span class="ds-consent__name">Marketing</span>
+                <span class="ds-consent__desc">These cookies are used by us and our partners, including Shopify, to optimize marketing communications and show you ads on other websites.</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="ds-consent__item">
+              <input type="checkbox" data-ds-consent-key="analytics">
+              <span class="ds-consent__box" aria-hidden="true"></span>
+              <span>
+                <span class="ds-consent__name">Analytics</span>
+                <span class="ds-consent__desc">These cookies help us understand how you interact with the site. We use this data to identify areas to improve.</span>
+              </span>
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </dialog>
 {%- endif -%}

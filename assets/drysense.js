@@ -144,7 +144,7 @@ function initSticky(bar) {
   const select = (key) => {
     options.forEach((option) => {
       const active = option.dataset.dsOption === key;
-      option.setAttribute('aria-pressed', String(active));
+      option.setAttribute('aria-checked', String(active));
       if (!active) return;
       if (name) name.textContent = option.dataset.name ?? '';
       if (price) price.textContent = option.dataset.price ?? '';
@@ -478,65 +478,113 @@ document.querySelectorAll('[data-ds-lang]').forEach((menu) => {
   });
 });
 
-/* ---------- Cookie banner (Shopify Customer Privacy API) ---------- */
+/* ---------- Cookie banner + preferences modal (Shopify Customer Privacy API) ---------- */
 (() => {
   const banner = /** @type {HTMLElement | null} */ (document.querySelector('[data-ds-cookie]'));
-  if (!banner) return;
+  const modal = /** @type {HTMLDialogElement | null} */ (document.querySelector('[data-ds-consent]'));
+  if (!banner && !modal) return;
   const STORE_KEY = 'ds-cookie-choice';
   const remember = (value) => {
     try {
-      localStorage.setItem(STORE_KEY, value);
+      localStorage.setItem(STORE_KEY, JSON.stringify(value));
     } catch (e) {}
   };
   const stored = () => {
     try {
-      return localStorage.getItem(STORE_KEY);
+      const raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : null;
     } catch (e) {
       return null;
     }
   };
+  const privacy = () => window.Shopify?.customerPrivacy;
 
-  const hide = () => {
+  const hideBanner = () => {
+    if (!banner) return;
     banner.classList.remove('is-visible');
     setTimeout(() => (banner.hidden = true), 300);
   };
-  const show = () => {
+  const showBanner = () => {
+    if (!banner) return;
     banner.hidden = false;
     requestAnimationFrame(() => banner.classList.add('is-visible'));
   };
 
-  /** @param {boolean} granted */
-  const decide = (granted) => {
-    const privacy = window.Shopify?.customerPrivacy;
-    const consent = { analytics: granted, marketing: granted, preferences: granted, sale_of_data: granted };
-    if (privacy?.setTrackingConsent) {
-      privacy.setTrackingConsent(consent, () => {});
-    }
-    remember(granted ? 'accepted' : 'declined');
-    hide();
+  /** @param {{analytics: boolean, marketing: boolean, preferences: boolean}} choice */
+  const apply = (choice) => {
+    const consent = {
+      analytics: choice.analytics,
+      marketing: choice.marketing,
+      preferences: choice.preferences,
+      sale_of_data: choice.marketing,
+    };
+    privacy()?.setTrackingConsent?.(consent, () => {});
+    remember(choice);
+    hideBanner();
+    if (modal?.open) modal.close();
+  };
+  const all = (value) => apply({ analytics: value, marketing: value, preferences: value });
+
+  // Preferences modal
+  const boxes = modal ? [...modal.querySelectorAll('[data-ds-consent-key]')] : [];
+  const fillBoxes = () => {
+    const p = privacy();
+    const saved = stored();
+    const current = {
+      analytics: p?.analyticsProcessingAllowed?.() ?? saved?.analytics ?? false,
+      marketing: p?.marketingAllowed?.() ?? saved?.marketing ?? false,
+      preferences: p?.preferencesProcessingAllowed?.() ?? saved?.preferences ?? false,
+    };
+    boxes.forEach((box) => {
+      /** @type {HTMLInputElement} */ (box).checked = Boolean(current[/** @type {HTMLElement} */ (box).dataset.dsConsentKey]);
+    });
+  };
+  const openModal = () => {
+    if (!modal) return;
+    fillBoxes();
+    if (!modal.open) modal.showModal();
   };
 
-  // "Cookie preferences" links (footer) reopen the banner
   document.addEventListener('click', (event) => {
-    if (/** @type {Element} */ (event.target).closest?.('[data-ds-cookie-open]')) show();
+    if (/** @type {Element} */ (event.target).closest?.('[data-ds-cookie-open]')) {
+      event.preventDefault();
+      openModal();
+    }
   });
 
-  banner.querySelector('[data-ds-cookie-accept]')?.addEventListener('click', () => decide(true));
-  banner.querySelector('[data-ds-cookie-decline]')?.addEventListener('click', () => decide(false));
+  banner?.querySelector('[data-ds-cookie-accept]')?.addEventListener('click', () => all(true));
+  banner?.querySelector('[data-ds-cookie-decline]')?.addEventListener('click', () => all(false));
 
+  if (modal) {
+    modal.querySelector('[data-ds-consent-all]')?.addEventListener('click', () => all(true));
+    modal.querySelector('[data-ds-consent-none]')?.addEventListener('click', () => all(false));
+    modal.querySelector('[data-ds-consent-save]')?.addEventListener('click', () => {
+      const choice = { analytics: false, marketing: false, preferences: false };
+      boxes.forEach((box) => {
+        choice[/** @type {HTMLElement} */ (box).dataset.dsConsentKey] = /** @type {HTMLInputElement} */ (box).checked;
+      });
+      apply(choice);
+    });
+    modal.querySelector('[data-ds-consent-close]')?.addEventListener('click', () => modal.close());
+    // Click on the backdrop closes it
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) modal.close();
+    });
+  }
+
+  // Show the banner only where consent is still needed
   const loadFeatures = window.Shopify?.loadFeatures;
   if (typeof loadFeatures === 'function') {
     loadFeatures([{ name: 'consent-tracking-api', version: '0.1' }], (error) => {
-      const privacy = window.Shopify?.customerPrivacy;
-      if (error || !privacy) {
-        if (!stored()) show();
+      const p = privacy();
+      if (error || !p) {
+        if (!stored()) showBanner();
         return;
       }
-      // Shopify decides per visitor region whether consent is still needed
-      if (privacy.shouldShowBanner()) show();
+      if (p.shouldShowBanner()) showBanner();
     });
   } else if (!stored()) {
-    show();
+    showBanner();
   }
 })();
 

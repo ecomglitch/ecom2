@@ -108,7 +108,11 @@
         <p class="ds-footer__heading">Policies</p>
         <ul role="list">
           {%- for policy in shop.policies -%}
-            <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+            {%- assign policy_title = policy.title | downcase -%}
+            {%- comment -%} Our own "Cookie preferences" button below replaces Shopify's entry {%- endcomment -%}
+            {%- unless policy_title contains 'cookie' -%}
+              <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+            {%- endunless -%}
           {%- endfor -%}
           {%- if settings.ds_cookie_enabled -%}
             <li><button type="button" class="ds-footer__linkbtn" data-ds-cookie-open>Cookie preferences</button></li>

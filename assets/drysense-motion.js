@@ -315,6 +315,9 @@
   });
 
   // Reviews, guarantee, FAQ, social proof, customer videos
+  $('.ds-previews__track').forEach(function (track) {
+    riseOnScroll($('.ds-preview', track), { trigger: track, y: 40, stagger: 0.12 });
+  });
   $('.ds-reviews__grid').forEach(function (grid) {
     riseOnScroll($('.ds-review', grid), { trigger: grid, y: 40, stagger: 0.12 });
   });

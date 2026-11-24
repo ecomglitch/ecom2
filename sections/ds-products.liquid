@@ -112,71 +112,54 @@
 </section>
 
 {%- comment -%} Sticky mobile purchase bar — appears once the shopper scrolls past this section {%- endcomment -%}
+{%- liquid
+  assign dp = section.settings[d_product]
+  assign dv = dp.selected_or_first_available_variant
+-%}
 <div class="ds-sticky" data-ds-sticky data-watch="DsProducts-{{ section.id }}" inert>
   <div class="ds-sticky__row">
-    {%- for key in keys -%}
-      {%- assign k_image = key | append: '_image' -%}
-      <div data-ds-thumb="{{ key }}"{% unless key == default_key %} hidden{% endunless %}>
-        {% render 'ds-media',
-          image: section.settings[k_image],
-          number: '',
-          label: '',
-          ratio: '1 / 1',
-          class: 'ds-sticky__thumb ds-media--contain',
-          sizes: '44px',
-          alt: ''
-        %}
-      </div>
-    {%- endfor -%}
-
-    <div class="ds-sticky__info">
-      <div class="ds-sticky__select" role="group" aria-label="Choose model">
-        {%- for key in sticky_keys -%}
-          {%- liquid
-            assign k_product = key | append: '_product'
-            assign k_name = key | append: '_name'
-            assign k_image = key | append: '_image'
-            assign k_badge = key | append: '_badge'
-            assign k_description = key | append: '_description'
-            assign k_price = key | append: '_price'
-            assign k_compare = key | append: '_compare'
-            assign k_cta = key | append: '_cta'
-            assign p = section.settings[k_product]
-            assign variant = p.selected_or_first_available_variant
-            if p != blank
-              assign price_text = variant.price | money
-            else
-              assign price_text = section.settings[k_price]
-            endif
-            assign short_name = section.settings[k_name] | remove: 'DrySense ' | strip
-          -%}
-          <button
-            type="button"
-            class="ds-sticky__option"
-            data-ds-option="{{ key }}"
-            data-name="{{ section.settings[k_name] | escape }}"
-            data-price="{{ price_text | escape }}"
-            data-variant-id="{% if p != blank and variant.available %}{{ variant.id }}{% endif %}"
-            data-product-id="{{ p.id }}"
-            aria-pressed="{% if key == default_key %}true{% else %}false{% endif %}"
-          >
-            {{- short_name | escape -}}
-          </button>
-        {%- endfor -%}
-      </div>
-      {%- liquid
-        assign dp = section.settings[d_product]
-        assign dv = dp.selected_or_first_available_variant
-      -%}
-      <span class="visually-hidden" data-ds-name>{{ section.settings[d_name] | escape }}</span>
-      <span class="ds-sticky__price" data-ds-price>
-        {%- if dp != blank -%}{{ dv.price | money }}{%- else -%}{{ section.settings[d_price] }}{%- endif -%}
-      </span>
+    <div class="ds-sticky__seg" role="radiogroup" aria-label="Choose model">
+      {%- for key in sticky_keys -%}
+        {%- liquid
+          assign k_product = key | append: '_product'
+          assign k_name = key | append: '_name'
+          assign k_image = key | append: '_image'
+          assign k_price = key | append: '_price'
+          assign p = section.settings[k_product]
+          assign variant = p.selected_or_first_available_variant
+          if p != blank
+            assign price_text = variant.price | money
+          else
+            assign price_text = section.settings[k_price]
+          endif
+          assign short_name = section.settings[k_name] | remove: 'DrySense ' | strip
+          assign thumb = section.settings[k_image] | default: p.featured_image
+        -%}
+        <button
+          type="button"
+          role="radio"
+          class="ds-sticky__option"
+          data-ds-option="{{ key }}"
+          data-name="{{ section.settings[k_name] | escape }}"
+          data-price="{{ price_text | escape }}"
+          data-variant-id="{% if p != blank and variant.available %}{{ variant.id }}{% endif %}"
+          data-product-id="{{ p.id }}"
+          aria-checked="{% if key == default_key %}true{% else %}false{% endif %}"
+        >
+          <span class="ds-sticky__thumb" aria-hidden="true">
+            {%- if thumb != blank -%}
+              {{ thumb | image_url: width: 96 | image_tag: width: 32, height: 32, loading: 'lazy', alt: '' }}
+            {%- endif -%}
+          </span>
+          <span class="ds-sticky__label">{{ short_name | escape }}</span>
+        </button>
+      {%- endfor -%}
     </div>
 
+    <span class="visually-hidden" data-ds-name>{{ section.settings[d_name] | escape }}</span>
     <button
       type="button"
-      class="ds-btn ds-btn--primary"
+      class="ds-sticky__buy"
       data-ds-add
       data-variant-id="{% if dp != blank and dv.available %}{{ dv.id }}{% endif %}"
       data-product-id="{{ dp.id }}"
@@ -184,7 +167,10 @@
         disabled
       {% endunless %}
     >
-      Add to cart
+      <span class="ds-sticky__buy-label">Add to cart</span>
+      <span class="ds-sticky__price" data-ds-price>
+        {%- if dp != blank -%}{{ dv.price | money }}{%- else -%}{{ section.settings[d_price] }}{%- endif -%}
+      </span>
     </button>
   </div>
 </div>

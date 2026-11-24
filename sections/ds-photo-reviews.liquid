@@ -1,0 +1,118 @@
+{%- comment -%}
+  Customer reviews with photos. Every review is a block (photo, stars, title,
+  text, name, product, verified tick). Reviews without text are hidden from
+  shoppers and shown as a hint in the theme editor. Swipeable on phones.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign visible = 0
+  for block in section.blocks
+    if block.settings.text != blank
+      assign visible = visible | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if visible > 0 or request.design_mode -%}
+  <section id="reviews" class="ds ds-anchor ds-previews" aria-labelledby="DsReviewsHeading-{{ section.id }}">
+    <div class="ds__container">
+      <header class="ds-head ds-head--center">
+        {%- if s.eyebrow != blank -%}<p class="ds-eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        <h2 id="DsReviewsHeading-{{ section.id }}" class="ds-h2">{{ s.heading | escape }}</h2>
+        {%- if s.summary != blank -%}
+          <p class="ds-previews__summary">
+            <span class="ds-previews__stars" aria-hidden="true">★★★★★</span>
+            {{ s.summary | escape }}
+          </p>
+        {%- endif -%}
+      </header>
+
+      <ul class="ds-previews__track" role="list">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          {%- if b.text != blank -%}
+            <li class="ds-preview" {{ block.shopify_attributes }}>
+              {%- if b.image != blank -%}
+                <div class="ds-preview__media">
+                  {{
+                    b.image
+                    | image_url: width: 900
+                    | image_tag: widths: '300, 450, 600, 900', sizes: '(min-width: 900px) 30vw, 80vw', loading: 'lazy', alt: b.image.alt
+                  }}
+                </div>
+              {%- endif -%}
+              <div class="ds-preview__body">
+                <div class="ds-preview__stars" role="img" aria-label="{{ b.rating }} out of 5 stars">
+                  {%- for i in (1..5) -%}
+                    <span{% if i > b.rating %} class="is-empty"{% endif %} aria-hidden="true">★</span>
+                  {%- endfor -%}
+                </div>
+                {%- if b.title != blank -%}
+                  <h3 class="ds-preview__title">{{ b.title | escape }}</h3>
+                {%- endif -%}
+                <p class="ds-preview__text">{{ b.text | escape | newline_to_br }}</p>
+                <footer class="ds-preview__meta">
+                  <span class="ds-preview__name">
+                    {{- b.name | escape -}}
+                    {%- if b.verified -%}
+                      <span class="ds-preview__verified">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                        Verified buyer
+                      </span>
+                    {%- endif -%}
+                  </span>
+                  {%- if b.product != blank -%}
+                    <span class="ds-preview__product">{{ b.product | escape }}</span>
+                  {%- endif -%}
+                </footer>
+              </div>
+            </li>
+          {%- elsif request.design_mode -%}
+            <li class="ds-preview ds-preview--empty" {{ block.shopify_attributes }}>
+              <div class="ds-preview__body">Review {{ forloop.index }}: add a photo, rating and the customer's words.</div>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "DrySense: Photo reviews",
+  "tag": "div",
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Optional. Customer photo or product in use." },
+        { "type": "range", "id": "rating", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Title", "info": "Optional, e.g. \"Dry by morning\"" },
+        { "type": "textarea", "id": "text", "label": "Review text", "info": "Reviews without text are hidden from shoppers." },
+        { "type": "text", "id": "name", "label": "Customer name", "info": "e.g. Sarah M." },
+        { "type": "text", "id": "product", "label": "Product", "info": "e.g. DrySense Pro" },
+        { "type": "checkbox", "id": "verified", "label": "Show \"Verified buyer\"", "default": false, "info": "Only for confirmed customers." }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Reviews" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Real Experiences. Better Mornings." },
+    {
+      "type": "text",
+      "id": "summary",
+      "label": "Summary line",
+      "info": "Optional, real numbers only, e.g. \"Rated 4.8 out of 5 by 230 customers\"."
+    }
+  ],
+  "presets": [
+    {
+      "name": "DrySense: Photo reviews",
+      "blocks": [{ "type": "review" }, { "type": "review" }, { "type": "review" }]
+    }
+  ]
+}
+{% endschema %}
