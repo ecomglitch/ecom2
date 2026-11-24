@@ -45,35 +45,65 @@
       </div>
 
       {%- if section.settings.show_newsletter -%}
-        <div class="ds-footer__newsletter">
-          <p class="ds-footer__news-title">{{ section.settings.newsletter_heading | escape }}</p>
-          <p class="ds-footer__news-text">{{ section.settings.newsletter_text | escape }}</p>
+        {%- liquid
+          assign ns = section.settings
+          assign offer_on = false
+          if ns.offer_badge != blank
+            assign offer_on = true
+          endif
+        -%}
+        <div class="ds-footer__newsletter{% if offer_on %} ds-offer{% endif %}" id="DsFooterOffer">
+          {%- if offer_on -%}
+            <span class="ds-offer__glow" aria-hidden="true"></span>
+            <span class="ds-offer__badge">{{ ns.offer_badge | escape }}</span>
+          {%- endif -%}
+          <p class="ds-footer__news-title">{{ ns.newsletter_heading | escape }}</p>
+          <p class="ds-footer__news-text">{{ ns.newsletter_text | escape }}</p>
           {%- form 'customer', id: 'DsFooterNewsletter', class: 'ds-footer__form' -%}
-            <input type="hidden" name="contact[tags]" value="newsletter">
-            <label for="DsFooterEmail" class="visually-hidden">Email address</label>
-            <input
-              id="DsFooterEmail"
-              type="email"
-              name="contact[email]"
-              placeholder="Email address"
-              autocomplete="email"
-              autocapitalize="off"
-              spellcheck="false"
-              required
-              {% if form.errors %}
-                aria-invalid="true" aria-describedby="DsFooterNewsStatus"
-              {% endif %}
-            >
-            <button type="submit" class="ds-btn ds-btn--primary">Subscribe</button>
             {%- if form.posted_successfully? -%}
-              <p id="DsFooterNewsStatus" class="ds-footer__news-status" role="status">Thanks — you're subscribed.</p>
-            {%- elsif form.errors -%}
-              <p id="DsFooterNewsStatus" class="ds-footer__news-status ds-footer__news-status--error" role="alert">
-                {{- form.errors.translated_fields.email | capitalize }}
-                {{ form.errors.messages.email -}}
-              </p>
+              <div class="ds-offer__success" role="status">
+                <p class="ds-offer__success-title">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  {{ ns.success_heading | escape }}
+                </p>
+                {%- if ns.discount_code != blank -%}
+                  <p class="ds-offer__success-text">{{ ns.success_text | escape }}</p>
+                  <div class="ds-offer__code">
+                    <span class="ds-offer__code-value" data-ds-copy-value>{{ ns.discount_code | escape }}</span>
+                    <button type="button" class="ds-offer__copy" data-ds-copy data-copied-label="Copied!">Copy</button>
+                  </div>
+                {%- else -%}
+                  <p class="ds-offer__success-text">Check your inbox for your welcome email.</p>
+                {%- endif -%}
+              </div>
+            {%- else -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <label for="DsFooterEmail" class="visually-hidden">Email address</label>
+              <input
+                id="DsFooterEmail"
+                type="email"
+                name="contact[email]"
+                placeholder="Your email address"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+                {% if form.errors %}
+                  aria-invalid="true" aria-describedby="DsFooterNewsStatus"
+                {% endif %}
+              >
+              <button type="submit" class="ds-btn ds-btn--primary">{{ ns.button_label | escape }}</button>
+              {%- if form.errors -%}
+                <p id="DsFooterNewsStatus" class="ds-footer__news-status ds-footer__news-status--error" role="alert">
+                  {{- form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email -}}
+                </p>
+              {%- endif -%}
             {%- endif -%}
           {%- endform -%}
+          {%- if ns.fine_print != blank -%}
+            <p class="ds-offer__fine">{{ ns.fine_print | escape }}</p>
+          {%- endif -%}
         </div>
       {%- endif -%}
     </div>
@@ -210,16 +240,26 @@
       "default": "Thoughtfully designed footwear-care technology for everyday life."
     },
 
-    { "type": "header", "content": "Newsletter" },
+    { "type": "header", "content": "Newsletter offer" },
     { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter signup", "default": true },
-    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Stay in the loop" },
+    { "type": "text", "id": "offer_badge", "label": "Offer badge", "default": "10% OFF", "info": "Clear it for a plain newsletter signup without an offer" },
+    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Get 10% off your first order" },
     {
       "type": "text",
       "id": "newsletter_text",
       "label": "Text",
-      "default": "Product news, care tips and early access to offers. No spam."
+      "default": "Join the DrySense list for shoe-care tips, early access to sales and your welcome discount."
     },
-
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Get my 10%" },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Discount code shown after signing up",
+      "info": "Create this code in Discounts first (e.g. WELCOME10). Leave blank to only say \"check your inbox\"."
+    },
+    { "type": "text", "id": "success_heading", "label": "Success heading", "default": "You're in! Here's your code" },
+    { "type": "text", "id": "success_text", "label": "Success text", "default": "Use it at checkout for 10% off your first order." },
+    { "type": "text", "id": "fine_print", "label": "Small print", "default": "One use per customer. Unsubscribe anytime." },
     { "type": "header", "content": "Links" },
     { "type": "product", "id": "classic_product", "label": "Classic product" },
     { "type": "product", "id": "pro_product", "label": "Pro product" },

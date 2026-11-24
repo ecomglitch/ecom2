@@ -626,3 +626,30 @@ document.querySelectorAll('[data-ds-header]').forEach((header) => {
   new ResizeObserver(publish).observe(el);
   publish();
 });
+
+/* ---------- Footer offer: copy discount code ---------- */
+document.addEventListener('click', async (event) => {
+  const button = /** @type {Element} */ (event.target).closest?.('[data-ds-copy]');
+  if (!(button instanceof HTMLButtonElement)) return;
+  const value = button.closest('.ds-offer__code')?.querySelector('[data-ds-copy-value]')?.textContent?.trim();
+  if (!value) return;
+  try {
+    await navigator.clipboard.writeText(value);
+  } catch (e) {
+    // Fallback: select the code so it can be copied manually
+    const range = document.createRange();
+    const node = button.closest('.ds-offer__code')?.querySelector('[data-ds-copy-value]');
+    if (node) {
+      range.selectNodeContents(node);
+      window.getSelection()?.removeAllRanges();
+      window.getSelection()?.addRange(range);
+    }
+  }
+  const original = button.textContent;
+  button.textContent = button.dataset.copiedLabel || 'Copied!';
+  button.classList.add('is-copied');
+  setTimeout(() => {
+    button.textContent = original;
+    button.classList.remove('is-copied');
+  }, 2000);
+});

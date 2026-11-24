@@ -4681,3 +4681,164 @@ html.ds-anim-pre .ds-buy {
 [class*=' ds-'][hidden] {
   display: none !important;
 }
+
+/* ==========================================================================
+   Footer newsletter offer card
+   ========================================================================== */
+.ds-offer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 28px 28px 24px;
+  border: 1px solid rgb(233 120 53 / 0.35);
+  border-radius: 22px;
+  background:
+    linear-gradient(150deg, rgb(233 120 53 / 0.16), rgb(233 120 53 / 0.04) 55%, rgb(255 255 255 / 0.02)),
+    rgb(255 255 255 / 0.03);
+  box-shadow: 0 24px 48px -28px rgb(233 120 53 / 0.55);
+}
+
+/* Soft orange light in the corner */
+.ds-offer__glow {
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  z-index: -1;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(233 120 53 / 0.45), transparent 70%);
+  filter: blur(10px);
+}
+
+.ds-offer__badge {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--ds-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  box-shadow: 0 8px 20px -8px rgb(233 120 53 / 0.9);
+}
+
+.ds-offer .ds-footer__news-title {
+  font-family: var(--ds-font-display);
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.ds-offer .ds-footer__news-text {
+  margin: 8px 0 18px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ds-offer .ds-footer__form input[type='email'] {
+  background: rgb(255 255 255 / 0.08);
+  border-color: rgb(255 255 255 / 0.2);
+}
+
+.ds-offer .ds-footer__form .ds-btn {
+  min-height: 52px;
+  padding-inline: 24px;
+}
+
+.ds-offer__fine {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.5);
+}
+
+/* After signing up: the code, ready to copy */
+.ds-offer__success {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.ds-offer__success-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ds-offer__success-title svg {
+  width: 22px;
+  height: 22px;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--ds-success);
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ds-offer__success-text {
+  margin: 0;
+  font-size: 14px;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ds-offer__code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 8px 8px 18px;
+  border: 2px dashed rgb(233 120 53 / 0.7);
+  border-radius: 14px;
+  background: rgb(233 120 53 / 0.08);
+}
+
+.ds-offer__code-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #fff;
+}
+
+.ds-offer__copy {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+  font: 700 14px var(--ds-font);
+  color: var(--ds-ink);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.ds-offer__copy:hover {
+  background: #f1f2f4;
+}
+
+.ds-offer__copy.is-copied {
+  background: var(--ds-success);
+  color: #fff;
+}
+
+@media (max-width: 599px) {
+  .ds-offer {
+    padding: 22px 18px 20px;
+  }
+}
+
+.ds-footer__hero:has(.ds-offer) {
+  align-items: center;
+}
