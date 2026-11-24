@@ -4842,3 +4842,86 @@ html.ds-anim-pre .ds-buy {
 .ds-footer__hero:has(.ds-offer) {
   align-items: center;
 }
+
+/* ==========================================================================
+   Offer card: solid orange, flat (no glow / shadows); badge in footer colour
+   ========================================================================== */
+.ds-offer {
+  border: 0;
+  background: var(--ds-accent);
+  box-shadow: none;
+}
+
+.ds-offer__glow {
+  display: none;
+}
+
+.ds-offer__badge {
+  background: var(--ds-ink);
+  color: #fff;
+  box-shadow: none;
+}
+
+.ds-offer .ds-footer__news-title,
+.ds-offer .ds-offer__success-title {
+  color: #fff;
+}
+
+.ds-offer .ds-footer__news-text,
+.ds-offer .ds-offer__success-text {
+  color: rgb(255 255 255 / 0.92);
+}
+
+.ds-offer__fine {
+  color: rgb(255 255 255 / 0.8);
+}
+
+/* Form on orange: white field, dark button */
+.ds-offer .ds-footer__form input[type='email'] {
+  border-color: #fff;
+  background: #fff;
+  color: var(--ds-ink);
+}
+
+.ds-offer .ds-footer__form input[type='email']::placeholder {
+  color: var(--ds-muted);
+}
+
+.ds-offer .ds-footer__form input[type='email']:focus {
+  border-color: var(--ds-ink);
+}
+
+.ds-offer .ds-footer__form .ds-btn--primary {
+  background: var(--ds-ink);
+  color: #fff;
+  box-shadow: none;
+}
+
+.ds-offer .ds-footer__form .ds-btn--primary:hover {
+  background: #2a3541;
+}
+
+.ds-offer .ds-footer__news-status--error {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Code reveal on orange */
+.ds-offer .ds-offer__code {
+  border-color: #fff;
+  background: rgb(255 255 255 / 0.14);
+}
+
+.ds-offer .ds-offer__copy {
+  background: var(--ds-ink);
+  color: #fff;
+}
+
+.ds-offer .ds-offer__copy:hover {
+  background: #2a3541;
+}
+
+.ds-offer .ds-offer__copy.is-copied {
+  background: #fff;
+  color: var(--ds-success);
+}
