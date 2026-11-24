@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero": {
       "type": "ds-hero",
@@ -29,7 +30,9 @@
     "products": {
       "type": "ds-products",
       "settings": {
+        "eyebrow": "",
         "heading": "Meet Your New Everyday Essential.",
+        "page_heading": false,
         "text": "Two thoughtfully designed models. One simple goal: fresher footwear.",
         "classic_product": "drysense-shoe-dryer-1",
         "classic_image": "shopify://shop_images/picture_1_black.png",
@@ -121,6 +124,7 @@
       "settings": {
         "heading": "Two Models. One Fresh Start.",
         "text": "Find the DrySense that fits your everyday routine.",
+        "show_buttons": true,
         "show_image": false,
         "classic_product": "",
         "pro_product": "",
@@ -233,6 +237,57 @@
         "note": "Choose between DrySense Classic and DrySense Pro."
       }
     },
+    "photo_reviews": {
+      "type": "ds-photo-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/6b9de625-2080-4532-9798-252a571ebd64.webp",
+            "rating": 5,
+            "title": "This is a test",
+            "text": "This is the best",
+            "name": "Diddy",
+            "product": "DrySense Pro",
+            "verified": false
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/6b9de625-2080-4532-9798-252a571ebd64.webp",
+            "rating": 5,
+            "title": "This is a test",
+            "text": "This is the best",
+            "name": "Diddy",
+            "product": "DrySense Pro",
+            "verified": true
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/6b9de625-2080-4532-9798-252a571ebd64.webp",
+            "rating": 5,
+            "title": "This is a test",
+            "text": "This is the best",
+            "name": "Diddy",
+            "product": "DrySense Pro",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "eyebrow": "Reviews",
+        "heading": "Real Experiences. Better Mornings.",
+        "summary": ""
+      }
+    },
     "faq": {
       "type": "ds-faq",
       "blocks": {
@@ -322,29 +377,6 @@
       "settings": {
         "heading": "Everything You Need to Know."
       }
-    },
-    "photo_reviews": {
-      "type": "ds-photo-reviews",
-      "settings": {},
-      "blocks": {
-        "review_1": {
-          "type": "review",
-          "settings": {}
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {}
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "review_1",
-        "review_2",
-        "review_3"
-      ]
     }
   },
   "order": [
