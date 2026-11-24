@@ -3787,3 +3787,41 @@ body:has(dialog[open]) .ds-satc {
   opacity: 1 !important;
   text-decoration-color: currentColor !important;
 }
+
+/* ==========================================================================
+   Motion (GSAP) helpers
+   ========================================================================== */
+/* Pre-hide intro content until the animation starts (removed by drysense-motion.js or after 2.5s) */
+html.ds-anim-pre .ds-hero__media,
+html.ds-anim-pre .ds-hero .ds-h1,
+html.ds-anim-pre .ds-hero__eyebrow,
+html.ds-anim-pre .ds-hero__text,
+html.ds-anim-pre .ds-hero__actions,
+html.ds-anim-pre .ds-hero__trust,
+html.ds-anim-pre .ds-intro,
+html.ds-anim-pre media-gallery,
+html.ds-anim-pre .ds-tier,
+html.ds-anim-pre .ds-buy {
+  visibility: hidden;
+}
+
+/* Masked words for headline reveals */
+.ds-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.ds-word__inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Parallax images get a little extra size so their edges never show */
+.ds-hero__media .ds-media img,
+.ds-split .ds-media img,
+.ds-lifestyle .ds-media img {
+  will-change: transform;
+}

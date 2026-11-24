@@ -23,6 +23,19 @@
     {%- render 'scripts' -%}
     {{ 'drysense.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'drysense.js' | asset_url }}" type="module" defer></script>
+    {%- if template.name == 'index' or template.name == 'product' or template.suffix == 'shop' -%}
+      {%- comment -%} DrySense motion: GSAP + ScrollTrigger (home, product and shop pages) {%- endcomment -%}
+      <script>
+        // Pre-hide above-the-fold content until the intro animation starts; reveal anyway after 2.5s
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('ds-anim-pre');
+          setTimeout(function () { document.documentElement.classList.remove('ds-anim-pre'); }, 2500);
+        }
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+      <script src="{{ 'drysense-motion.js' | asset_url }}" defer></script>
+    {%- endif -%}
     {%- render 'theme-styles-variables' -%}
     {%- render 'color-palette' -%}
 
