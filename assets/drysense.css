@@ -3767,3 +3767,23 @@ body:has(dialog[open]) .ds-satc {
     max-width: 200px;
   }
 }
+
+/* Cookie banner link: force readable colours in every state (theme link styles
+   otherwise darken it on hover, matching the dark background) */
+.ds-cookie a,
+.ds-cookie a:link,
+.ds-cookie a:visited {
+  color: #f4a26b !important;
+  opacity: 1 !important;
+  text-decoration: underline !important;
+  text-decoration-color: currentColor !important;
+  text-underline-offset: 3px;
+}
+
+.ds-cookie a:hover,
+.ds-cookie a:focus-visible,
+.ds-cookie a:active {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  text-decoration-color: currentColor !important;
+}

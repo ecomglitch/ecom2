@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "type": "header",
   "name": "t:names.header",
   "sections": {
@@ -23,7 +24,8 @@
         "shop_product": "drysense-shoe-dryer",
         "show_languages": true,
         "languages": "EN|English\nSQ|Shqip\nDE|Deutsch\nIT|Italiano\nFR|Français",
-        "show_currency": true
+        "show_currency": true,
+        "link": "/pages/shop"
       }
     },
     "ds_header": {
@@ -36,8 +38,8 @@
           "type": "link",
           "settings": {
             "label": "Shop",
-            "product": "drysense-shoe-dryer",
-            "link": "",
+            "product": "",
+            "link": "/pages/shop",
             "highlight": true
           }
         },

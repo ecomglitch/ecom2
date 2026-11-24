@@ -1,0 +1,171 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "products": {
+      "type": "ds-products",
+      "settings": {
+        "heading": "Choose Your DrySense",
+        "text": "Two models, one goal: dry, fresh shoes every day. Compare them below, view the details, or add straight to your cart.",
+        "classic_product": "drysense-shoe-dryer-1",
+        "classic_image": "shopify://shop_images/picture_1_black.png",
+        "classic_name": "DrySense Classic",
+        "classic_description": "Your everyday essential for fresher, drier footwear.",
+        "classic_badge": "",
+        "classic_cta": "Choose Classic",
+        "classic_price": "$49.99",
+        "classic_compare": "$79.99",
+        "pro_product": "drysense-shoe-dryer",
+        "pro_image": "shopify://shop_images/image_d6682fb4-a4dc-4ec6-aabf-985c8a9ad819.jpg",
+        "pro_name": "DrySense Pro",
+        "pro_description": "Premium footwear care with a smart digital display and sophisticated design.",
+        "pro_badge": "Premium model",
+        "pro_cta": "Choose Pro",
+        "pro_price": "$54.99",
+        "pro_compare": "$89.99",
+        "eyebrow": "Shop",
+        "page_heading": true
+      }
+    },
+    "compare": {
+      "type": "ds-compare",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "feature": "Drying capacity",
+            "classic": "1 Pair (2 Arms)",
+            "pro": "2 Pairs (4 Arms)"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "feature": "Best for",
+            "classic": "Daily sneakers and work shoes",
+            "pro": "Families, athletes, ski boots, and gloves"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "feature": "Drying technology",
+            "classic": "48°C Controlled Warm Air",
+            "pro": "48°C Controlled Warm Air"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "feature": "Display",
+            "classic": "Top Control Panel",
+            "pro": "Front Digital Temperature Display"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "feature": "Exterior color",
+            "classic": "Charcoal",
+            "pro": "Champagne"
+          }
+        },
+        "row_6": {
+          "type": "row",
+          "settings": {
+            "feature": "Auto shut-off",
+            "classic": "Yes",
+            "pro": "Yes"
+          }
+        },
+        "row_7": {
+          "type": "row",
+          "settings": {
+            "feature": "Folding design",
+            "classic": "Folds flat",
+            "pro": "Folds flat"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5",
+        "row_6",
+        "row_7"
+      ],
+      "settings": {
+        "heading": "Classic or Pro?",
+        "text": "The quick differences at a glance.",
+        "show_image": false,
+        "classic_product": "",
+        "pro_product": "",
+        "classic_price": "$49.99",
+        "pro_price": "$54.99",
+        "show_buttons": false
+      }
+    },
+    "steps": {
+      "type": "ds-steps",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "icon": "sliders",
+            "title": "Adjust",
+            "text": "Extend the drying attachments to accommodate your footwear."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "icon": "timer",
+            "title": "Set",
+            "text": "Choose your desired drying time using the controls."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "icon": "wind",
+            "title": "Relax",
+            "text": "Let DrySense circulate warm air through your footwear."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ],
+      "settings": {
+        "heading": "Three Simple Steps. A Fresher Start."
+      }
+    },
+    "guarantee": {
+      "type": "ds-guarantee",
+      "settings": {
+        "heading": "Try DrySense Risk-Free for 30 Days.",
+        "text": "We want you to feel confident about your purchase. If DrySense doesn't meet your expectations, contact our support team within 30 days of receiving your order and request a refund, subject to our published return policy.",
+        "point_1": "30-day money-back guarantee",
+        "point_2": "Secure checkout",
+        "point_3": "Customer support"
+      }
+    }
+  },
+  "order": [
+    "products",
+    "compare",
+    "steps",
+    "guarantee"
+  ]
+}
