@@ -10,7 +10,7 @@
   assign current = request.path
 -%}
 
-<div class="ds-header" data-ds-header>
+<div class="ds-header" data-ds-header style="--ds-logo-h: {{ section.settings.logo_height }}px;">
   <div class="ds-header__inner">
     <button
       type="button"
@@ -25,11 +25,10 @@
 
     <a class="ds-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
       {%- if logo != blank -%}
-        {%- assign logo_style = 'height: ' | append: section.settings.logo_height | append: 'px; width: auto;' -%}
         {{
           logo
           | image_url: width: 480
-          | image_tag: widths: '160, 240, 320, 480', sizes: '200px', alt: shop.name, loading: 'eager', style: logo_style
+          | image_tag: widths: '160, 240, 320, 480', sizes: '280px', alt: shop.name, loading: 'eager'
         }}
       {%- else -%}
         <span class="ds-header__wordmark">{{ shop.name | upcase | escape }}</span>
@@ -98,7 +97,7 @@
       "label": "Logo",
       "info": "Defaults to the logo in Theme settings"
     },
-    { "type": "range", "id": "logo_height", "label": "Logo height", "min": 16, "max": 60, "step": 2, "unit": "px", "default": 22 }
+    { "type": "range", "id": "logo_height", "label": "Logo height", "min": 20, "max": 72, "step": 2, "unit": "px", "default": 40, "info": "Phones use about 80% of this" }
   ],
   "presets": [{ "name": "DrySense: Header" }]
 }

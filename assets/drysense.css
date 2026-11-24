@@ -3744,3 +3744,26 @@ body:has(dialog[open]) .ds-satc {
   max-height: min(360px, 60vh);
   overflow-y: auto;
 }
+
+/* Header logo: bigger, size set by the section (--ds-logo-h) */
+.ds-header__logo img {
+  height: var(--ds-logo-h, 40px);
+  width: auto;
+  max-width: 280px;
+  object-fit: contain;
+}
+
+.ds-header__wordmark {
+  font-size: calc(var(--ds-logo-h, 40px) * 0.55);
+}
+
+.ds-header__inner {
+  min-height: calc(var(--ds-logo-h, 40px) + 28px);
+}
+
+@media (max-width: 899px) {
+  .ds-header__logo img {
+    height: calc(var(--ds-logo-h, 40px) * 0.8);
+    max-width: 200px;
+  }
+}

@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "type": "header",
   "name": "t:names.header",
   "sections": {
@@ -30,7 +29,7 @@
     "ds_header": {
       "type": "ds-header",
       "settings": {
-        "logo_height": 22
+        "logo_height": 40
       },
       "blocks": {
         "shop": {
@@ -62,9 +61,17 @@
             "label": "Contact",
             "link": "/pages/contact"
           }
+        },
+        "home": {
+          "type": "link",
+          "settings": {
+            "label": "Home",
+            "link": "/"
+          }
         }
       },
       "block_order": [
+        "home",
         "shop",
         "guide",
         "how",
