@@ -4662,3 +4662,22 @@ html.ds-anim-pre .ds-buy {
   justify-content: center;
   gap: 4px 10px;
 }
+
+/* The cookie banner sets display:grid, which overrides the [hidden] attribute.
+   When closed it must be fully gone, otherwise its invisible buttons sit over
+   the bottom of the screen (e.g. the sticky add-to-cart bar) and catch taps. */
+.ds-cookie[hidden] {
+  display: none !important;
+}
+
+.ds-cookie:not(.is-visible) {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Any DrySense element with the [hidden] attribute is really hidden, even if its
+   class sets a display value (flex/grid would otherwise win over [hidden]). */
+[class^='ds-'][hidden],
+[class*=' ds-'][hidden] {
+  display: none !important;
+}
