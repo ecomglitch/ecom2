@@ -555,9 +555,12 @@ document.querySelectorAll('[data-ds-header]').forEach((header) => {
   el.querySelectorAll('.ds-header__link').forEach((link) => link.addEventListener('click', () => setOpen(false)));
   window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => e.matches && setOpen(false));
 
-  // Hairline once the page has scrolled
-  const onScroll = () => el.classList.toggle('is-scrolled', window.scrollY > 8);
+  // Hairline once the page has scrolled. On desktop the theme scrolls .page-wrapper,
+  // on mobile the window, so listen to both.
+  const wrapper = document.querySelector('.page-wrapper');
+  const onScroll = () => el.classList.toggle('is-scrolled', Math.max(window.scrollY, wrapper?.scrollTop || 0) > 8);
   window.addEventListener('scroll', onScroll, { passive: true });
+  wrapper?.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
   // The theme's original header publishes these; keep them for sticky offsets elsewhere

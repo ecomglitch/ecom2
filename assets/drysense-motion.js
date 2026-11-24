@@ -46,18 +46,45 @@
     });
   }
 
+  /**
+   * Run `play` once when `trigger` scrolls into view. Uses IntersectionObserver, so it works
+   * whichever element scrolls (the theme scrolls .page-wrapper on desktop, the window on mobile).
+   * Elements already above the viewport (e.g. after an anchor jump) are shown instantly.
+   */
+  function onReveal(trigger, play) {
+    if (!trigger) return;
+    if (!('IntersectionObserver' in window)) return play(true);
+    var io = new IntersectionObserver(
+      function (entries) {
+        var entry = entries[0];
+        if (!entry) return;
+        var above = entry.boundingClientRect.bottom < 0;
+        if (entry.isIntersecting || above) {
+          io.disconnect();
+          play(above);
+        }
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0 }
+    );
+    io.observe(trigger);
+  }
+
   /** Fade + rise a group of elements when they scroll into view */
   function riseOnScroll(targets, opts) {
     targets = targets.filter(Boolean);
     if (!targets.length) return;
     opts = opts || {};
-    gsap.from(targets, {
-      y: opts.y || 32,
-      autoAlpha: 0,
-      duration: opts.duration || 0.9,
-      ease: EASE,
-      stagger: opts.stagger || 0.08,
-      scrollTrigger: { trigger: opts.trigger || targets[0], start: opts.start || 'top 85%', once: true },
+    var y = opts.y === undefined ? 32 : opts.y;
+    gsap.set(targets, { autoAlpha: 0, y: y });
+    onReveal(opts.trigger || targets[0], function (instant) {
+      gsap.to(targets, {
+        autoAlpha: 1,
+        y: 0,
+        duration: instant ? 0 : opts.duration || 0.9,
+        ease: opts.ease || EASE,
+        stagger: instant ? 0 : opts.stagger || 0.08,
+        clearProps: y ? 'transform' : '',
+      });
     });
   }
 
@@ -86,16 +113,7 @@
       .from($('.ds-hero__actions > *', hero), { y: 16, autoAlpha: 0, duration: 0.7, stagger: 0.08 }, 0.6)
       .from($('.ds-hero__trust li', hero), { y: 12, autoAlpha: 0, duration: 0.6, stagger: 0.06 }, 0.75);
 
-    // Gentle parallax on the hero image
-    heroMedia.forEach(function (media) {
-      var img = media.querySelector('img');
-      if (!img) return;
-      gsap.fromTo(
-        img,
-        { yPercent: -4, scale: 1.08 },
-        { yPercent: 4, scale: 1.08, ease: 'none', scrollTrigger: { trigger: media, start: 'top top', end: 'bottom top', scrub: true } }
-      );
-    });
+    // (hero image parallax is built with the scroll animations below, on the right scroller)
   }
 
   // Product page buy box
@@ -116,85 +134,151 @@
 
   reveal();
 
-  /* ---------------- Scroll reveals (all pages) ---------------- */
+  /* ---------------- Scroll animations ----------------
+     Reveals are triggered by IntersectionObserver (scroller-independent, see onReveal).
+     Only the parallax scrubs use ScrollTrigger. The theme scrolls `.page-wrapper` on screens
+     >= 990px and the window below that, so they are built per breakpoint with gsap.matchMedia(). */
+  var ScrollTrigger = window.ScrollTrigger;
+  var wrapper = document.querySelector('.page-wrapper');
+
+  function pageScroller() {
+    if (!wrapper) return window;
+    var overflowY = window.getComputedStyle(wrapper).overflowY;
+    return overflowY === 'auto' || overflowY === 'scroll' ? wrapper : window;
+  }
+
+  /** Parallax drift for an image inside a clipped media box */
+  function parallax(img, trigger, amount, scale, start, end) {
+    if (!img) return;
+    gsap.fromTo(
+      img,
+      { yPercent: -amount, scale: scale },
+      {
+        yPercent: amount,
+        scale: scale,
+        ease: 'none',
+        scrollTrigger: { trigger: trigger, start: start || 'top bottom', end: end || 'bottom top', scrub: true },
+      }
+    );
+  }
+
+  var mm = gsap.matchMedia();
+  mm.add({ desktop: '(min-width: 990px)', mobile: '(max-width: 989px)' }, function () {
+    ScrollTrigger.defaults({ scroller: pageScroller() });
+    $('.ds-hero__media .ds-media').forEach(function (media) {
+      parallax(media.querySelector('img'), media, 4, 1.08, 'top top', 'bottom top');
+    });
+    $('.ds-split .ds-media').forEach(function (media) {
+      parallax(media.querySelector('img'), media, 5, 1.1);
+    });
+    $('.ds-lifestyle').forEach(function (block) {
+      parallax(block.querySelector('.ds-media img'), block, 8, 1.15);
+    });
+    ScrollTrigger.refresh();
+  });
+
+  // Section headings
   $('.ds-head').forEach(function (head) {
     riseOnScroll($('.ds-eyebrow, .ds-h1, .ds-h2, .ds-lead', head), { trigger: head, stagger: 0.1 });
   });
 
   // Product cards
-  var grid = document.querySelector('.ds-products__grid');
-  if (grid) riseOnScroll($('.ds-card', grid), { trigger: grid, y: 60, stagger: 0.15, duration: 1.1 });
+  $('.ds-products__grid').forEach(function (grid) {
+    riseOnScroll($('.ds-card', grid), { trigger: grid, y: 60, stagger: 0.15, duration: 1.1 });
+  });
 
-  // Comparison rows (table or chart)
-  var table = document.querySelector('.ds-table, .ds-vs');
-  if (table) {
-    riseOnScroll($('tbody tr, .ds-vs__row', table), { trigger: table, y: 14, stagger: 0.05, duration: 0.6 });
-  }
+  // Comparison: rows only fade (transforms on <tr> break table layout in some browsers)
+  $('.ds-table').forEach(function (table) {
+    riseOnScroll($('tbody tr', table), { trigger: table, y: 0, stagger: 0.06, duration: 0.6, ease: 'power1.out' });
+  });
   riseOnScroll($('.ds-compare__actions > *'), { stagger: 0.1 });
 
-  // Benefits + split sections
+  // Split sections (benefits, final call to action)
   $('.ds-split').forEach(function (split) {
     var media = split.querySelector('.ds-media');
     if (media) {
-      gsap.fromTo(
-        media,
-        { clipPath: 'inset(10% 10% 10% 10% round 24px)', autoAlpha: 0 },
-        {
+      gsap.set(media, { clipPath: 'inset(10% 10% 10% 10% round 24px)', autoAlpha: 0 });
+      onReveal(split, function (instant) {
+        gsap.to(media, {
           clipPath: 'inset(0% 0% 0% 0% round 24px)',
           autoAlpha: 1,
-          duration: 1.2,
+          duration: instant ? 0 : 1.2,
           ease: EASE,
           clearProps: 'clipPath',
-          scrollTrigger: { trigger: split, start: 'top 80%', once: true },
-        }
-      );
-      var img = media.querySelector('img');
-      if (img) {
-        gsap.fromTo(img, { yPercent: -5, scale: 1.1 }, { yPercent: 5, scale: 1.1, ease: 'none', scrollTrigger: { trigger: media, scrub: true } });
-      }
+        });
+      });
     }
-    riseOnScroll($('.ds-benefit, .ds-hero__actions > *, .ds-body', split), { trigger: split, stagger: 0.1 });
+    // Direct content only, so nested items are never animated twice
+    var copy = split.querySelector(':scope > div:not(.ds-media)');
+    if (copy) {
+      riseOnScroll(
+        $(':scope > *, .ds-benefit', copy).filter(function (el) {
+          return !el.classList.contains('ds-benefits__list');
+        }),
+        { trigger: split, stagger: 0.1 }
+      );
+    }
   });
 
-  // How it works
-  var steps = document.querySelector('.ds-steps');
-  if (steps) {
-    gsap.from($('.ds-step', steps), {
-      y: 40,
-      autoAlpha: 0,
-      duration: 0.9,
-      ease: EASE,
-      stagger: 0.15,
-      scrollTrigger: { trigger: steps, start: 'top 80%', once: true },
+  // How it works: steps rise, markers pop
+  $('.ds-steps').forEach(function (steps) {
+    var items = $('.ds-step', steps);
+    var markers = $('.ds-step__marker', steps);
+    gsap.set(items, { autoAlpha: 0, y: 40 });
+    gsap.set(markers, { scale: 0.4 });
+    onReveal(steps, function (instant) {
+      gsap.to(items, { autoAlpha: 1, y: 0, duration: instant ? 0 : 0.9, ease: EASE, stagger: instant ? 0 : 0.15, clearProps: 'transform' });
+      gsap.to(markers, { scale: 1, duration: instant ? 0 : 0.8, ease: 'back.out(2)', stagger: instant ? 0 : 0.15, clearProps: 'transform' });
     });
-    gsap.from($('.ds-step__marker', steps), {
-      scale: 0.4,
-      duration: 0.8,
-      ease: 'back.out(2)',
-      stagger: 0.15,
-      scrollTrigger: { trigger: steps, start: 'top 80%', once: true },
-    });
-  }
+  });
 
-  // Full-width lifestyle image
+  // Lifestyle text
   $('.ds-lifestyle').forEach(function (block) {
-    var img = block.querySelector('.ds-media img');
-    if (img) {
-      gsap.fromTo(img, { yPercent: -8, scale: 1.15 }, { yPercent: 8, scale: 1.15, ease: 'none', scrollTrigger: { trigger: block, scrub: true } });
-    }
-    riseOnScroll($('.ds-h2, .ds-lead', block), { trigger: block, start: 'top 70%' });
+    riseOnScroll($('.ds-h2, .ds-lead', block), { trigger: block });
   });
 
   // Reviews, guarantee, FAQ, social proof, customer videos
-  riseOnScroll($('.ds-review'), { y: 40, stagger: 0.12 });
-  riseOnScroll($('.ds-guarantee'), { y: 24 });
-  riseOnScroll($('.ds-faq details'), { y: 16, stagger: 0.05, duration: 0.6 });
-  riseOnScroll($('.ds-social__item'), { y: 40, stagger: 0.12 });
-  riseOnScroll($('.ds-ugc__item'), { y: 40, stagger: 0.08 });
+  $('.ds-reviews__grid').forEach(function (grid) {
+    riseOnScroll($('.ds-review', grid), { trigger: grid, y: 40, stagger: 0.12 });
+  });
+  $('.ds-guarantee').forEach(function (el) {
+    riseOnScroll([el], { y: 24 });
+  });
+  $('.ds-faq').forEach(function (faq) {
+    riseOnScroll($('details', faq), { trigger: faq, y: 16, stagger: 0.05, duration: 0.6 });
+  });
+  $('.ds-social__track').forEach(function (track) {
+    riseOnScroll($('.ds-social__item', track), { trigger: track, y: 40, stagger: 0.12 });
+  });
+  $('.ds-ugc__track').forEach(function (track) {
+    riseOnScroll($('.ds-ugc__item', track), { trigger: track, y: 40, stagger: 0.08 });
+  });
 
   // Product page details
-  riseOnScroll($('.ds-pdp-delivery__steps li'), { y: 16, stagger: 0.12 });
-  riseOnScroll($('.ds-pdp-assurance li'), { y: 16, stagger: 0.08 });
+  $('.ds-pdp-delivery__steps').forEach(function (list) {
+    riseOnScroll($('li', list), { trigger: list, y: 16, stagger: 0.12 });
+  });
+  $('.ds-pdp-assurance').forEach(function (list) {
+    riseOnScroll($('li', list), { trigger: list, y: 16, stagger: 0.08 });
+  });
+
+  /* Keep parallax positions right as lazy images, fonts and app content change the layout */
+  var refreshTimer = 0;
+  function queueRefresh() {
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(function () {
+      ScrollTrigger.refresh();
+    }, 150);
+  }
+  document.addEventListener(
+    'load',
+    function (event) {
+      if (event.target && event.target.tagName === 'IMG') queueRefresh();
+    },
+    true
+  );
+  window.addEventListener('load', queueRefresh);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(queueRefresh);
 
   /* ---------------- Magnetic primary buttons (mouse only) ---------------- */
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -212,9 +296,4 @@
       });
     });
   }
-
-  // Layout can shift once fonts/images settle
-  window.addEventListener('load', function () {
-    window.ScrollTrigger.refresh();
-  });
 })();
