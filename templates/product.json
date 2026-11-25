@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "product-information",
@@ -94,10 +95,10 @@
                 "subtitle": "Fresh, dry shoes with controlled 48°C warm air",
                 "checklist": "Controlled 48°C warm air\nHelps remove moisture and odor\nDesigned for everyday use",
                 "deal_label": "Winter deal",
-                "proof_text": "",
                 "timer_end_date": "2026-11-30",
                 "timer_end_time": "23:59",
-                "timer_label": "Winter sale ends in"
+                "timer_label": "Winter sale ends in",
+                "proof_text": ""
               },
               "blocks": {}
             },
@@ -127,7 +128,7 @@
                 "t2_qty": 2,
                 "t2_title": "2 DrySense Pro",
                 "t2_subtitle": "One for you, one to share",
-                "t2_discount": 10,
+                "t2_discount": 9,
                 "t2_badge": "Most popular",
                 "t2_gift_1": "",
                 "t2_gift_2": "",
@@ -258,15 +259,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "How long does drying take?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>Most footwear dries in 1 to 3 hours. Heavy winter boots or heavily soaked shoes may require up to 3 hours of continuous warm air circulation.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -277,15 +298,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "Does it turn off automatically?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>Yes, the device features a smart timer control panel with an auto shut-off function. You can set the desired drying time, and the device will power down automatically when the cycle is complete.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -296,15 +337,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "Does DrySense help reduce unpleasant odors?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>Yes. By circulating warm air inside the shoe, it removes trapped moisture. Odor-causing bacteria thrive in damp environments, so keeping shoes dry helps reduce unpleasant smells.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -315,15 +376,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "Classic or Pro?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>Both use 48°C controlled warm air, have auto shut-off and fold flat. <strong>Classic</strong> dries 1 pair (2 arms) and is ideal for daily sneakers and work shoes. <strong>Pro</strong> dries 2 pairs (4 arms), adds a front digital temperature display and is ideal for families, athletes, ski boots and gloves.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -334,15 +415,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "How much does shipping cost?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>We offer Free Shipping on all orders within the US, UK, and European countries. Orders are processed in 1-2 business days and typically arrive within 6 to 12 business days.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -353,15 +454,35 @@
                   "type": "_accordion-row",
                   "settings": {
                     "heading": "What if I am not satisfied?",
-                    "open_by_default": false
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
                   },
                   "blocks": {
                     "text": {
                       "type": "text",
                       "settings": {
                         "text": "<p>We offer a 30-Day Money-Back Guarantee. If your shoes aren’t perfectly dry and warm, contact our support team within 30 days of delivery, and we will issue a full refund.</p>",
-                        "type_preset": "rte"
-                      }
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -570,12 +691,12 @@
       "settings": {
         "heading": "Two Models. One Fresh Start.",
         "text": "Find the DrySense that fits your everyday routine.",
+        "show_buttons": false,
         "show_image": false,
         "classic_product": "",
         "pro_product": "",
         "classic_price": "$49.99",
-        "pro_price": "$54.99",
-        "show_buttons": false
+        "pro_price": "$54.99"
       }
     },
     "steps_pdp": {
